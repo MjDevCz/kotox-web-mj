@@ -11,7 +11,7 @@ const MetaDataView = ({name, picture, tags}: Props) => {
             <div className="flex flex-wrap text-xl font-semibold space-x-4">
                 {tags.map(tag => {
                     return (
-                        <span className="rounded outline p-1 m-1">
+                        <span key={tag} className="rounded outline p-1 m-1">
                             {tag}
                         </span>
                     )
