@@ -18,7 +18,7 @@ export default function Index({allPosts}: Props) {
         <>
             <Layout>
                 <Head>
-                    <title>{`Software craftsmanship by MJ`}</title>
+                    <title>{`MJ Stories`}</title>
                 </Head>
                 <Container>
                     <Intro/>
