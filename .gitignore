@@ -5,3 +5,4 @@
 .env.local
 .env.development
 .env.production
+/public/feed.xml
