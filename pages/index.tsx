@@ -4,6 +4,8 @@ import HeroPost from '../components/hero-post'
 import Intro from '../components/intro'
 import Layout from '../components/layout'
 import {getAllPosts} from '../lib/api'
+import {generateRssFeed} from '../lib/generateRssFeed'
+import fs from 'fs'
 import Head from 'next/head'
 import Post from '../interfaces/post'
 
@@ -48,6 +50,8 @@ export const getStaticProps = async () => {
         'coverImage',
         'excerpt',
     ])
+
+    fs.writeFileSync('public/feed.xml', generateRssFeed())
 
     return {
         props: {allPosts},

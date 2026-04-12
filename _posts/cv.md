@@ -11,6 +11,7 @@ ogImage:
     url: ''
 ogTitle: "TBD. ogTitle CV..."
 root: true
+hideReadingTime: true
 ---
 
 TBD. CV here!

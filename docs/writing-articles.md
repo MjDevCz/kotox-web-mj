@@ -27,6 +27,14 @@ ogTitle: "Title for social sharing"
 - **date**: articles without a date (empty string `''`) are excluded from the homepage feed (used for static pages like `aboutme.md`).
 - **coverImage**: place images in `public/assets/blog/post/<folder>/`.
 
+## Reading time
+
+A reading time estimate (e.g. "4 min read") is displayed next to the date on every post automatically. To hide it on non-article pages (like `aboutme.md` or `cv.md`), add to the frontmatter:
+
+```yaml
+hideReadingTime: true
+```
+
 ## Links
 
 - **Internal link** (same tab): use a relative path

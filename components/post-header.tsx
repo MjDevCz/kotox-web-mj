@@ -8,10 +8,11 @@ type Props = {
   title: string
   coverImage: string
   date: string
+  readingTime: string
   metaData: MetaDataType
 }
 
-const PostHeader = ({ title, coverImage, date, metaData }: Props) => {
+const PostHeader = ({ title, coverImage, date, readingTime, metaData }: Props) => {
   return (
     <>
       <PostTitle>{title}</PostTitle>
@@ -27,8 +28,14 @@ const PostHeader = ({ title, coverImage, date, metaData }: Props) => {
         <div className="block md:hidden mb-6">
           <MetaDataView name={metaData.name} picture={metaData.picture} tags={metaData.tags} />
         </div>
-        <div className="mb-6 text-lg">
+        <div className="mb-6 text-lg flex items-center gap-3">
           <DateFormatter dateString={date} />
+          {readingTime && (
+            <>
+              <span className="text-gray-400">·</span>
+              <span className="text-gray-500">{readingTime}</span>
+            </>
+          )}
         </div>
       </div>
     </>
