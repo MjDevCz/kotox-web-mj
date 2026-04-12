@@ -54,6 +54,12 @@ Picking the sync layer was just the first decision. The harder questions followe
 
 We chose an **event-first architecture** where the mobile client records immutable operational events (user intent), while a shared KMP processing engine runs on both client and server to produce deterministic state. The client gets instant feedback. The server remains the authoritative judge. And conflicts carry enough context to be resolved meaningfully — not just last-write-wins.
 
+### KMP beyond mobile: sharing logic with the server
+
+One advantage of building the processing engines in Kotlin Multiplatform is that they don't have to stay on the phone. We compile the same validation and state-projection logic to **Kotlin/JS** and ship it as a library to our colleagues running the Node.js server. The mobile client and the server literally execute the same code — so an event processed optimistically on the device produces the exact same result when the server processes it after sync.
+
+This eliminates an entire class of bugs where client and server disagree on business rules. The only case where the outcome can differ is a genuine conflict — another user modified the same entity while you were offline — and for that we surface the conflict for human review rather than silently merging.
+
 ## The takeaway
 
 The offline-first ecosystem is maturing, but it's still fragmented. Most tools assume a web-first, NoSQL, or single-platform world. If you're building for **KMP with relational data**, the options narrow quickly.
