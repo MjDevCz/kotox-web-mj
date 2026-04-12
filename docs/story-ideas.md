@@ -4,7 +4,7 @@ Potential topics for new blog stories. Each should follow the format: short, rea
 
 ## Candidates
 
-### Offline-first architecture [NEXT — draft after April 22]
+### Offline-first architecture [NEXT — draft after April 12]
 Challenges and patterns of building a strongly offline-first mobile app. Data sync strategies, conflict resolution, local-first persistence. Keep it generic enough to not spoil the current project. Connected to the KMP offline-first tooling choice — internal STRV mobile meeting talk on 2026-04-22. Write the public-friendly version after that talk.
 
 ### KMP in practice
