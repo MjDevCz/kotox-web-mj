@@ -16,12 +16,12 @@ jobs:
       HOST: ssh.rosti.cz
       USER: app
       PORT: 26052
-      NODE_VERSION: 19.6.0
+      NODE_VERSION: 22.22.0
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: "v19.6.0"
+          node-version: "22.22.0"
       - uses: webfactory/ssh-agent@v0.8.0
         with:
           ssh-private-key: ${{ secrets.ROSTI_DEPLOY_SSH_KEY }}
