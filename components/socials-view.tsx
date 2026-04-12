@@ -30,6 +30,9 @@ const SocialsView = (preview) => {
                 <a href={`https://www.facebook.com/kotomisak`} target="_blank">
                     <img src="/assets/blog/social/facebook.png" className="w-10 h-10 p2 mr-4" alt=""/>
                 </a>
+                <a href={`https://dev.to/mjdev`} target="_blank">
+                    <img src="/assets/blog/social/devto.png" className="w-10 h-10 p2 mr-4" alt=""/>
+                </a>
             </div>
         </div>
     )
