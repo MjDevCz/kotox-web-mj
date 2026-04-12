@@ -18,11 +18,11 @@ jobs:
       PORT: 26052
       NODE_VERSION: 22.22.0
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: "22.22.0"
-      - uses: webfactory/ssh-agent@v0.8.0
+      - uses: webfactory/ssh-agent@v0.9.1
         with:
           ssh-private-key: ${{ secrets.ROSTI_DEPLOY_SSH_KEY }}
       - name: Setup hostkey
