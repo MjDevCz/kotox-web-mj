@@ -38,9 +38,12 @@ export default function Post({post, morePosts, preview}: Props) {
                                 </title>
                                 <meta property="og:image" content={CMS_DOMAIN +post.ogImage.url}/>
                                 <meta property="og:title" content={post.ogTitle}/>
+                                <meta property="og:description" content={post.excerpt}/>
                                 <meta property="og:type" content="article"/>
+                                <meta property="og:url" content={CMS_DOMAIN + '/posts/' + post.slug}/>
                                 <meta name="twitter:image" content={CMS_DOMAIN + post.ogImage.url}/>
                                 <meta name="twitter:title" content={post.ogTitle}/>
+                                <meta name="twitter:description" content={post.excerpt}/>
                                 <meta name="twitter:card" content="summary_large_image"/>
                             </Head>
                             <PostHeader
@@ -69,6 +72,7 @@ export async function getStaticProps({params}: Params) {
         'title',
         'date',
         'slug',
+        'excerpt',
         'metaData',
         'content',
         'ogImage',
