@@ -1,5 +1,7 @@
 # RSS Feed
 
+**Feed URL:** `https://jenicek.dev/feed.xml`
+
 ## How it works
 
 The site generates an RSS feed at `/feed.xml` during every build. The feed includes all published posts (those with a non-empty `date` in frontmatter), sorted newest first. Static pages like `aboutme.md` and `cv.md` are excluded automatically.
