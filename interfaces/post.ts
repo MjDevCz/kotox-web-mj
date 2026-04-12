@@ -12,6 +12,7 @@ type PostType = {
   }
   ogTitle: string
   content: string
+  readingTime: string
 }
 
 export default PostType

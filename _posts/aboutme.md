@@ -10,6 +10,7 @@ metaData:
 ogImage:
     url: '/assets/blog/about/cover-talk-brno.jpg'
 ogTitle: "MJ - Android Software Craftsman"
+hideReadingTime: true
 ---
 
 Hi there! I'm Michal, aka **MJ** — a Software Engineer based in Central Bohemia, Czechia.

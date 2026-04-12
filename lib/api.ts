@@ -34,6 +34,11 @@ export function getPostBySlug(slug: string, fields: string[] = []) {
         }
     })
 
+    if (fields.includes('readingTime') && !data.hideReadingTime) {
+        const words = content.trim().split(/\s+/).length
+        items['readingTime'] = `${Math.max(1, Math.round(words / 200))} min read`
+    }
+
     return items
 }
 
