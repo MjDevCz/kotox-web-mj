@@ -51,7 +51,7 @@ export const getStaticProps = async () => {
         'excerpt',
     ])
 
-    fs.writeFileSync('public/feed.xml', generateRssFeed())
+    fs.writeFileSync('public/feed.xml', await generateRssFeed())
 
     return {
         props: {allPosts},
