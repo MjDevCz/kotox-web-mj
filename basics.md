@@ -4,7 +4,7 @@ Local first time:
 1) At the very first run: `npm install`
 
 Local any dev session:
-1) Run: `next` which will start pages locally and will automatically update any changes. Just reload page to see it.
+1) Run: `rm -rf .next && npm run dev` which will clear the cache and start pages locally. It will automatically update any changes. Just reload page to see it.
 
 
 Remote server (e.g. rosti) first time

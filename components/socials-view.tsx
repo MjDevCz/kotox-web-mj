@@ -15,7 +15,7 @@ const SocialsView = (preview) => {
                 <a href={`mailto:jenicek.michal@gmail.com`}>
                     <img src="/assets/blog/social/email.png" className="w-10 h-10 p2 mr-4" alt=""/>
                 </a>
-                <a href={`https://github.com/kotoMJ`} target="_blank">
+                <a href={`https://github.com/mjDevCz`} target="_blank">
                     <img src="/assets/blog/social/github.png" className="w-10 h-10 p2 mr-4" alt=""/>
                 </a>
                 <a href={`https://www.linkedin.com/in/jenicekmichal/`} target="_blank">
