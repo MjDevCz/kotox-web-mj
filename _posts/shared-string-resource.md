@@ -56,7 +56,7 @@ For situation when there is a need for custom data post-processing, **the best w
 plugin** and implement any processing specifically to the project needs.
 
 For anyone interested in implementation details,
-check [my GitHub repository custom PoEditor Android plugin implementation](https://github.com/kotoMJ/kotox-android/blob/main/build-logic/README-POEDITOR.md)
+check [my GitHub repository custom PoEditor Android plugin implementation](https://github.com/mjDevCz/kotox-android/blob/main/build-logic/README-POEDITOR.md)
 
 ## Why using gradle plugin at all?
 
