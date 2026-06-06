@@ -7,6 +7,7 @@ import type MetaDataType from '../interfaces/meta-data-type'
 type Props = {
   title: string
   coverImage: string
+  coverBlurDataURL?: string | null
   date: string
   excerpt: string
   metaData: MetaDataType
@@ -16,6 +17,7 @@ type Props = {
 const PostPreview = ({
   title,
   coverImage,
+  coverBlurDataURL,
   date,
   excerpt,
   metaData,
@@ -24,7 +26,7 @@ const PostPreview = ({
   return (
     <div>
       <div className="mb-5">
-        <CoverImage slug={slug} title={title} src={coverImage} />
+        <CoverImage slug={slug} title={title} src={coverImage} blurDataURL={coverBlurDataURL} />
       </div>
       <h3 className="text-3xl mb-3 leading-snug">
         <Link

@@ -6,9 +6,11 @@ type Props = {
   title: string
   src: string
   slug?: string
+  blurDataURL?: string | null
+  priority?: boolean
 }
 
-const CoverImage = ({ title, src, slug }: Props) => {
+const CoverImage = ({ title, src, slug, blurDataURL, priority }: Props) => {
   const image = (
     <Image
       src={src}
@@ -18,6 +20,8 @@ const CoverImage = ({ title, src, slug }: Props) => {
       })}
       width={1300}
       height={630}
+      priority={priority}
+      {...(blurDataURL ? { placeholder: 'blur' as const, blurDataURL } : {})}
     />
   )
   return (

@@ -4,6 +4,7 @@ import HeroPost from '../components/hero-post'
 import Intro from '../components/intro'
 import Layout from '../components/layout'
 import {getAllPosts} from '../lib/api'
+import {getCoverBlurDataURL} from '../lib/coverBlur'
 import {generateRssFeed} from '../lib/generateRssFeed'
 import fs from 'fs'
 import Head from 'next/head'
@@ -28,6 +29,7 @@ export default function Index({allPosts}: Props) {
                         <HeroPost
                             title={heroPost.title}
                             coverImage={heroPost.coverImage}
+                            coverBlurDataURL={heroPost.coverBlurDataURL}
                             date={heroPost.date}
                             metaData={heroPost.metaData}
                             slug={heroPost.slug}
@@ -51,9 +53,16 @@ export const getStaticProps = async () => {
         'excerpt',
     ])
 
+    const allPostsWithBlur = await Promise.all(
+        allPosts.map(async (post) => ({
+            ...post,
+            coverBlurDataURL: post.coverImage ? await getCoverBlurDataURL(post.coverImage as string) : null,
+        }))
+    )
+
     fs.writeFileSync('public/feed.xml', await generateRssFeed())
 
     return {
-        props: {allPosts},
+        props: {allPosts: allPostsWithBlur},
     }
 }

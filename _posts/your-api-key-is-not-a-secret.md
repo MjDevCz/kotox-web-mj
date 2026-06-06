@@ -1,14 +1,14 @@
 ---
 title: 'Your API key is not a secret'
 excerpt: "We have been hiding API keys in Android apps for a decade — with BuildConfig tricks, NDK, obfuscation libraries. None of it works. The fix is not better hiding; it is treating the key as a public identifier and proving the app is genuine instead."
-coverImage: '/assets/blog/post/api-key-not-secret/cover.png'
+coverImage: '/assets/blog/post/api-key-not-secret/cover.jpg'
 date: '2026-06-05T00:00:00.000Z'
 metaData:
     name: Android
     picture: '/assets/blog/meta/android_logo_128.png'
     tags: ['android','security','play-integrity','bff','architecture']
 ogImage:
-    url: '/assets/blog/post/api-key-not-secret/cover.png'
+    url: '/assets/blog/post/api-key-not-secret/cover.jpg'
 ogTitle: "Your API key is not a secret"
 ---
 
