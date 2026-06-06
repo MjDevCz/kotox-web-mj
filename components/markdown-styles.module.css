@@ -28,3 +28,46 @@
 .markdown li {
     @apply ml-8 list-disc
 }
+
+.markdown img {
+    @apply block w-full my-8 rounded-lg;
+}
+
+.markdown :global(.youtube-embed) {
+    @apply relative block w-full my-8 overflow-hidden rounded-lg bg-black cursor-pointer;
+    aspect-ratio: 16 / 9;
+}
+
+.markdown :global(.youtube-embed-link) {
+    @apply block w-full h-full no-underline;
+}
+
+.markdown :global(.youtube-embed-thumb) {
+    @apply block w-full h-full m-0 rounded-none;
+    object-fit: cover;
+    transition: opacity 0.2s ease, transform 0.3s ease;
+}
+
+.markdown :global(.youtube-embed:hover .youtube-embed-thumb) {
+    opacity: 0.85;
+    transform: scale(1.02);
+}
+
+.markdown :global(.youtube-embed-play) {
+    @apply absolute pointer-events-none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 68px;
+    height: 48px;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+    transition: transform 0.2s ease;
+}
+
+.markdown :global(.youtube-embed:hover .youtube-embed-play) {
+    transform: translate(-50%, -50%) scale(1.08);
+}
+
+.markdown :global(.youtube-embed iframe) {
+    @apply absolute inset-0 w-full h-full border-0;
+}
