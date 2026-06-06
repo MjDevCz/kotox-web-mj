@@ -1,14 +1,14 @@
 ---
 title: 'Choosing an offline-first sync layer for KMP'
 excerpt: "When your mobile app must work without internet as a standard — not an edge case — picking the right sync layer becomes the most critical architectural decision. Here is how we evaluated the landscape."
-coverImage: '/assets/blog/post/offline-first/cover.png'
+coverImage: '/assets/blog/post/offline-first/cover.jpg'
 date: '2026-04-12T00:00:00.000Z'
 metaData:
     name: Android
     picture: '/assets/blog/meta/android_logo_128.png'
     tags: ['android','kmp','offline-first','powersync','architecture']
 ogImage:
-    url: '/assets/blog/post/offline-first/cover.png'
+    url: '/assets/blog/post/offline-first/cover.jpg'
 ogTitle: "Choosing an offline-first sync layer for KMP"
 ---
 

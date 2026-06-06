@@ -6,6 +6,7 @@ import Header from '../../components/header'
 import PostHeader from '../../components/post-header'
 import Layout from '../../components/layout'
 import {getPostBySlug, getAllPosts} from '../../lib/api'
+import {getCoverBlurDataURL} from '../../lib/coverBlur'
 import PostTitle from '../../components/post-title'
 import Head from 'next/head'
 import {CMS_DOMAIN, CMS_INTRO} from '../../lib/constants'
@@ -49,6 +50,7 @@ export default function Post({post, morePosts, preview}: Props) {
                             <PostHeader
                                 title={post.title}
                                 coverImage={post.coverImage}
+                                coverBlurDataURL={post.coverBlurDataURL}
                                 date={post.date}
                                 readingTime={post.readingTime}
                                 metaData={post.metaData}
@@ -82,12 +84,14 @@ export async function getStaticProps({params}: Params) {
         'coverImage',
     ])
     const content = await markdownToHtml(post.content || '')
+    const coverBlurDataURL = post.coverImage ? await getCoverBlurDataURL(post.coverImage as string) : null
 
     return {
         props: {
             post: {
                 ...post,
                 content,
+                coverBlurDataURL,
             },
         },
     }

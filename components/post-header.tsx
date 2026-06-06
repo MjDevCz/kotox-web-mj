@@ -7,12 +7,13 @@ import type MetaDataType from '../interfaces/meta-data-type'
 type Props = {
   title: string
   coverImage: string
+  coverBlurDataURL?: string | null
   date: string
   readingTime: string
   metaData: MetaDataType
 }
 
-const PostHeader = ({ title, coverImage, date, readingTime, metaData }: Props) => {
+const PostHeader = ({ title, coverImage, coverBlurDataURL, date, readingTime, metaData }: Props) => {
   return (
     <>
       <PostTitle>{title}</PostTitle>
@@ -21,7 +22,7 @@ const PostHeader = ({ title, coverImage, date, readingTime, metaData }: Props) =
       </div>
         {coverImage.length>0 &&
           <div className="mb-8 md:mb-16 sm:mx-0">
-            <CoverImage title={title} src={coverImage} />
+            <CoverImage title={title} src={coverImage} blurDataURL={coverBlurDataURL} priority />
           </div>
         }
       <div className="max-w-2xl mx-auto">

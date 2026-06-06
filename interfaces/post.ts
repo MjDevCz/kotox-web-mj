@@ -5,6 +5,7 @@ type PostType = {
   title: string
   date: string
   coverImage: string
+  coverBlurDataURL?: string | null
   metaData: MetaDataType
   excerpt: string
   ogImage: {
