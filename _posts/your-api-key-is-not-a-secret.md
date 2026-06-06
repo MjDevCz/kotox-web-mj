@@ -90,4 +90,4 @@ Move real secrets to a backend. Prove the app is genuine — not the key. Use th
 
 The platform changes. The architecture does not.
 
-![Resources from the talk: sample Android app and sample BFF (Kotlin / Ktor) on GitHub at github.com/MjDevCz](/assets/blog/post/api-key-not-secret/link-screen.png)
+![Resources from the talk: sample Android app and sample BFF (Kotlin / Ktor) on GitHub at github.com/MjDevCz](/assets/blog/post/api-key-not-secret/link-screen.jpg)

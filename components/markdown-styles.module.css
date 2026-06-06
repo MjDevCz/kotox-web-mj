@@ -33,6 +33,17 @@
     @apply block w-full my-8 rounded-lg;
 }
 
+.markdown :global(.blur-img) {
+    @apply block w-full my-8 overflow-hidden rounded-lg;
+    background-size: cover;
+    background-position: center;
+}
+
+.markdown :global(.blur-img) > img {
+    @apply block w-full m-0 rounded-none;
+    height: auto;
+}
+
 .markdown :global(.youtube-embed) {
     @apply relative block w-full my-8 overflow-hidden rounded-lg bg-black cursor-pointer;
     aspect-ratio: 16 / 9;

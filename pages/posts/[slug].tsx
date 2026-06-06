@@ -83,7 +83,7 @@ export async function getStaticProps({params}: Params) {
         'ogTitle',
         'coverImage',
     ])
-    const content = await markdownToHtml(post.content || '')
+    const content = await markdownToHtml(post.content || '', { enrichImages: true })
     const coverBlurDataURL = post.coverImage ? await getCoverBlurDataURL(post.coverImage as string) : null
 
     return {
