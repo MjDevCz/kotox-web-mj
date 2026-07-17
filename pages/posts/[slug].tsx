@@ -5,7 +5,9 @@ import PostBody from '../../components/post-body'
 import Header from '../../components/header'
 import PostHeader from '../../components/post-header'
 import Layout from '../../components/layout'
-import {getPostBySlug, getAllPosts} from '../../lib/api'
+import {getPostBySlug, getAllPosts, getSeriesNav} from '../../lib/api'
+import type {SeriesNavItem} from '../../lib/api'
+import SeriesNav from '../../components/series-nav'
 import {getCoverBlurDataURL} from '../../lib/coverBlur'
 import PostTitle from '../../components/post-title'
 import Head from 'next/head'
@@ -16,10 +18,11 @@ import type PostType from '../../interfaces/post'
 type Props = {
     post: PostType
     morePosts: PostType[]
+    seriesNav: {prev: SeriesNavItem | null; next: SeriesNavItem | null}
     preview?: boolean
 }
 
-export default function Post({post, morePosts, preview}: Props) {
+export default function Post({post, morePosts, seriesNav, preview}: Props) {
     const router = useRouter()
     if (!router.isFallback && !post?.slug) {
         return <ErrorPage statusCode={404}/>
@@ -49,6 +52,8 @@ export default function Post({post, morePosts, preview}: Props) {
                             </Head>
                             <PostHeader
                                 title={post.title}
+                                series={post.series}
+                                seriesPart={post.seriesPart}
                                 coverImage={post.coverImage}
                                 coverBlurDataURL={post.coverBlurDataURL}
                                 date={post.date}
@@ -57,6 +62,7 @@ export default function Post({post, morePosts, preview}: Props) {
                             />
                             <PostBody content={post.content}/>
                         </article>
+                        <SeriesNav prev={seriesNav.prev} next={seriesNav.next}/>
                     </>
                 )}
             </Container>
@@ -73,6 +79,8 @@ type Params = {
 export async function getStaticProps({params}: Params) {
     const post = getPostBySlug(params.slug, [
         'title',
+        'series',
+        'seriesPart',
         'date',
         'slug',
         'excerpt',
@@ -85,6 +93,7 @@ export async function getStaticProps({params}: Params) {
     ])
     const content = await markdownToHtml(post.content || '', { enrichImages: true })
     const coverBlurDataURL = post.coverImage ? await getCoverBlurDataURL(post.coverImage as string) : null
+    const seriesNav = getSeriesNav(params.slug)
 
     return {
         props: {
@@ -93,6 +102,7 @@ export async function getStaticProps({params}: Params) {
                 content,
                 coverBlurDataURL,
             },
+            seriesNav,
         },
     }
 }

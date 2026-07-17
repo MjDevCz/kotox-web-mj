@@ -28,6 +28,8 @@ export default function Index({allPosts}: Props) {
                     {heroPost && (
                         <HeroPost
                             title={heroPost.title}
+                            series={heroPost.series}
+                            seriesPart={heroPost.seriesPart}
                             coverImage={heroPost.coverImage}
                             coverBlurDataURL={heroPost.coverBlurDataURL}
                             date={heroPost.date}
@@ -46,6 +48,8 @@ export default function Index({allPosts}: Props) {
 export const getStaticProps = async () => {
     const allPosts = getAllPosts([
         'title',
+        'series',
+        'seriesPart',
         'date',
         'slug',
         'metaData',

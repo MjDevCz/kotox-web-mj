@@ -1,4 +1,4 @@
-# Writing Articles
+"""# Writing Articles
 
 ## File location
 
@@ -26,6 +26,8 @@ ogTitle: "Title for social sharing"
 
 - **date**: articles without a date (empty string `''`) are excluded from the homepage feed (used for static pages like `aboutme.md`).
 - **coverImage**: place images in `public/assets/blog/post/<folder>/`.
+- **series** *(optional)*: marks the article as part of a series. The value is shown as a small uppercase "eyebrow" label above the title — on the post page, the hero card, and the preview cards. Use the same string on every post in the series (e.g. `series: 'Offline-First KMP'`).
+- **seriesPart** *(optional)*: the installment number within the series. Appended to the eyebrow as `· Part N` (e.g. `seriesPart: 2` → "Offline-First KMP · Part 2"). Ignored unless `series` is also set.
 
 ## Reading time
 

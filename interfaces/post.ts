@@ -3,6 +3,8 @@ import type MetaDataType from './meta-data-type'
 type PostType = {
   slug: string
   title: string
+  series?: string
+  seriesPart?: number
   date: string
   coverImage: string
   coverBlurDataURL?: string | null

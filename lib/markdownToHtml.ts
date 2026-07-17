@@ -31,6 +31,14 @@ function openExternalLinksInNewTab(htmlString: string): string {
   )
 }
 
+// Tag a paragraph that opens with a bold "TL;DR" so it can be styled as a lead.
+function styleTldr(htmlString: string): string {
+  return htmlString.replace(
+    /<p>(<strong>TL;DR<\/strong>)/,
+    '<p class="tldr">$1'
+  )
+}
+
 const IMG_TAG = /<img\s+([^>]*?)\s*\/?>/g
 
 function getAttr(attrs: string, name: string): string | null {
@@ -95,7 +103,7 @@ type Options = {
 
 export default async function markdownToHtml(markdown: string, options: Options = {}) {
   const result = await remark().use(html, { sanitize: false }).process(expandYouTubeShortcodes(markdown))
-  let htmlString = openExternalLinksInNewTab(result.toString())
+  let htmlString = styleTldr(openExternalLinksInNewTab(result.toString()))
   if (options.enrichImages) {
     htmlString = await enrichLocalImages(htmlString)
   }
