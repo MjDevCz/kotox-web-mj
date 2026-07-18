@@ -60,8 +60,8 @@ But an event log doesn't render a screen. The user doesn't want to see "you reco
 They want to see wine X sitting in Tank 7, right now, with the right volume.
 
 So the second write takes that event and *projects* it into the entity tables the UI reads from:
-`wine`, `vessel`, `docket`. A local engine reads the transfer event and updates the local rows: Tank 7
-now shows wine X, the source vessel shows empty, volumes adjust.
+`wine`, `vessel`, `docket`, all rows in PowerSync's local database. A local engine reads the transfer
+event and updates the local rows: Tank 7 now shows wine X, the source vessel shows empty, volumes adjust.
 
 ```
 User taps "Move to Tank 7"
@@ -75,9 +75,9 @@ The screen updates instantly because the rows it reads from just changed, with n
 We call this Zero-Flicker: the UI never shows a spinner waiting for a round trip, and it never shows the
 old state for a frame before snapping to the new one.
 
-The engine that does this projection is deliberately dumb about the network. It just derives current
-state from an event. (Where that engine *runs*, and what else runs it, is the good part. I'll leave that
-thread hanging for now.)
+The engine that does this projection is common Kotlin: iOS and Android share one definition of what a
+transfer *means*, instead of each platform reimplementing it. It's deliberately dumb about the network;
+it just derives current state from an event.
 
 ## The Part That Feels Wrong
 
