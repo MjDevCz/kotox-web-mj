@@ -1,11 +1,14 @@
 import MetaDataView from './meta-data-view'
 import DateFormatter from './date-formatter'
 import CoverImage from './cover-image'
+import SeriesLabel from './series-label'
 import Link from 'next/link'
 import type MetaDataType from '../interfaces/meta-data-type'
 
 type Props = {
   title: string
+  series?: string
+  seriesPart?: number
   coverImage: string
   coverBlurDataURL?: string | null
   date: string
@@ -16,6 +19,8 @@ type Props = {
 
 const PostPreview = ({
   title,
+  series,
+  seriesPart,
   coverImage,
   coverBlurDataURL,
   date,
@@ -28,6 +33,7 @@ const PostPreview = ({
       <div className="mb-5">
         <CoverImage slug={slug} title={title} src={coverImage} blurDataURL={coverBlurDataURL} />
       </div>
+      <SeriesLabel series={series} part={seriesPart} className="text-xs mb-2" />
       <h3 className="text-3xl mb-3 leading-snug">
         <Link
           as={`/posts/${slug}`}

@@ -2,10 +2,13 @@ import MetaDataView from './meta-data-view'
 import DateFormatter from './date-formatter'
 import CoverImage from './cover-image'
 import PostTitle from './post-title'
+import SeriesLabel from './series-label'
 import type MetaDataType from '../interfaces/meta-data-type'
 
 type Props = {
   title: string
+  series?: string
+  seriesPart?: number
   coverImage: string
   coverBlurDataURL?: string | null
   date: string
@@ -13,9 +16,10 @@ type Props = {
   metaData: MetaDataType
 }
 
-const PostHeader = ({ title, coverImage, coverBlurDataURL, date, readingTime, metaData }: Props) => {
+const PostHeader = ({ title, series, seriesPart, coverImage, coverBlurDataURL, date, readingTime, metaData }: Props) => {
   return (
     <>
+      <SeriesLabel series={series} part={seriesPart} className="text-base md:text-lg mb-4 text-center md:text-left" />
       <PostTitle>{title}</PostTitle>
       <div className="hidden md:block md:mb-12">
         <MetaDataView name={metaData.name} picture={metaData.picture} tags={metaData.tags} />

@@ -1,5 +1,7 @@
 ---
 title: 'Choosing an offline-first sync layer for KMP'
+series: 'Offline-First KMP'
+seriesPart: 1
 excerpt: "When your mobile app must work without internet as a standard — not an edge case — picking the right sync layer becomes the most critical architectural decision. Here is how we evaluated the landscape."
 coverImage: '/assets/blog/post/offline-first/cover.jpg'
 date: '2026-04-12T00:00:00.000Z'

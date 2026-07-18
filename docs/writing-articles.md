@@ -1,4 +1,4 @@
-# Writing Articles
+"""# Writing Articles
 
 ## File location
 
@@ -26,6 +26,8 @@ ogTitle: "Title for social sharing"
 
 - **date**: articles without a date (empty string `''`) are excluded from the homepage feed (used for static pages like `aboutme.md`).
 - **coverImage**: place images in `public/assets/blog/post/<folder>/`.
+- **series** *(optional)*: marks the article as part of a series. The value is shown as a small uppercase "eyebrow" label above the title — on the post page, the hero card, and the preview cards. Use the same string on every post in the series (e.g. `series: 'Offline-First KMP'`).
+- **seriesPart** *(optional)*: the installment number within the series. Appended to the eyebrow as `· Part N` (e.g. `seriesPart: 2` → "Offline-First KMP · Part 2"). Ignored unless `series` is also set.
 
 ## Reading time
 
@@ -59,3 +61,30 @@ Unfinished articles live in `_posts_wip/`. This folder is not read by the site �
 - Think "stories from the trenches" — real-world moments from professional experience.
 - Structure: set the scene, explain the problem, share the decision/solution, end with a takeaway.
 - The shared-string-resource and offline-first-kmp articles are good references for tone and length.
+
+## House style
+
+This is the house style for the series — apply it to every part while iterating. It tightens *surface and
+structure* but never the payoff line (keep the closing thesis intact):
+**the idea and the punchline are the author's; the packaging gets standardized.**
+
+- **Open with a one-line `TL;DR` deck** stating the thesis, then start the body. (Our per-part
+  "The idea" callout is the raw material for this.)
+- **Expand acronyms on first use** — "Kotlin Multiplatform (KMP)".
+- **Spell out small numbers** in prose — "four months, two engineers", not "4 months, 2 engineers".
+- **"and", not "&".**
+- **Calm the punctuation.** Prefer commas/colons over piled-up em-dashes. (Our current drafts are
+  em-dash-heavy — this is the single biggest surface fix to make on each.)
+- **Headings: Title Case, descriptive, keyword-rich, concrete.** "The 7 … Tools We Evaluated" beats
+  "The landscape". Favor scannable, numbered, SEO-friendly headings.
+- **Add connective context / an outbound resource** where it genuinely helps the reader.
+- **Keep the strong closing line intact** — polish around a good payoff, don't rewrite it.
+- **Never reference the eventual talks in the blog.** No "saving this for the stage / a talk / to tell
+  live." To withhold, either (a) point to a specific later part when it *is* genuinely covered later
+  (e.g. "Part 5 gets into where that breaks down"), or (b) just set the topic aside without promising
+  anything ("a whole topic of its own, set aside here"). Talk-reserved material (Witness/Judge,
+  KMP-on-backend, conflict-resolution-as-UX) gets option (b) — it isn't covered later in the series.
+  *(This file and the `*-notes-*.md` files may reference the talks freely — the rule is about the
+  reader-facing blog text only.)*
+- **Don't imply a fixed part count.** The series is open-ended (6 drafted for now, can grow). Blog text
+  should say "next up" / "later in the series", never "the final part" or "the last of six".
