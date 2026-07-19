@@ -91,9 +91,15 @@ The first reaction is always "so I'm writing data I'm going to throw away?" Yes.
 projection is a provisional answer: a bet that the server will agree. When the server's version syncs
 back, it replaces your local guess.
 
-And the beautiful part, the part that made me trust this architecture, is that *you write no cleanup
-code for this.* You don't diff, you don't reconcile, you don't delete your optimistic row when the real
-one arrives. The sync layer does it for you, through a mechanism I'll unpack in Part 4.
+The reason this is safe, the part that made me trust this architecture, is that the projection is
+disposable *by construction*: the event it came from is permanent. It's an append-only fact that never
+gets edited or deleted, so the projection is always re-derivable from it. Throwing away the local guess
+costs nothing, because nothing was ever really *stored* there — the truth lives in the event log, and
+the projection is just the log read out loud.
+
+And *because* the projection is re-derivable, you don't even write the reconciliation. You don't diff,
+you don't delete your optimistic row when the real one arrives. The sync layer reverts your local guess
+when the authoritative row syncs down, through a mechanism I'll unpack in Part 4.
 
 ## Why Split It This Way
 
@@ -101,8 +107,8 @@ You could imagine collapsing the two writes into one: just update the entity tab
 of offline apps do exactly that. Here's what you lose.
 
 - **The event is the truth; the entity is a view.** If a projection is wrong (a bug, a bad assumption
-  about current state), you fix the projection logic and re-derive. The historical record of what the
-  user actually did is untouched. You never corrupt history to fix a display bug.
+  about current state), you fix the projection logic and re-derive. You correct the view, never the
+  history — a display bug never becomes a reason to rewrite what the user actually did.
 - **The server can be late without being wrong.** Because the client and server both derive state from
   the same events, "the device is ahead of the server" is a normal, expected condition, not a
   desync bug. The device shows its best guess; the server confirms or corrects; they converge.
