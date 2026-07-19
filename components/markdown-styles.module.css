@@ -37,6 +37,21 @@
     @apply ml-8 list-disc
 }
 
+.markdown code {
+    @apply px-1.5 py-0.5 rounded bg-gray-100 text-gray-800;
+    font-size: 0.875em;
+}
+
+.markdown pre {
+    @apply my-6 p-4 rounded-lg bg-gray-100 text-sm leading-normal overflow-x-auto;
+}
+
+.markdown pre code {
+    @apply p-0 bg-transparent text-gray-800;
+    font-size: inherit;
+    white-space: pre;
+}
+
 .markdown img {
     @apply block w-full my-8 rounded-lg;
 }
