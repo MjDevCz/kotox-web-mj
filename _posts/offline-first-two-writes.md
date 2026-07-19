@@ -23,13 +23,13 @@ is online or off.
 
 ## The Problem With "Just Sync It"
 
-In Part 1 I picked PowerSync and hand-waved the hard part: choosing a sync engine is the easy 20%. The
+In [Part 1](/posts/offline-first-kmp) I picked **PowerSync** and hand-waved the hard part: choosing a sync engine is the easy 20%. The
 other 80% is deciding what your app writes, when, and what the user sees while the server hasn't heard
 about any of it yet.
 
 Here's the constraint that shapes everything. Our users are cellar hands: people moving wine between
-tanks, recording intake at the crush pad, blending, bottling. Half the time they're standing in a
-metal shed with no signal. When someone taps "move this wine to Tank 7," the app cannot wait for a
+tanks, recording intake at the crush pad, blending, bottling. Half the time they're down in the
+cellar with no signal. When someone taps "move this wine to Tank 7," the app cannot wait for a
 server to agree. The screen has to update *now*, on a device that might not reconnect for hours.
 
 So the naive model (tap, send request, wait, update UI) is dead on arrival. What replaces it is a
@@ -54,7 +54,7 @@ The reason it's an *event* and not a *state update* is a whole topic of its own,
 here to keep this post about the mechanics. For now the takeaway is enough: we write down what the user
 did, not what we think the world now looks like.
 
-## Write #2: The Projection (What It Means, Provisionally)
+## Write #2: The Projection (What You See)
 
 But an event log doesn't render a screen. The user doesn't want to see "you recorded a transfer event."
 They want to see wine X sitting in Tank 7, right now, with the right volume.
