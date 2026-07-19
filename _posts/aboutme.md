@@ -15,7 +15,7 @@ hideReadingTime: true
 
 Hi there! I'm Michal, aka **MJ** — a Software Engineer based in Central Bohemia, Czechia.
 
-As of 2026, I have over **10 years of Android experience**, all of it at [STRV](https://www.strv.com/) — a software agency where the variety of projects never lets you get comfortable. Agency life means greenfield builds one quarter, legacy rewrites the next. Different domains, different scales, different user bases. That range shaped how I think about mobile development.
+As of 2026, I have over **10 years of Android experience**, all of it at [STRV](https://www.strv.com/) — a software agency where the variety of projects never lets you get comfortable. Agency life means greenfield builds one quarter, legacy rewrites the next. Different domains, different scales, different user bases — and lately, **Kotlin Multiplatform (KMP)** in production. That range shaped how I think about mobile development.
 
 ## Projects that became part of my journey
 
@@ -29,7 +29,7 @@ Here are some of the projects I've had the privilege to work on as an Android En
 - **Opkix** — lightweight wearable camera & video editing
 - **LegalZoom** — legal services
 
-My latest ongoing work involves a strongly offline-first application — a challenge I particularly enjoy.
+My latest ongoing work involves a [strongly offline-first KMP application](/posts/offline-first-kmp) — a challenge I particularly enjoy.
 
 ## What I believe in
 
