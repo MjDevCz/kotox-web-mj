@@ -75,6 +75,65 @@ export function getSeriesNav(slug: string): {
   }
 }
 
+export type SeriesShowcasePart = {
+  slug: string
+  title: string
+  part: number | null
+  date: string
+}
+
+export type SeriesShowcase = {
+  name: string
+  description: string
+  parts: SeriesShowcasePart[]
+}
+
+// How many series bands the homepage will show at once, newest-active first.
+export const MAX_FEATURED_SERIES = 3
+
+// Series to feature on the homepage, ordered by recency (the series whose newest
+// part is most recent comes first), capped at MAX_FEATURED_SERIES. Each series'
+// parts are ordered by `seriesPart`, with a short description from the first
+// part's excerpt. Empty when no post has a series.
+export function getFeaturedSeries(): SeriesShowcase[] {
+  const posts = getAllPosts(['slug', 'title', 'series', 'seriesPart', 'date', 'excerpt'])
+
+  // `posts` is date-descending, so first sighting of a series name = its newest
+  // part. Collecting names in encounter order gives us newest-active first.
+  const order: string[] = []
+  const groups: Record<string, typeof posts> = {}
+  for (const p of posts) {
+    const name = p.series as string | undefined
+    if (!name) continue
+    if (!groups[name]) {
+      groups[name] = []
+      order.push(name)
+    }
+    groups[name].push(p)
+  }
+
+  return order
+    // Only feature a series once it has at least two published parts; a lone
+    // Part 1 stays an ordinary card in the grid until Part 2 ships.
+    .filter((name) => groups[name].length >= 2)
+    .slice(0, MAX_FEATURED_SERIES)
+    .map((name) => {
+      const parts = groups[name]
+        .slice()
+        .sort((a, b) => Number(a.seriesPart ?? 0) - Number(b.seriesPart ?? 0))
+      return {
+        name,
+        description: (parts[0]?.excerpt as string) ?? '',
+        parts: parts.map((p) => ({
+          slug: p.slug as string,
+          title: p.title as string,
+          part: p.seriesPart != null ? Number(p.seriesPart) : null,
+          date: p.date as string,
+        })),
+      }
+    })
+}
+
 export function getAllPosts(fields: string[] = []) {
     const slugs = getPostSlugs()
     const posts = slugs
