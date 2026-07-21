@@ -1,6 +1,9 @@
 import fs from 'fs'
 import {join} from 'path'
 import matter from 'gray-matter'
+import {seriesSlug} from './series'
+
+export {seriesSlug}
 
 const postsDirectory = join(process.cwd(), '_posts')
 
@@ -84,6 +87,7 @@ export type SeriesShowcasePart = {
 
 export type SeriesShowcase = {
   name: string
+  slug: string
   description: string
   parts: SeriesShowcasePart[]
 }
@@ -91,11 +95,11 @@ export type SeriesShowcase = {
 // How many series bands the homepage will show at once, newest-active first.
 export const MAX_FEATURED_SERIES = 3
 
-// Series to feature on the homepage, ordered by recency (the series whose newest
-// part is most recent comes first), capped at MAX_FEATURED_SERIES. Each series'
-// parts are ordered by `seriesPart`, with a short description from the first
-// part's excerpt. Empty when no post has a series.
-export function getFeaturedSeries(): SeriesShowcase[] {
+// All series that have at least one post, ordered by recency (the series whose
+// newest part is most recent comes first). Each series' parts are ordered by
+// `seriesPart`, with a short description from the first part's excerpt. This is
+// the shared source for both the homepage bands and the /series overview pages.
+export function getAllSeries(): SeriesShowcase[] {
   const posts = getAllPosts(['slug', 'title', 'series', 'seriesPart', 'date', 'excerpt'])
 
   // `posts` is date-descending, so first sighting of a series name = its newest
@@ -112,26 +116,36 @@ export function getFeaturedSeries(): SeriesShowcase[] {
     groups[name].push(p)
   }
 
-  return order
-    // Only feature a series once it has at least two published parts; a lone
-    // Part 1 stays an ordinary card in the grid until Part 2 ships.
-    .filter((name) => groups[name].length >= 2)
+  return order.map((name) => {
+    const parts = groups[name]
+      .slice()
+      .sort((a, b) => Number(a.seriesPart ?? 0) - Number(b.seriesPart ?? 0))
+    return {
+      name,
+      slug: seriesSlug(name),
+      description: (parts[0]?.excerpt as string) ?? '',
+      parts: parts.map((p) => ({
+        slug: p.slug as string,
+        title: p.title as string,
+        part: p.seriesPart != null ? Number(p.seriesPart) : null,
+        date: p.date as string,
+      })),
+    }
+  })
+}
+
+// Look up a single series by its slug for the /series/[slug] page.
+export function getSeriesBySlug(slug: string): SeriesShowcase | null {
+  return getAllSeries().find((s) => s.slug === slug) ?? null
+}
+
+// Series to feature on the homepage, ordered by recency, capped at
+// MAX_FEATURED_SERIES. Only series with at least two published parts are
+// featured; a lone Part 1 stays an ordinary card in the grid until Part 2 ships.
+export function getFeaturedSeries(): SeriesShowcase[] {
+  return getAllSeries()
+    .filter((s) => s.parts.length >= 2)
     .slice(0, MAX_FEATURED_SERIES)
-    .map((name) => {
-      const parts = groups[name]
-        .slice()
-        .sort((a, b) => Number(a.seriesPart ?? 0) - Number(b.seriesPart ?? 0))
-      return {
-        name,
-        description: (parts[0]?.excerpt as string) ?? '',
-        parts: parts.map((p) => ({
-          slug: p.slug as string,
-          title: p.title as string,
-          part: p.seriesPart != null ? Number(p.seriesPart) : null,
-          date: p.date as string,
-        })),
-      }
-    })
 }
 
 export function getAllPosts(fields: string[] = []) {

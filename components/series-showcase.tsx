@@ -10,7 +10,7 @@ type Props = {
 // homepage: series title, a short blurb, and its parts laid out as a numbered
 // row. Sits between the hero and the "More Stories" grid.
 const SeriesShowcase = ({ series }: Props) => {
-  const { name, description, parts } = series
+  const { name, slug, description, parts } = series
   if (parts.length === 0) return null
 
   return (
@@ -20,7 +20,9 @@ const SeriesShowcase = ({ series }: Props) => {
           Series · {parts.length} {parts.length === 1 ? 'part' : 'parts'}
         </p>
         <h2 className="text-3xl md:text-4xl font-bold tracking-tighter leading-tight mb-3">
-          {name}
+          <Link href="/series/[slug]" as={`/series/${slug}`} className="hover:underline">
+            {name}
+          </Link>
         </h2>
         {description && (
           <p className="text-lg leading-relaxed text-gray-700 mb-8 max-w-3xl">{description}</p>
