@@ -1,6 +1,6 @@
 ---
 title: 'Michal Jeníček • MJ'
-excerpt: 'I am Michal (aka MJ) - a Software Engineer with over 10 years of Android experience as of 2026, crafting apps of all shapes and sizes at STRV.'
+excerpt: 'I am Michal (aka MJ) - a Software Engineer with over 10 years of Android experience as of 2026 - and a background in enterprise banking software - crafting apps of all shapes and sizes at STRV.'
 coverImage: '/assets/blog/about/cover-talk-brno.jpg'
 date: ''
 metaData:
@@ -15,7 +15,7 @@ hideReadingTime: true
 
 Hi there! I'm Michal, aka **MJ** — a Software Engineer based in Central Bohemia, Czechia.
 
-As of 2026, I have over **10 years of Android experience**, all of it at [STRV](https://www.strv.com/) — a software agency where the variety of projects never lets you get comfortable. Agency life means greenfield builds one quarter, legacy rewrites the next. Different domains, different scales, different user bases — and lately, **Kotlin Multiplatform (KMP)** in production. That range shaped how I think about mobile development.
+As of 2026, I have over **10 years of Android experience**, all of it at [STRV](https://www.strv.com/) — a software agency where the variety of projects never lets you get comfortable. My software engineering roots reach back a little further, though: before mobile, I cut my teeth building enterprise applications for banking, where correctness and reliability were never negotiable. Agency life since then has meant greenfield builds one quarter, legacy rewrites the next. Different domains, different scales, different user bases — and lately, **Kotlin Multiplatform (KMP)** in production. That range shaped how I think about mobile development.
 
 ## Projects that became part of my journey
 
