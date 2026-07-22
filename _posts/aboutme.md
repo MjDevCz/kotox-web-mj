@@ -29,7 +29,7 @@ Here are some of the projects I've had the privilege to work on as an Android En
 - **Opkix** — lightweight wearable camera & video editing
 - **LegalZoom** — legal services
 
-My latest ongoing work involves a [strongly offline-first KMP application](/posts/offline-first-kmp) — a challenge I particularly enjoy.
+My latest ongoing work involves a [strongly offline-first KMP application](/series/offline-first-kmp) — a challenge I particularly enjoy.
 
 ## What I believe in
 
