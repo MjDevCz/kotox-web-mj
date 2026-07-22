@@ -14,7 +14,7 @@ ogImage:
 ogTitle: "Choosing an offline-first sync layer for KMP"
 ---
 
-When your mobile app must work without internet as a **standard — not an edge case** — picking the right sync layer becomes the most critical architectural decision. This is the story of how we evaluated the offline-first landscape for a Kotlin Multiplatform project.
+**TL;DR** When your mobile app must work without internet as a **standard, not an edge case**, picking the right sync layer becomes the most critical architectural decision. This is the story of how we evaluated the offline-first landscape for a Kotlin Multiplatform (KMP) project.
 
 ## The requirements
 
