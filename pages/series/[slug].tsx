@@ -43,7 +43,15 @@ export default function SeriesPage({series, coverMeta, socialMeta}: Props) {
                             <meta property="og:type" content="website"/>
                             <meta property="og:site_name" content={CMS_INTRO}/>
                             <meta property="og:locale" content="en_US"/>
-                            <meta property="og:url" content={CMS_DOMAIN + '/series/' + series.slug}/>
+                            {/*
+                              Intentionally no canonical og:url. LinkedIn caches
+                              share previews keyed on og:url and canonicalizes
+                              query-string variants back to it, so a stale first
+                              scrape (before this page had an image) sticks and
+                              cache-busting URLs (?v=N) collapse to it. Omitting
+                              og:url makes LinkedIn key on the exact shared URL,
+                              so a fresh ?v= reliably forces a clean re-scrape.
+                            */}
                             {series.social && (
                                 <meta property="og:image" content={CMS_DOMAIN + series.social}/>
                             )}
