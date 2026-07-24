@@ -83,13 +83,24 @@ export type SeriesShowcasePart = {
   title: string
   part: number | null
   date: string
+  coverImage: string | null
 }
 
 export type SeriesShowcase = {
   name: string
   slug: string
   description: string
+  cover: string | null
   parts: SeriesShowcasePart[]
+}
+
+// A series can have its own banner image at
+// `public/assets/blog/series/<slug>/cover.jpg`. Returns the public path if the
+// file exists, otherwise null so pages can fall back gracefully.
+function getSeriesCover(slug: string): string | null {
+  const publicPath = `/assets/blog/series/${slug}/cover.jpg`
+  const filePath = join(process.cwd(), 'public', publicPath)
+  return fs.existsSync(filePath) ? publicPath : null
 }
 
 // How many series bands the homepage will show at once, newest-active first.
@@ -100,7 +111,7 @@ export const MAX_FEATURED_SERIES = 3
 // `seriesPart`, with a short description from the first part's excerpt. This is
 // the shared source for both the homepage bands and the /series overview pages.
 export function getAllSeries(): SeriesShowcase[] {
-  const posts = getAllPosts(['slug', 'title', 'series', 'seriesPart', 'date', 'excerpt'])
+  const posts = getAllPosts(['slug', 'title', 'series', 'seriesPart', 'date', 'excerpt', 'coverImage'])
 
   // `posts` is date-descending, so first sighting of a series name = its newest
   // part. Collecting names in encounter order gives us newest-active first.
@@ -120,15 +131,18 @@ export function getAllSeries(): SeriesShowcase[] {
     const parts = groups[name]
       .slice()
       .sort((a, b) => Number(a.seriesPart ?? 0) - Number(b.seriesPart ?? 0))
+    const slug = seriesSlug(name)
     return {
       name,
-      slug: seriesSlug(name),
+      slug,
       description: (parts[0]?.excerpt as string) ?? '',
+      cover: getSeriesCover(slug),
       parts: parts.map((p) => ({
         slug: p.slug as string,
         title: p.title as string,
         part: p.seriesPart != null ? Number(p.seriesPart) : null,
         date: p.date as string,
+        coverImage: (p.coverImage as string) || null,
       })),
     }
   })
