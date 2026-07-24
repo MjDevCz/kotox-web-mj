@@ -91,16 +91,28 @@ export type SeriesShowcase = {
   slug: string
   description: string
   cover: string | null
+  social: string | null
   parts: SeriesShowcasePart[]
 }
 
-// A series can have its own banner image at
-// `public/assets/blog/series/<slug>/cover.jpg`. Returns the public path if the
-// file exists, otherwise null so pages can fall back gracefully.
-function getSeriesCover(slug: string): string | null {
-  const publicPath = `/assets/blog/series/${slug}/cover.jpg`
+// Returns the public path for a series asset if the file exists, else null.
+function getSeriesAsset(slug: string, file: string): string | null {
+  const publicPath = `/assets/blog/series/${slug}/${file}`
   const filePath = join(process.cwd(), 'public', publicPath)
   return fs.existsSync(filePath) ? publicPath : null
+}
+
+// A series can have its own banner image at
+// `public/assets/blog/series/<slug>/cover.jpg`, shown on the overview page.
+function getSeriesCover(slug: string): string | null {
+  return getSeriesAsset(slug, 'cover.jpg')
+}
+
+// A dedicated 1200x630 social-share image at `.../og.jpg` (LinkedIn/OG's
+// canonical size and 1.91:1 ratio). Falls back to the banner cover so sharing
+// still works before an og.jpg is added.
+function getSeriesSocial(slug: string): string | null {
+  return getSeriesAsset(slug, 'og.jpg') ?? getSeriesCover(slug)
 }
 
 // How many series bands the homepage will show at once, newest-active first.
@@ -137,6 +149,7 @@ export function getAllSeries(): SeriesShowcase[] {
       slug,
       description: (parts[0]?.excerpt as string) ?? '',
       cover: getSeriesCover(slug),
+      social: getSeriesSocial(slug),
       parts: parts.map((p) => ({
         slug: p.slug as string,
         title: p.title as string,
