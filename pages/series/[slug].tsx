@@ -18,9 +18,10 @@ import {CMS_DOMAIN, CMS_INTRO} from '../../lib/constants'
 type Props = {
     series: SeriesShowcase | null
     coverMeta: LocalImageMeta | null
+    socialMeta: LocalImageMeta | null
 }
 
-export default function SeriesPage({series, coverMeta}: Props) {
+export default function SeriesPage({series, coverMeta, socialMeta}: Props) {
     const router = useRouter()
     if (!router.isFallback && !series) {
         return <ErrorPage statusCode={404}/>
@@ -40,30 +41,32 @@ export default function SeriesPage({series, coverMeta}: Props) {
                             <meta property="og:title" content={series.name}/>
                             <meta property="og:description" content={series.description}/>
                             <meta property="og:type" content="website"/>
+                            <meta property="og:site_name" content={CMS_INTRO}/>
+                            <meta property="og:locale" content="en_US"/>
                             <meta property="og:url" content={CMS_DOMAIN + '/series/' + series.slug}/>
-                            {series.cover && (
-                                <meta property="og:image" content={CMS_DOMAIN + series.cover}/>
+                            {series.social && (
+                                <meta property="og:image" content={CMS_DOMAIN + series.social}/>
                             )}
-                            {series.cover && (
-                                <meta property="og:image:secure_url" content={CMS_DOMAIN + series.cover}/>
+                            {series.social && (
+                                <meta property="og:image:secure_url" content={CMS_DOMAIN + series.social}/>
                             )}
-                            {series.cover && (
+                            {series.social && (
                                 <meta property="og:image:type" content="image/jpeg"/>
                             )}
-                            {coverMeta && (
-                                <meta property="og:image:width" content={String(coverMeta.width)}/>
+                            {socialMeta && (
+                                <meta property="og:image:width" content={String(socialMeta.width)}/>
                             )}
-                            {coverMeta && (
-                                <meta property="og:image:height" content={String(coverMeta.height)}/>
+                            {socialMeta && (
+                                <meta property="og:image:height" content={String(socialMeta.height)}/>
                             )}
-                            {series.cover && (
+                            {series.social && (
                                 <meta property="og:image:alt" content={`Cover image for ${series.name}`}/>
                             )}
                             <meta name="twitter:title" content={series.name}/>
                             <meta name="twitter:description" content={series.description}/>
-                            <meta name="twitter:card" content={series.cover ? 'summary_large_image' : 'summary'}/>
-                            {series.cover && (
-                                <meta name="twitter:image" content={CMS_DOMAIN + series.cover}/>
+                            <meta name="twitter:card" content={series.social ? 'summary_large_image' : 'summary'}/>
+                            {series.social && (
+                                <meta name="twitter:image" content={CMS_DOMAIN + series.social}/>
                             )}
                         </Head>
                         <p className="uppercase tracking-widest font-semibold text-gray-500 text-sm mb-4">
@@ -137,10 +140,12 @@ type Params = {
 export async function getStaticProps({params}: Params) {
     const series = getSeriesBySlug(params.slug)
     const coverMeta = series?.cover ? await getLocalImageMeta(series.cover) : null
+    const socialMeta = series?.social ? await getLocalImageMeta(series.social) : null
     return {
         props: {
             series,
             coverMeta,
+            socialMeta,
         },
     }
 }
