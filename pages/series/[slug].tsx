@@ -11,15 +11,16 @@ import DateFormatter from '../../components/date-formatter'
 import CoverImage from '../../components/cover-image'
 import {getAllSeries, getSeriesBySlug} from '../../lib/api'
 import type {SeriesShowcase} from '../../lib/api'
-import {getCoverBlurDataURL} from '../../lib/coverBlur'
+import {getLocalImageMeta} from '../../lib/coverBlur'
+import type {LocalImageMeta} from '../../lib/coverBlur'
 import {CMS_DOMAIN, CMS_INTRO} from '../../lib/constants'
 
 type Props = {
     series: SeriesShowcase | null
-    coverBlurDataURL: string | null
+    coverMeta: LocalImageMeta | null
 }
 
-export default function SeriesPage({series, coverBlurDataURL}: Props) {
+export default function SeriesPage({series, coverMeta}: Props) {
     const router = useRouter()
     if (!router.isFallback && !series) {
         return <ErrorPage statusCode={404}/>
@@ -42,6 +43,21 @@ export default function SeriesPage({series, coverBlurDataURL}: Props) {
                             <meta property="og:url" content={CMS_DOMAIN + '/series/' + series.slug}/>
                             {series.cover && (
                                 <meta property="og:image" content={CMS_DOMAIN + series.cover}/>
+                            )}
+                            {series.cover && (
+                                <meta property="og:image:secure_url" content={CMS_DOMAIN + series.cover}/>
+                            )}
+                            {series.cover && (
+                                <meta property="og:image:type" content="image/jpeg"/>
+                            )}
+                            {coverMeta && (
+                                <meta property="og:image:width" content={String(coverMeta.width)}/>
+                            )}
+                            {coverMeta && (
+                                <meta property="og:image:height" content={String(coverMeta.height)}/>
+                            )}
+                            {series.cover && (
+                                <meta property="og:image:alt" content={`Cover image for ${series.name}`}/>
                             )}
                             <meta name="twitter:title" content={series.name}/>
                             <meta name="twitter:description" content={series.description}/>
@@ -66,7 +82,7 @@ export default function SeriesPage({series, coverBlurDataURL}: Props) {
                                 <CoverImage
                                     title={series.name}
                                     src={series.cover}
-                                    blurDataURL={coverBlurDataURL}
+                                    blurDataURL={coverMeta?.blurDataURL}
                                     priority
                                 />
                             </div>
@@ -120,11 +136,11 @@ type Params = {
 
 export async function getStaticProps({params}: Params) {
     const series = getSeriesBySlug(params.slug)
-    const coverBlurDataURL = series?.cover ? await getCoverBlurDataURL(series.cover) : null
+    const coverMeta = series?.cover ? await getLocalImageMeta(series.cover) : null
     return {
         props: {
             series,
-            coverBlurDataURL,
+            coverMeta,
         },
     }
 }
