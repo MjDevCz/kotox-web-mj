@@ -7,7 +7,7 @@ type Props = {
 const MetaDataView = ({name, picture, tags}: Props) => {
     return (
         <div className="flex flex-wrap items-center">
-            {picture != '' ? <img src={picture} className="w-12 h-12 p2 mr-4" alt={name}/> : ""}
+            {picture != '' ? <img src={picture} className="w-12 h-12 object-cover rounded-full mr-4" alt={name}/> : ""}
             <div className="flex flex-wrap text-xl font-semibold space-x-4">
                 {tags.map(tag => {
                     return (

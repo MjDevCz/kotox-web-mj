@@ -56,6 +56,19 @@
     @apply block w-full my-8 rounded-lg;
 }
 
+.markdown figure {
+    @apply my-8;
+}
+
+.markdown figure img,
+.markdown figure :global(.blur-img) {
+    @apply my-0;
+}
+
+.markdown figcaption {
+    @apply mt-3 text-center text-sm italic text-gray-500;
+}
+
 .markdown :global(.blur-img) {
     @apply block w-full my-8 overflow-hidden rounded-lg;
     background-size: cover;
