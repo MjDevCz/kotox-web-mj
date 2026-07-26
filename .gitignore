@@ -1,4 +1,6 @@
 /node_modules/
+# This project uses yarn (see packageManager) — never commit an npm lockfile
+package-lock.json
 .idea
 .next
 .env

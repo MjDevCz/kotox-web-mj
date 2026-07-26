@@ -22,6 +22,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22.22.0"
+      - name: Enable Corepack
+        run: corepack enable
       - uses: webfactory/ssh-agent@v0.9.1
         with:
           ssh-private-key: ${{ secrets.ROSTI_DEPLOY_SSH_KEY }}
@@ -35,10 +37,10 @@ jobs:
           EOF
       - name: Dependencies
         run: |
-          npm install
+          yarn install --frozen-lockfile
       - name: Build
         run: |
-          npm run build
+          yarn build
       - name: Setup Node.js
         run: |
           ssh -o UserKnownHostsFile=./known_hosts -p $PORT $USER@$HOST /usr/local/bin/rosti node $NODE_VERSION

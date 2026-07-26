@@ -1,0 +1,33 @@
+# Guards the yarn-only policy: no npm lockfile, and yarn.lock stays in
+# sync with package.json (so security resolutions can't be bypassed).
+name: Lockfile guard
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fail if an npm lockfile is committed
+        run: |
+          if [ -f package-lock.json ]; then
+            echo "::error file=package-lock.json::This project uses yarn. Delete package-lock.json and commit yarn.lock only."
+            exit 1
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.22.0"
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      # --frozen-lockfile fails if package.json and yarn.lock disagree,
+      # catching dependency changes that skipped `yarn install`.
+      - name: Verify yarn.lock is in sync with package.json
+        run: yarn install --frozen-lockfile
