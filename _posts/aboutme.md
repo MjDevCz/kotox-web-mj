@@ -6,7 +6,7 @@ date: ''
 metaData:
     name: Michal Jeníček (aka MJ)
     picture: '/assets/blog/about/profile.jpg'
-    tags: ['Android', 'KMP', 'Mobile']
+    tags: ['Software Craftsmanship', 'Mobile', 'Android', 'KMP']
 ogImage:
     url: '/assets/blog/about/cover-talk-brno.jpg'
 ogTitle: "MJ - Mobile Software Craftsman"

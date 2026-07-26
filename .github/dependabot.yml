@@ -1,0 +1,41 @@
+# Dependabot version updates.
+# Opens PRs that bump dependencies on a schedule. Each PR runs through
+# the lockfile-guard workflow, so yarn.lock / package.json stay in sync
+# and no npm lockfile can sneak in. Security alerts are separate and
+# always open regardless of this schedule.
+version: 2
+updates:
+  # JavaScript deps. Dependabot's "npm" ecosystem understands yarn.lock
+  # and respects the `resolutions` field in package.json.
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    # Collapse routine bumps into a few PRs instead of one per package.
+    groups:
+      next:
+        patterns:
+          - "next"
+          - "@next/*"
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      dev-and-build:
+        dependency-type: "development"
+      production:
+        dependency-type: "production"
+        exclude-patterns:
+          - "next"
+          - "@next/*"
+          - "react"
+          - "react-dom"
+
+  # Keep the GitHub Actions used by the deploy and guard workflows current.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"

@@ -1,25 +1,28 @@
 # Nextjs Starter steps
 
+> This project uses **yarn** only — never run `npm install`. See
+> [docs/dependency-management.md](docs/dependency-management.md) for why.
+
 Local first time:
-1) At the very first run: `npm install`
+1) At the very first run: `yarn install`
 
 Local any dev session:
-1) Run: `rm -rf .next && npm run dev` which will clear the cache and start pages locally. It will automatically update any changes. Just reload page to see it.
+1) Run: `rm -rf .next && yarn dev` which will clear the cache and start pages locally. It will automatically update any changes. Just reload page to see it.
 
 
 Remote server (e.g. rosti) first time
 1) Ensure you have enough memory on the machine for first build (eventually temporarily increase)
-2) `npm install`
-3) For production Image Optimization with Next.js, the optional `sharp` package is strongly recommended. Run `yarn add sharp`, and Next.js will use it automatically for Image Optimization.
-4) `npm run build`
+2) `yarn install --frozen-lockfile`
+3) Image Optimization uses the `sharp` package, which is already a pinned dependency — `yarn install` pulls it in automatically, no extra step needed.
+4) `yarn build`
 
 Remote server any update
-1) `npm run build`
+1) `yarn build`
 2) `supervisorctl restart app`  (rosti.cz specific command to restart the app)
 
 
 General
-1) `npx next -v` checks out version of nextjs. It should be at least 12 for our case.
+1) `yarn next -v` checks out version of nextjs. It should be at least 12 for our case.
 
 
 # NODE Basics
