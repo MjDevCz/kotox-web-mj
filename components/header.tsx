@@ -2,12 +2,15 @@ import Link from 'next/link'
 
 const Header = () => {
   return (
-    <h2 className="text-2xl md:text-4xl font-bold tracking-tight md:tracking-tighter leading-tight mb-20 mt-8">
-      <Link href="/" className="hover:underline">
-        Stories
+    <div className="mb-20 mt-8">
+      <Link
+        href="/"
+        className="inline-flex items-center gap-2 rounded-lg border border-neutral-300 px-4 py-2 text-lg font-semibold text-neutral-800 transition-colors hover:bg-neutral-100 hover:border-neutral-400"
+      >
+        <span aria-hidden="true">←</span>
+        MJ Stories
       </Link>
-      .
-    </h2>
+    </div>
   )
 }
 
