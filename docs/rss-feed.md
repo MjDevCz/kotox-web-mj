@@ -11,7 +11,7 @@ The site generates an RSS feed at `/feed.xml` during every build. The feed inclu
 - **`lib/generateRssFeed.ts`** — reads all posts via `getAllPosts()` and produces RSS 2.0 XML with title, link, date, and excerpt for each post.
 - **`pages/index.tsx`** — calls `generateRssFeed()` inside `getStaticProps` and writes the result to `public/feed.xml` at build time.
 - **`components/meta.tsx`** — includes `<link rel="alternate" type="application/rss+xml" href="/feed.xml"/>` in the site `<head>`, so RSS readers auto-discover the feed.
-- **`.gitignore`** — `public/feed.xml` is excluded from version control since it's a build artifact. This is safe because the CI workflow (`npm run build`) regenerates it before rsyncing to the server.
+- **`.gitignore`** — `public/feed.xml` is excluded from version control since it's a build artifact. This is safe because the CI workflow (`yarn build`) regenerates it before rsyncing to the server.
 
 ## Adding a new article
 
