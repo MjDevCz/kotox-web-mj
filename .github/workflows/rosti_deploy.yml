@@ -25,7 +25,7 @@ jobs:
           cache: "yarn"
       - name: Enable Corepack
         run: corepack enable
-      - uses: webfactory/ssh-agent@v0.9.1
+      - uses: webfactory/ssh-agent@v0.10.0
         with:
           ssh-private-key: ${{ secrets.ROSTI_DEPLOY_SSH_KEY }}
       - name: Setup hostkey
