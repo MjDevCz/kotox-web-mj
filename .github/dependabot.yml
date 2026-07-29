@@ -33,6 +33,18 @@ updates:
           - "@next/*"
           - "react"
           - "react-dom"
+    # Hold back two major upgrades that need a deliberate migration, not an
+    # auto-bump (both were build-tested and break `next build` as-is):
+    #  - tailwindcss 4.x: CSS-first config + PostCSS plugin moved to
+    #    @tailwindcss/postcss; needs a config/CSS rewrite.
+    #  - typescript 7.x: the native compiler port isn't yet compatible with
+    #    Next's build-time TypeScript integration.
+    # Minor/patch bumps within the current majors still come through.
+    ignore:
+      - dependency-name: "tailwindcss"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
 
   # Keep the GitHub Actions used by the deploy and guard workflows current.
   - package-ecosystem: "github-actions"
