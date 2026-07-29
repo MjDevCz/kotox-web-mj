@@ -78,11 +78,19 @@ structure* but never the payoff line (keep the closing thesis intact):
 - **Headings: Title Case, descriptive, keyword-rich, concrete.** "The 7 … Tools We Evaluated" beats
   "The landscape". Favor scannable, numbered, SEO-friendly headings.
 - **SEO/GEO titling** *(derived from STRV's edits to Part 2 before publishing — apply to every part):*
-  - **Title pattern: `[Searchable keyword concept]: [Memorable phrase]`.** Lead with the domain keyword
-    a person or LLM would actually search, keep the clever phrase as the tail. STRV rewrote "Two writes
-    for every tap" → "Optimistic UI in Offline-First Apps: Two Writes Per Tap". Don't lose the voice —
-    pair it. Apply to both `title` and `ogTitle` (they are the H1/SEO title; there is no separate body
-    H1). Aim for ~60 chars where practical.
+  - **Keep the local `title`/`ogTitle` short and punchy — do NOT hand-write the keyword-stuffed
+    version.** Two reasons: the series **eyebrow already shows the context** ("Offline-First KMP · Part
+    3" renders above every title, so restating "offline-first" or "…before the server" in the title is
+    redundant), and **STRV applies the SEO/GEO title rewrite at publish time** (the local Part 2 file
+    still reads "Two writes for every tap"; STRV published it as "Optimistic UI in Offline-First Apps:
+    Two Writes Per Tap"). The slug, tags, and excerpt already carry the keywords. So match the punchy
+    house voice locally — "Two writes for every tap", "Minting IDs Before the Server" — and let the
+    eyebrow + STRV do the keyword work. Under ~40 chars is a good target; keep a small memorable hook
+    rather than a bare label.
+  - **The `[Searchable keyword concept]: [Memorable phrase]` pattern is what the *published* title
+    should become — not what you write locally.** It's STRV's transform (lead with the domain keyword a
+    person or LLM would search, keep the clever phrase as the tail: "Optimistic UI in Offline-First
+    Apps: Two Writes Per Tap"). Documented here so we recognize/anticipate it, not so we pre-apply it.
   - **Name the concept in the heading — never tease it.** Cute/vague headings become explicit statements
     or questions that match search intent: "The Problem With 'Just Sync It'" → "Why 'Just Sync It' Fails
     In Offline-First Apps"; "The Part That Feels Wrong" → "Why The Optimistic Projection Is Never

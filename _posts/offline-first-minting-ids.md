@@ -1,17 +1,17 @@
 ---
-title: 'Client-Generated IDs in Offline-First Apps: Minting UUIDs Offline'
+title: 'Minting IDs Before the Server'
 series: 'Offline-First KMP'
 seriesPart: 3
 excerpt: "Offline, you can't wait for a server to hand you an id. The client mints it at creation — a random UUID — so a new entity is addressable immediately, referenceable by the very next offline action. That one move deletes temporary ids and a whole class of reference-rewrite bugs."
-coverImage: '/assets/blog/post/offline-first-two-writes/cover.jpg'
+coverImage: '/assets/blog/post/offline-first-minting-ids/cover.jpg'
 date: '2026-07-29T00:00:00.000Z'
 metaData:
     name: Android
     picture: '/assets/blog/meta/android_logo_128.png'
     tags: ['android','kmp','offline-first','uuid','architecture']
 ogImage:
-    url: '/assets/blog/post/offline-first-two-writes/cover.jpg'
-ogTitle: "Client-Generated IDs in Offline-First Apps: Minting UUIDs Offline"
+    url: '/assets/blog/post/offline-first-minting-ids/cover.jpg'
+ogTitle: "Minting IDs Before the Server"
 ---
 
 *Identity is asserted by the client, not granted by the server.*
