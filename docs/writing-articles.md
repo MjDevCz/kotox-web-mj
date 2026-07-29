@@ -77,6 +77,29 @@ structure* but never the payoff line (keep the closing thesis intact):
   em-dash-heavy — this is the single biggest surface fix to make on each.)
 - **Headings: Title Case, descriptive, keyword-rich, concrete.** "The 7 … Tools We Evaluated" beats
   "The landscape". Favor scannable, numbered, SEO-friendly headings.
+- **SEO/GEO titling** *(derived from STRV's edits to Part 2 before publishing — apply to every part):*
+  - **Keep the local `title`/`ogTitle` short and punchy — do NOT hand-write the keyword-stuffed
+    version.** Two reasons: the series **eyebrow already shows the context** ("Offline-First KMP · Part
+    3" renders above every title, so restating "offline-first" or "…before the server" in the title is
+    redundant), and **STRV applies the SEO/GEO title rewrite at publish time** (the local Part 2 file
+    still reads "Two writes for every tap"; STRV published it as "Optimistic UI in Offline-First Apps:
+    Two Writes Per Tap"). The slug, tags, and excerpt already carry the keywords. So match the punchy
+    house voice locally — "Two writes for every tap", "Minting IDs Before the Server" — and let the
+    eyebrow + STRV do the keyword work. Under ~40 chars is a good target; keep a small memorable hook
+    rather than a bare label.
+  - **The `[Searchable keyword concept]: [Memorable phrase]` pattern is what the *published* title
+    should become — not what you write locally.** It's STRV's transform (lead with the domain keyword a
+    person or LLM would search, keep the clever phrase as the tail: "Optimistic UI in Offline-First
+    Apps: Two Writes Per Tap"). Documented here so we recognize/anticipate it, not so we pre-apply it.
+  - **Name the concept in the heading — never tease it.** Cute/vague headings become explicit statements
+    or questions that match search intent: "The Problem With 'Just Sync It'" → "Why 'Just Sync It' Fails
+    In Offline-First Apps"; "The Part That Feels Wrong" → "Why The Optimistic Projection Is Never
+    Uploaded"; "Why Split It This Way" → "Event Sourcing vs. CRUD: Why Split The Write In Two".
+  - **Surface named terminology in headings** — the technical terms a reader/LLM would search go into the
+    heading text: "The Event" → "The **Immutable** Event"; "The Projection" → "The **Optimistic**
+    Projection". This is the GEO win: an LLM can extract the heading as a self-contained answer.
+  - **The signature closer stays.** "The Shape to Take Away" is left unchanged — series-consistent
+    closers are exempt from keyword rewriting.
 - **Add connective context / an outbound resource** where it genuinely helps the reader.
 - **Keep the strong closing line intact** — polish around a good payoff, don't rewrite it.
 - **Never reference the eventual talks in the blog.** No "saving this for the stage / a talk / to tell
