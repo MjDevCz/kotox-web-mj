@@ -77,6 +77,21 @@ structure* but never the payoff line (keep the closing thesis intact):
   em-dash-heavy — this is the single biggest surface fix to make on each.)
 - **Headings: Title Case, descriptive, keyword-rich, concrete.** "The 7 … Tools We Evaluated" beats
   "The landscape". Favor scannable, numbered, SEO-friendly headings.
+- **SEO/GEO titling** *(derived from STRV's edits to Part 2 before publishing — apply to every part):*
+  - **Title pattern: `[Searchable keyword concept]: [Memorable phrase]`.** Lead with the domain keyword
+    a person or LLM would actually search, keep the clever phrase as the tail. STRV rewrote "Two writes
+    for every tap" → "Optimistic UI in Offline-First Apps: Two Writes Per Tap". Don't lose the voice —
+    pair it. Apply to both `title` and `ogTitle` (they are the H1/SEO title; there is no separate body
+    H1). Aim for ~60 chars where practical.
+  - **Name the concept in the heading — never tease it.** Cute/vague headings become explicit statements
+    or questions that match search intent: "The Problem With 'Just Sync It'" → "Why 'Just Sync It' Fails
+    In Offline-First Apps"; "The Part That Feels Wrong" → "Why The Optimistic Projection Is Never
+    Uploaded"; "Why Split It This Way" → "Event Sourcing vs. CRUD: Why Split The Write In Two".
+  - **Surface named terminology in headings** — the technical terms a reader/LLM would search go into the
+    heading text: "The Event" → "The **Immutable** Event"; "The Projection" → "The **Optimistic**
+    Projection". This is the GEO win: an LLM can extract the heading as a self-contained answer.
+  - **The signature closer stays.** "The Shape to Take Away" is left unchanged — series-consistent
+    closers are exempt from keyword rewriting.
 - **Add connective context / an outbound resource** where it genuinely helps the reader.
 - **Keep the strong closing line intact** — polish around a good payoff, don't rewrite it.
 - **Never reference the eventual talks in the blog.** No "saving this for the stage / a talk / to tell
