@@ -142,4 +142,4 @@ reported success while doing it.
 
 ## Reference
 
-- PowerSync — [Write Checkpoints](https://docs.powersync.com/handling-writes/custom-write-checkpoints)
+- PowerSync — [Consistency](https://docs.powersync.com/architecture/consistency)
