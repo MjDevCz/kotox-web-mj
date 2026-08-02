@@ -4,6 +4,7 @@ import CoverImage from './cover-image'
 import SeriesLabel from './series-label'
 import Link from 'next/link'
 import type MetaDataType from '../interfaces/meta-data-type'
+import { renderInlineBold } from '../lib/inlineBold'
 
 type Props = {
   title: string
@@ -50,7 +51,7 @@ const HeroPost = ({
           </div>
         </div>
         <div>
-          <p className="text-lg leading-relaxed mb-4">{excerpt}</p>
+          <p className="text-lg leading-relaxed mb-4">{renderInlineBold(excerpt)}</p>
           <MetaDataView name={metaData.name} picture={metaData.picture} tags={metaData.tags} />
         </div>
       </div>

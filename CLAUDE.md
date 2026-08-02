@@ -40,3 +40,9 @@ Use **yarn** — this repo is yarn-only (do not use npm).
 When creating or editing anything in `_posts/`, follow `docs/writing-articles.md` end to end — especially
 the house style and SEO/GEO titling rules. The Offline-First KMP series (`offline-first-*.md`) is the
 reference for tone, structure, and frontmatter.
+
+## Skills
+
+- **optimize-cover** (`/optimize-cover`) — convert a post cover (PNG/large JPG) into an optimized
+  `cover.jpg` matching the other covers (~1920px wide, ~200–290KB). Use whenever asked to optimize,
+  compress, or convert a cover image under `public/assets/blog/post/`.
