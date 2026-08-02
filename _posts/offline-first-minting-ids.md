@@ -4,7 +4,7 @@ series: 'Offline-First KMP'
 seriesPart: 3
 excerpt: "Offline, you can't wait for a server to hand you an id. The client mints it at creation — a random UUID — so a new entity is addressable immediately, referenceable by the very next offline action. That one move deletes temporary ids and a whole class of reference-rewrite bugs."
 coverImage: '/assets/blog/post/offline-first-minting-ids/cover.jpg'
-date: '2026-07-29T00:00:00.000Z'
+date: '2026-07-27T00:00:00.000Z'
 metaData:
     name: Android
     picture: '/assets/blog/meta/android_logo_128.png'
@@ -120,7 +120,7 @@ device decided it first and the server is told what it is.
 *How* the server is told, and how its authoritative version of the entity lands on top of your local
 projection without creating a duplicate, is a contract with a couple of genuinely subtle edges, more
 than this post needs. So I'll tease the shape and stop. Half of it is easy: the minted id travels *with
-the event*, and both sides use it. Part 4 shows the sync mechanic behind the other half — the
+the event*, and both sides use it. [Part 4](/posts/offline-first-write-checkpoints) shows the sync mechanic behind the other half — the
 authoritative version landing on top without creating a duplicate.
 
 ## The Shape to Take Away
@@ -131,6 +131,6 @@ enough to build a chain of further actions on, before any server has heard of it
 safe. Once you stop treating identity as a server privilege, a whole category of offline bugs (temporary
 ids, reference rewrites, "which id is the real one") simply never gets written.
 
-Next up (Part 4): you've got a local row with a client-minted id, and eventually the server sends down
+Next up ([Part 4](/posts/offline-first-write-checkpoints)): you've got a local row with a client-minted id, and eventually the server sends down
 its own authoritative version. How does your provisional row get out of the way, with no cleanup code
 of yours? The answer is a PowerSync mechanism that looks, at first, like a bug.
