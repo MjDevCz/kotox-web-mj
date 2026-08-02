@@ -7,6 +7,24 @@ import {stripInlineBold} from './inlineBold'
 export {seriesSlug}
 
 const postsDirectory = join(process.cwd(), '_posts')
+const seriesDirectory = join(process.cwd(), '_series')
+
+// A series can have a hand-written blurb at `_series/<slug>.md`. The Markdown
+// body is the full description shown on the /series overview and homepage bands;
+// an optional `ogDescription` in frontmatter is a shorter variant for the social
+// meta tags. When present the body overrides the default (the first part's
+// excerpt). Returns null if the file is absent or empty.
+function getSeriesBlurb(slug: string): {description: string; ogDescription: string | null} | null {
+    const fullPath = join(seriesDirectory, `${slug}.md`)
+    if (!fs.existsSync(fullPath)) return null
+    const {content, data} = matter(fs.readFileSync(fullPath, 'utf8'))
+    // The file is hard-wrapped for readability; collapse it to a single line so
+    // meta tags and cards get clean text rather than embedded newlines.
+    const description = content.replace(/\s+/g, ' ').trim()
+    if (description.length === 0) return null
+    const og = typeof data.ogDescription === 'string' ? data.ogDescription.trim() : ''
+    return {description, ogDescription: og.length > 0 ? og : null}
+}
 
 export function getPostSlugs() {
     return fs.readdirSync(postsDirectory)
@@ -91,6 +109,7 @@ export type SeriesShowcase = {
   name: string
   slug: string
   description: string
+  ogDescription: string
   cover: string | null
   social: string | null
   parts: SeriesShowcasePart[]
@@ -121,8 +140,10 @@ export const MAX_FEATURED_SERIES = 3
 
 // All series that have at least one post, ordered by recency (the series whose
 // newest part is most recent comes first). Each series' parts are ordered by
-// `seriesPart`, with a short description from the first part's excerpt. This is
-// the shared source for both the homepage bands and the /series overview pages.
+// `seriesPart`. The description is the hand-written `_series/<slug>.md` blurb
+// when present, otherwise the first part's excerpt; `ogDescription` is that
+// file's optional short variant for meta tags, falling back to the description.
+// This is the shared source for both the homepage bands and the /series pages.
 export function getAllSeries(): SeriesShowcase[] {
   const posts = getAllPosts(['slug', 'title', 'series', 'seriesPart', 'date', 'excerpt', 'coverImage'])
 
@@ -145,10 +166,14 @@ export function getAllSeries(): SeriesShowcase[] {
       .slice()
       .sort((a, b) => Number(a.seriesPart ?? 0) - Number(b.seriesPart ?? 0))
     const slug = seriesSlug(name)
+    const blurb = getSeriesBlurb(slug)
+    const description = blurb?.description ?? stripInlineBold((parts[0]?.excerpt as string) ?? '')
     return {
       name,
       slug,
-      description: stripInlineBold((parts[0]?.excerpt as string) ?? ''),
+      description,
+      // Fall back to the full description when no short OG variant is given.
+      ogDescription: blurb?.ogDescription ?? description,
       cover: getSeriesCover(slug),
       social: getSeriesSocial(slug),
       parts: parts.map((p) => ({
