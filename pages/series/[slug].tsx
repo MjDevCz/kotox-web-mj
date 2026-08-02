@@ -39,7 +39,7 @@ export default function SeriesPage({series, coverMeta, socialMeta}: Props) {
                                 {series.name} | {CMS_INTRO}
                             </title>
                             <meta property="og:title" content={series.name}/>
-                            <meta property="og:description" content={series.description}/>
+                            <meta property="og:description" content={series.ogDescription}/>
                             <meta property="og:type" content="website"/>
                             <meta property="og:site_name" content={CMS_INTRO}/>
                             <meta property="og:locale" content="en_US"/>
@@ -71,7 +71,7 @@ export default function SeriesPage({series, coverMeta, socialMeta}: Props) {
                                 <meta property="og:image:alt" content={`Cover image for ${series.name}`}/>
                             )}
                             <meta name="twitter:title" content={series.name}/>
-                            <meta name="twitter:description" content={series.description}/>
+                            <meta name="twitter:description" content={series.ogDescription}/>
                             <meta name="twitter:card" content={series.social ? 'summary_large_image' : 'summary'}/>
                             {series.social && (
                                 <meta name="twitter:image" content={CMS_DOMAIN + series.social}/>
