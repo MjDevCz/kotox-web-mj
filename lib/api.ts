@@ -2,6 +2,7 @@ import fs from 'fs'
 import {join} from 'path'
 import matter from 'gray-matter'
 import {seriesSlug} from './series'
+import {stripInlineBold} from './inlineBold'
 
 export {seriesSlug}
 
@@ -147,7 +148,7 @@ export function getAllSeries(): SeriesShowcase[] {
     return {
       name,
       slug,
-      description: (parts[0]?.excerpt as string) ?? '',
+      description: stripInlineBold((parts[0]?.excerpt as string) ?? ''),
       cover: getSeriesCover(slug),
       social: getSeriesSocial(slug),
       parts: parts.map((p) => ({

@@ -99,7 +99,8 @@ the projection is just the log read out loud.
 
 And *because* the projection is re-derivable, you don't even write the reconciliation. You don't diff,
 you don't delete your optimistic row when the real one arrives. The sync layer reverts your local guess
-when the authoritative row syncs down, through a mechanism I'll unpack in Part 4.
+when the authoritative row syncs down, through a mechanism I unpack in
+[Part 4](/posts/offline-first-write-checkpoints).
 
 ## Why Split It This Way
 

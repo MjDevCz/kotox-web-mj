@@ -1,6 +1,7 @@
 import {getAllPosts} from './api'
 import {CMS_DOMAIN, CMS_INTRO} from './constants'
 import markdownToHtml from './markdownToHtml'
+import {stripInlineBold} from './inlineBold'
 
 export async function generateRssFeed(): Promise<string> {
     const posts = getAllPosts(['title', 'date', 'slug', 'excerpt', 'content'])
@@ -13,7 +14,7 @@ export async function generateRssFeed(): Promise<string> {
       <link>${CMS_DOMAIN}/posts/${post.slug}</link>
       <guid>${CMS_DOMAIN}/posts/${post.slug}</guid>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
-      <description><![CDATA[${post.excerpt}]]></description>
+      <description><![CDATA[${stripInlineBold(post.excerpt)}]]></description>
       <content:encoded><![CDATA[${contentHtml}]]></content:encoded>
     </item>`
         })

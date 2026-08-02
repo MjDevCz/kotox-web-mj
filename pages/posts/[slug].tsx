@@ -13,6 +13,7 @@ import PostTitle from '../../components/post-title'
 import Head from 'next/head'
 import {CMS_DOMAIN, CMS_INTRO} from '../../lib/constants'
 import markdownToHtml from '../../lib/markdownToHtml'
+import {stripInlineBold} from '../../lib/inlineBold'
 import type PostType from '../../interfaces/post'
 
 type Props = {
@@ -42,12 +43,12 @@ export default function Post({post, morePosts, seriesNav, preview}: Props) {
                                 </title>
                                 <meta property="og:image" content={CMS_DOMAIN +post.ogImage.url}/>
                                 <meta property="og:title" content={post.ogTitle}/>
-                                <meta property="og:description" content={post.excerpt}/>
+                                <meta property="og:description" content={stripInlineBold(post.excerpt)}/>
                                 <meta property="og:type" content="article"/>
                                 <meta property="og:url" content={CMS_DOMAIN + '/posts/' + post.slug}/>
                                 <meta name="twitter:image" content={CMS_DOMAIN + post.ogImage.url}/>
                                 <meta name="twitter:title" content={post.ogTitle}/>
-                                <meta name="twitter:description" content={post.excerpt}/>
+                                <meta name="twitter:description" content={stripInlineBold(post.excerpt)}/>
                                 <meta name="twitter:card" content="summary_large_image"/>
                             </Head>
                             <PostHeader
