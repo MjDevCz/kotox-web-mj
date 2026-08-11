@@ -1,5 +1,5 @@
 ---
-title: '"Success" Is Not Something Your Transport Can Tell You'
+title: 'HTTP 200 Is Not Success'
 series: 'Offline-First KMP'
 seriesPart: 5
 excerpt: "A batch upload can return **HTTP 200 while an operation inside it failed**, and a sync connector must acknowledge those failures or wedge its queue. So data can vanish with everything reporting green. 'Success' is a per-operation outcome your transport cannot report for you: you have to build a channel to hear the failures you actually care about."
@@ -11,7 +11,7 @@ metaData:
     tags: ['android','kmp','offline-first','powersync','sync']
 ogImage:
     url: '/assets/blog/post/offline-first-silent-success/cover.jpg'
-ogTitle: '"Success" Is Not Something Your Transport Can Tell You'
+ogTitle: 'HTTP 200 Is Not Success'
 ---
 
 *The event the server silently ate.*
