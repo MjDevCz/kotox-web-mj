@@ -24,8 +24,8 @@ channel to hear the failures you actually care about.
 [Part 2](/posts/offline-first-two-writes) established the two-write model, an uploaded event plus a
 local projection. [Part 3](/posts/offline-first-minting-ids) had the client mint the ids. [Part
 4](/posts/offline-first-write-checkpoints) let checkpoints sweep the provisional rows away. Those three
-posts built the model. This is the first war story: what happened when that model quietly failed and
-still returned HTTP 200 while doing it.
+posts built the model. **This is the first war story**: *what happened when that model quietly failed and
+still returned HTTP 200 while doing it.*
 
 ## A Bug With No Error
 
