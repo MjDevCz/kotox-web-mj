@@ -24,8 +24,8 @@ channel to hear the failures you actually care about.
 [Part 2](/posts/offline-first-two-writes) established the two-write model, an uploaded event plus a
 local projection. [Part 3](/posts/offline-first-minting-ids) had the client mint the ids. [Part
 4](/posts/offline-first-write-checkpoints) let checkpoints sweep the provisional rows away. Those three
-posts built the model. This is the first war story: what happened when that model quietly failed and
-still returned HTTP 200 while doing it.
+posts built the model. **This is the first war story**: *what happened when that model quietly failed and
+still returned HTTP 200 while doing it.*
 
 ## A Bug With No Error
 
@@ -88,9 +88,8 @@ connector can do with a *permanently* rejected op: it acknowledged the batch and
 
 Acknowledging is what clears the upload queue. Here's the bind you're in. If a rejected op is
 *permanent* (it will fail identically no matter how many times you resend it) and you *don't*
-acknowledge it, that one poison op wedges the queue forever, blocking every future upload behind it. The
-user's next hundred actions never sync because op #1 keeps bouncing. So a connector essentially has to
-acknowledge failures to stay alive.
+acknowledge it, that one poison op wedges the queue forever — the user's next hundred actions never sync,
+all stuck behind op #1. So a connector essentially has to acknowledge failures to stay alive.
 
 But "acknowledge and move on" means a permanently rejected op is **silently dropped after one attempt.**
 No retry. No user-visible error. No queue damage, and no trace unless you went looking in the logs. Our
@@ -109,8 +108,8 @@ it was an op the server turned away *at the door*, before it was ever stored, an
 place an event can slip through. Once the server ingests one it can't silently disappear; it always ends in
 a definite, stored `processing_state` on its own row. Most version conflicts auto-resolve, the genuine ones
 are parked in `CONFLICT_RESOLUTION_REQUESTED` for a human decision, and anything that can't be processed is
-parked in a terminal `PROCESSING_FAILURE` or `VALIDATION_FAILED`, sitting in the server database, queryable
-and there to act on. Surfacing those to a
+parked in a terminal `PROCESSING_FAILURE` or `VALIDATION_FAILED`, sitting in the server database and
+queryable. Surfacing those to a
 user is the same move we already ship for conflicts: a product decision about what to report, not a missing
 capability.
 
