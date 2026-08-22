@@ -124,5 +124,5 @@ trusts are not the same write.** One is a provisional projection for instant fee
 immutable fact you upload. Keeping them separate is what lets the app behave identically on a plane and
 at a desk.
 
-Next up (Part 3): those local rows need IDs before any server has heard of them. Minting identity on the
-client, and why UUID-collision anxiety is misplaced.
+Next up ([Part 3](/posts/offline-first-minting-ids)): those local rows need IDs before any server has
+heard of them. Minting identity on the client, and why UUID-collision anxiety is misplaced.
