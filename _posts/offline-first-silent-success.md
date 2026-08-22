@@ -127,5 +127,6 @@ to pull, so it gets its own.
 - **The nastiest offline bugs are the ones where everything reports success.** No throw, no red log,
   just an absence. Build the observability to see absences, because your error handling won't.
 
-Next up (Part 6): the layer nobody warns you about, the messy adapter between your local database and
-your actual write endpoint, and the one-line schema mistake that shipped `"770.0"` as a string.
+Next up ([Part 6](/posts/offline-first-adapter-layer)): the layer nobody warns you about, the messy
+adapter between your local database and your actual write endpoint, and the one-line schema mistake that
+shipped `"770.0"` as a string.
