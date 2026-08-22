@@ -4,7 +4,7 @@ Guidance for Claude Code when working in this repo.
 
 ## What this is
 
-MJ's personal website and blog (jenicek.dev) — Android craftsmanship stories. Next.js + Markdown +
+MJ's personal website and blog (jenicek.dev) — Mobile craftsmanship stories. Next.js + Markdown +
 React/TypeScript, based on the Vercel blog-starter template. Simple, content-first codebase.
 
 ## Commands

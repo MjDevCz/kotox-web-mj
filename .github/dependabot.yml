@@ -11,7 +11,10 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 5
+    # Security-only: 0 disables routine version-update PRs, but Dependabot
+    # security updates (CVE fixes) still open regardless of this limit. We
+    # apply version bumps deliberately rather than on a schedule.
+    open-pull-requests-limit: 0
     # Collapse routine bumps into a few PRs instead of one per package.
     groups:
       next:
