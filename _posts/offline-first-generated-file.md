@@ -34,15 +34,34 @@ run.
 Our client schema is generated per environment from the sync service's dashboard. It declares every synced
 table and the type of every column, and it opens with a comment telling you it is machine-written.
 
-Here is what makes it feel harmless: the local database ignores it. [PowerSync](https://www.powersync.com)
-keeps every value as text internally, so a column declared as text instead of a number behaves perfectly on
-the device. Every screen renders. Every query returns. Sync down works. If the declared types were only
-ever used locally, the file really would be cosmetic.
+Here is what makes it feel harmless: the local database ignores it.
+[PowerSync](https://www.powersync.com) keeps every value as text internally, so a wrongly declared column
+behaves perfectly on the device. The upload path is where the same declaration stops being cosmetic. What
+drains the upload queue there is our connector, the code that turns queued local rows into calls against
+our write endpoint, and it reads those declarations to decide how to serialize each value:
 
-They are not only used locally. On the upload path our connector reads those same declarations to decide
-how to serialize each value: columns declared as text ship as JSON strings, and everything else runs
-through a coercion helper that turns numeric-looking strings into JSON numbers. One declaration, two
-consumers, and the two consumers disagree about how much it matters. That is the whole setup.
+<div class="diagram">
+<div class="diagram-head">One column, declared TEXT</div>
+<div class="diagram-fork">
+<div class="diagram-branch">
+<div class="diagram-branch-title">Local database</div>
+<div class="diagram-branch-rule">SQLite, ignores the declared type</div>
+<div class="diagram-line">every value kept as text</div>
+<div class="diagram-line">screens render, queries pass</div>
+<div class="diagram-verdict is-ok">Nothing is wrong.</div>
+</div>
+<div class="diagram-branch">
+<div class="diagram-branch-title">Upload connector</div>
+<div class="diagram-branch-rule">our code, obeys the declared type</div>
+<div class="diagram-line"><span class="diagram-key">TEXT</span> ships as a JSON string</div>
+<div class="diagram-line"><span class="diagram-key">others</span> coerced to a JSON number</div>
+<div class="diagram-verdict is-bad">"770.0" is rejected on the wire.</div>
+</div>
+</div>
+</div>
+
+One declaration, two consumers, and they disagree about how much it matters. The local database can
+afford to be wrong about a column type. The connector cannot. That is the whole setup.
 
 The connector configuration and the wire format rules live in shared common Kotlin, so this single decision
 covers both the iOS and the Android client. One place to get it right, and one place to get it wrong.
@@ -91,17 +110,30 @@ What we do now is treat the generated schema as one input among several, and hol
 somewhere it cannot be touched.
 
 The connector's configuration makes that concrete, and the interesting thing about it is where each piece
-comes from. Most of what it holds has always been hand-written: which tables are allowed to upload at all,
-which columns are the server's to write rather than ours, and the per-table translation rules
-[Part 6](/posts/offline-first-adapter-layer) walks through. Exactly one of its inputs is derived from the
-generated schema. That one is the only one that ever needed rescuing, and in hindsight that is not a
-coincidence: the derived input is the fragile one, so it is the one that needs an escape hatch.
+comes from:
 
-At startup the connector still derives the set of text columns from the generated schema, because for
-genuinely textual columns that derivation is exactly right and it costs nothing to maintain as the schema
-grows. Then it subtracts a small hand-written map of the columns the server expects as numbers. Those fall
-through to the coercion helper and upload as JSON numbers, whatever the generated file happens to say this
-week.
+<div class="diagram">
+<div class="diagram-head">Connector configuration</div>
+<div class="diagram-rows">
+<div class="diagram-row"><span class="diagram-row-name">Tables allowed to upload</span><span class="diagram-tag">hand-written</span></div>
+<div class="diagram-row"><span class="diagram-row-name">Server-owned columns</span><span class="diagram-tag">hand-written</span></div>
+<div class="diagram-row"><span class="diagram-row-name">Per-table upload rules</span><span class="diagram-tag">hand-written</span></div>
+<div class="diagram-row is-derived"><span class="diagram-row-name">Text columns</span><span class="diagram-tag">derived from the generated schema</span></div>
+</div>
+<div class="diagram-formula">text columns = derive(<span class="is-fragile">generated schema</span>) &minus; <span class="is-safe">SERVER_NUMERIC_COLUMNS</span></div>
+<div class="diagram-legend"><span><span class="is-fragile">&#9632;</span> overwritten by every regeneration</span><span><span class="is-safe">&#9632;</span> hand-written, out of reach</span></div>
+</div>
+
+Three hand-written inputs, including the per-table upload rules
+[Part 6](/posts/offline-first-adapter-layer) walks through, and one derived. Only the derived one ever
+needed rescuing, and in hindsight that is not a coincidence: the derived input is the fragile one, so it is
+the one that needs an escape hatch.
+
+The derivation is worth keeping, because for genuinely textual columns it is exactly right and costs
+nothing to maintain as the schema grows. What we subtract from it is `SERVER_NUMERIC_COLUMNS`, a small
+hand-written map of the columns the server expects as numbers. Those are coerced to JSON numbers instead,
+whatever the generated file happens to say this week. Nobody has to remember to add to that map, which is
+the only reason a hand-written list is allowed anywhere near this problem.
 
 The map is keyed by table, not by column name, and that detail is load-bearing: the same column name can be
 genuinely numeric in one table and genuinely textual in another. A flat list of names would have quietly
@@ -121,8 +153,10 @@ every environment we ship.
 
 It checks both directions, which matters more than it sounds:
 
-- A synced column that is numeric upstream but is not in the map would upload as a string. The build fails,
-  and the message names the table and column to add.
+- A synced column that is numeric upstream but is not in the map would upload as a string. This is the
+  case that matters most, because it is the one that arrives on its own: every numeric column added
+  upstream from now on starts life missing from the map. The build fails the first time it is synced, and
+  the message names the table and column to add.
 - An entry in the map that is not actually numeric upstream is either stale, because the column was renamed
   or removed, or wrong, because somebody listed a genuinely textual column. One check catches both.
 

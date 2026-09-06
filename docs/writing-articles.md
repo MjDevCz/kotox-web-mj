@@ -50,6 +50,31 @@ hideReadingTime: true
 
 This is handled by `lib/markdownToHtml.ts` — any `href` starting with `http://` or `https://` gets `target="_blank" rel="noopener noreferrer"` automatically.
 
+## Diagrams
+
+Posts can embed small HTML diagrams to carry a structure that would otherwise cost several paragraphs.
+Write raw HTML directly in the Markdown (`remark-html` runs with `sanitize: false`, so it passes through)
+using the class names below. **Do not use Tailwind utility classes in a post** — `tailwind.config.js` only
+scans `components/` and `pages/`, so classes written in Markdown get purged. All diagram styling lives in
+`components/markdown-styles.module.css`.
+
+Note that Markdown **tables do not work** — the pipeline has no `remark-gfm`, so pipe syntax renders as
+literal text. Use a diagram or a list instead.
+
+Available blocks (see `_posts/offline-first-generated-file.md` for both in use):
+
+- `.diagram` — the outer card. `.diagram-head` is the small uppercase caption at the top.
+- **Two-branch fork:** `.diagram-fork` holding two `.diagram-branch` cards, each with
+  `.diagram-branch-title`, `.diagram-branch-rule`, one or more `.diagram-line`, and a closing
+  `.diagram-verdict` marked `is-ok` or `is-bad`. Stacks to one column on narrow screens.
+- **Labelled rows:** `.diagram-rows` holding `.diagram-row` items, each with `.diagram-row-name` and
+  `.diagram-tag`. Add `is-derived` to a row to highlight it.
+- **Formula and legend:** `.diagram-formula` for a monospace line, `.diagram-legend` beneath it. Use
+  `is-fragile` and `is-safe` to colour-code terms and their legend swatches.
+
+Keep diagrams to structures the prose would otherwise labour over, and **cut the prose the diagram
+replaces** — a diagram added on top of the paragraph it duplicates makes the post longer, not shorter.
+
 ## Drafts
 
 Unfinished articles live in `_posts_wip/`. This folder is not read by the site — articles there won't be built or deployed. When a draft is ready, move it to `_posts/`.
