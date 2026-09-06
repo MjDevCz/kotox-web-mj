@@ -131,7 +131,8 @@ completely different things: local storage (which ignores it) and upload seriali
 dies by it).
 
 *(There's a second trap here: that schema file is generated, not hand-authored, so "just edit the type" is
-the wrong fix. Part 7 is that story, and what we changed so a regeneration can't re-break it.)*
+the wrong fix. [Part 7](/posts/offline-first-generated-file) is that story, and what we changed so a
+regeneration can't re-break it.)*
 
 ## The Shape to Take Away
 
@@ -144,9 +145,10 @@ the wrong fix. Part 7 is that story, and what we changed so a regeneration can't
   store and decisive for upload serialization. Know which of your "cosmetic" declarations are secretly
   driving the wire.
 
-That's the plumbing run's first stop. Next up (Part 7): why the one-word fix above didn't stay fixed, and
-where a decision has to live so a regeneration can't reach it. Parts 8 and 9 stay down here in the
-plumbing too, then the series zooms out to the architecture underneath it all.
+That's the plumbing run's first stop. Next up ([Part 7](/posts/offline-first-generated-file)): why the
+one-word fix above didn't stay fixed, and where a decision has to live so a regeneration can't reach it.
+Parts 8 and 9 stay down here in the plumbing too, then the series zooms out to the architecture
+underneath it all.
 
 ## Reference
 

@@ -118,3 +118,102 @@
 .markdown :global(.youtube-embed iframe) {
     @apply absolute inset-0 w-full h-full border-0;
 }
+
+/* --- Inline diagrams -------------------------------------------------------
+   Authored as raw HTML in posts (see docs/writing-articles.md). Classes are
+   styled here rather than inline because tailwind.config.js only scans
+   components/ and pages/, so utility classes in Markdown would be purged. */
+
+.markdown :global(.diagram) {
+    @apply my-8 px-5 py-6 rounded-lg border border-gray-200 bg-gray-50 text-base leading-snug;
+}
+
+.markdown :global(.diagram-head) {
+    @apply text-center text-xs font-semibold uppercase tracking-widest text-gray-500;
+}
+
+.markdown :global(.diagram-fork) {
+    @apply grid gap-4 mt-4 sm:grid-cols-2;
+}
+
+.markdown :global(.diagram-branch) {
+    @apply p-4 rounded-md bg-white border border-gray-200;
+}
+
+.markdown :global(.diagram-branch-title) {
+    @apply font-semibold text-gray-900;
+}
+
+.markdown :global(.diagram-branch-rule) {
+    @apply mt-0.5 mb-3 text-sm text-gray-500;
+}
+
+.markdown :global(.diagram-line) {
+    @apply text-sm text-gray-700;
+}
+
+.markdown :global(.diagram-line) + :global(.diagram-line) {
+    @apply mt-1;
+}
+
+.markdown :global(.diagram-key) {
+    @apply font-mono text-xs text-gray-900;
+}
+
+.markdown :global(.diagram-verdict) {
+    @apply mt-3 pt-3 border-t border-gray-100 text-sm;
+}
+
+.markdown :global(.diagram-verdict.is-ok) {
+    @apply text-gray-500;
+}
+
+.markdown :global(.diagram-verdict.is-bad) {
+    @apply font-medium text-red-700;
+}
+
+.markdown :global(.diagram-rows) {
+    @apply mt-4 rounded-md bg-white border border-gray-200 overflow-hidden;
+}
+
+.markdown :global(.diagram-row) {
+    @apply flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 px-4 py-2.5 text-sm border-b border-gray-100;
+}
+
+.markdown :global(.diagram-row:last-child) {
+    @apply border-b-0;
+}
+
+.markdown :global(.diagram-row.is-derived) {
+    @apply bg-red-50;
+}
+
+.markdown :global(.diagram-row-name) {
+    @apply text-gray-900;
+}
+
+.markdown :global(.diagram-tag) {
+    @apply text-xs uppercase tracking-wide text-gray-400;
+}
+
+.markdown :global(.diagram-row.is-derived) :global(.diagram-tag) {
+    @apply text-red-700;
+}
+
+.markdown :global(.diagram-formula) {
+    @apply mt-4 px-4 py-3 rounded-md bg-white border border-gray-200 font-mono text-gray-800;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+}
+
+.markdown :global(.diagram-legend) {
+    @apply mt-2 flex flex-wrap gap-x-6 gap-y-1 text-xs text-gray-500;
+}
+
+.markdown :global(.is-fragile) {
+    @apply text-red-700;
+}
+
+.markdown :global(.is-safe) {
+    @apply text-gray-900;
+}
