@@ -10,6 +10,7 @@ really playful codebase to update/enhance even for beginners.
 
 ## Documentation
 
+- [basics.md](basics.md) — local dev setup, build, and deploy steps (yarn, Node, Rosti).
 - [CLAUDE.md](CLAUDE.md) — project overview, commands, and layout (also guides Claude Code).
 - [docs/writing-articles.md](docs/writing-articles.md) — authoring posts and the house style.
 - [docs/dependency-management.md](docs/dependency-management.md) — dependency management.
