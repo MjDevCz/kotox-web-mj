@@ -29,7 +29,7 @@ format is a real architectural layer, and closed by flagging one trap it did not
 driving all of it is generated, not hand-written. This is that trap, and the second stop on the plumbing
 run.
 
-## Why the Generated Schema File Looks Cosmetic
+## The Schema File Only Uploads Obey
 
 Our client schema is generated per environment from the sync service's dashboard. It declares every synced
 table and the type of every column, and it opens with a comment telling you it is machine-written.
@@ -47,7 +47,7 @@ consumers, and the two consumers disagree about how much it matters. That is the
 The connector configuration and the wire format rules live in shared common Kotlin, so this single decision
 covers both the iOS and the Android client. One place to get it right, and one place to get it wrong.
 
-## The One-Word Fix That Did Not Survive Regeneration
+## The Fix That Lasted Sixteen Days
 
 The bug was a bottle volume. In production the dashboard had been hand-forced to declare that column
 numeric; in staging, where nobody had done that, the same column in the same table came out as text. So
@@ -71,7 +71,7 @@ having typed anything wrong.
 That is the moment worth keeping. The fix was not incomplete or sloppy, and the regeneration that undid it
 was not careless. Both were correct. One of them was applied in a place that has no memory.
 
-## Why Fixing the Dashboard Was Never the Right Answer
+## The Dashboard Fix Works Once
 
 The obvious next move is to fix the dashboard instead, so the next regeneration produces the right file. We
 tried that, and it works exactly once, per column, per environment.
@@ -85,7 +85,7 @@ So the choice was never "correct declaration versus wrong declaration." It was: 
 column, per environment, forever, and pay that cost again every time somebody regenerates. Any fix whose
 lifetime is bounded by the next regeneration is not a fix. It is a countdown.
 
-## Put the Decision Where Regeneration Cannot Reach
+## Where Regeneration Cannot Reach
 
 What we do now is treat the generated schema as one input among several, and hold the part it gets wrong
 somewhere it cannot be touched.
@@ -109,7 +109,7 @@ broken the second case while fixing the first.
 
 The regeneration still overwrites the schema file. It just no longer overwrites the decision.
 
-## Anchor the Drift Guard to the Upstream Schema, Not the Artifact
+## What the Drift Test Refuses to Trust
 
 A hand-written map is a rot risk. So we solved it the way this codebase solves every rot risk: make drift
 fail the build.
