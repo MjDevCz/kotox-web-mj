@@ -117,19 +117,19 @@ notice anything, let alone report it.
 
 The second is a ledger, and it is the part that changes what "acknowledge" means. The connector still
 acknowledges the batch, because it has to. But before it does, it writes the refused operation to a table of
-its own on the device: the payload exactly as sent, the reason the server gave, the HTTP status, how many
-times it was tried, and whether a later download showed the server had the row after all. Acknowledging
-clears the queue. It no longer clears the record. The work is held until whatever refused it is fixed, and
-can then be replayed against the repaired system instead of being retyped from memory. "Acknowledge and
-move on" stopped meaning "gone".
+its own on the device: the operation's data, every column as the app wrote it; the error code and message
+the server returned; the HTTP status; and when it was first and last refused, and how many times.
+Acknowledging clears the queue. It no longer clears the record. If a later download proves the server has
+the row after all, the entry retires itself. Otherwise the work is held, so that once whatever refused it is
+fixed it can be replayed instead of retyped from memory. That replay is the recovery screen's job, and
+Part 19 is about that screen. "Acknowledge and move on" stopped meaning "gone".
 
 Past the door, the record was already safe. That door is the only place an event can slip through; once the
 server ingests one it can't silently disappear, because it always ends in a definite, stored
 `processing_state` on its own row. Most version conflicts auto-resolve, the genuine ones are parked in
 `CONFLICT_RESOLUTION_REQUESTED` for a human decision, and anything that can't be processed is parked in a
 terminal `PROCESSING_FAILURE` or `VALIDATION_FAILED`, sitting in the server database, queryable and there to
-act on. Showing both kinds of held work to the person who did it is one screen, and Part 19 is about that
-screen.
+act on. Showing both kinds of held work to the person who did it is that same screen.
 
 *Why* the two ids diverged, and the identity-minting fix behind it, is a bigger thread than this post wants
 to pull, so it gets its own.
