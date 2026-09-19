@@ -2,7 +2,7 @@
 title: 'HTTP 200 Is Not Success'
 series: 'Offline-First KMP'
 seriesPart: 5
-excerpt: "A batch upload can return **HTTP 200 while an operation inside it failed**, and a sync connector must acknowledge those failures or wedge its queue. So data can vanish with everything reporting green. 'Success' is a per-operation outcome your transport cannot report for you: you have to build a channel to hear the failures you actually care about."
+excerpt: "A batch upload can return **HTTP 200 while an operation inside it failed**, and a sync connector must acknowledge those failures or wedge its queue. So data can vanish with everything reporting green. 'Success' is a per-operation outcome your transport cannot report for you: you have to build a channel to hear the failures you actually care about, and a place to keep the work they refused."
 coverImage: '/assets/blog/post/offline-first-silent-success/cover.jpg'
 date: '2026-08-10T00:00:00.000Z'
 metaData:
@@ -19,7 +19,7 @@ ogTitle: 'HTTP 200 Is Not Success'
 **TL;DR** A batch upload endpoint can return HTTP 200 while an operation inside it failed, and a sync
 connector must acknowledge those failures or wedge its queue. So data can vanish with everything
 reporting green. "Success" is a per-operation outcome your transport cannot report for you: build a
-channel to hear the failures you actually care about.
+channel to hear the failures you actually care about, and a place to keep the work they refused.
 
 [Part 2](/posts/offline-first-two-writes) established the two-write model, an uploaded event plus a
 local projection. [Part 3](/posts/offline-first-minting-ids) had the client mint the ids. [Part
@@ -76,9 +76,13 @@ POST /v1/powersync/write
 The assign succeeded. The breadcrumb *failed validation on the server*, and the whole batch still came
 back HTTP 200.
 
-That's the first lesson, and it's a big one for anyone building a custom sync connector: **our write
-endpoint returns 200 for the batch and reports per-operation failures inside the body.** One failed op
-doesn't fail the request. If your connector only checks the HTTP status, it sees green.
+That's the first lesson, and it's a big one for anyone building a custom sync connector: **for anything
+our write endpoint turns away at the door, it returns 200 for the batch and reports the per-operation
+failure inside the body.** One failed op doesn't fail the request. If your connector only checks the HTTP
+status, it sees green.
+
+Failures on the other side of that door, after the row is accepted and stored, come back a different way
+entirely. Part 10 takes that one apart.
 
 ## Why the Connector Let It Go
 
@@ -88,8 +92,9 @@ connector can do with a *permanently* rejected op: it acknowledged the batch and
 
 Acknowledging is what clears the upload queue. Here's the bind you're in. If a rejected op is
 *permanent* (it will fail identically no matter how many times you resend it) and you *don't*
-acknowledge it, that one poison op wedges the queue forever — the user's next hundred actions never sync,
-all stuck behind op #1. So a connector essentially has to acknowledge failures to stay alive.
+acknowledge it, that one poison op wedges the queue forever, blocking every future upload behind it. The
+user's next hundred actions never sync because op #1 keeps bouncing. So a connector essentially has to
+acknowledge failures to stay alive.
 
 But "acknowledge and move on" means a permanently rejected op is **silently dropped after one attempt.**
 No retry. No user-visible error. No queue damage, and no trace unless you went looking in the logs. Our
@@ -100,18 +105,31 @@ buffer you can trust to hold your writes until they land. It isn't. It's a queue
 drop what it can't deliver, and it drops it quietly. "The queue drained" and "your data arrived" turn out
 to be two different claims.
 
-## Nothing Past the Door Is Lost
+## Nothing Is Lost at the Door Either
 
-None of which means we shrugged. The breadcrumb bug is fixed, and a rejected write no longer just slips into
-a log line. It surfaces as an alert, not a silent drop. And this failure mode is narrower than it sounds:
-it was an op the server turned away *at the door*, before it was ever stored, and that door is the only
-place an event can slip through. Once the server ingests one it can't silently disappear; it always ends in
-a definite, stored `processing_state` on its own row. Most version conflicts auto-resolve, the genuine ones
-are parked in `CONFLICT_RESOLUTION_REQUESTED` for a human decision, and anything that can't be processed is
-parked in a terminal `PROCESSING_FAILURE` or `VALIDATION_FAILED`, sitting in the server database and
-queryable. Surfacing those to a
-user is the same move we already ship for conflicts: a product decision about what to report, not a missing
-capability.
+None of which means we shrugged. The breadcrumb bug is fixed, and a write the server turns away at the door
+now goes to two places instead of a log line.
+
+The first is an alert. A rejection at the door almost always means the two sides disagree about something
+they should agree on: an inconsistency, or a bug. So the connector raises a Crashlytics non-fatal the moment
+it sees one. That channel is for us. The team hears about it without the person in the cellar having to
+notice anything, let alone report it.
+
+The second is a ledger, and it is the part that changes what "acknowledge" means. The connector still
+acknowledges the batch, because it has to. But before it does, it writes the refused operation to a table of
+its own on the device: the operation's data, every column as the app wrote it; the error code and message
+the server returned; the HTTP status; and when it was first and last refused, and how many times.
+Acknowledging clears the queue. It no longer clears the record. If a later download proves the server has
+the row after all, the entry retires itself. Otherwise the work is held, so that once whatever refused it is
+fixed it can be replayed instead of retyped from memory. That replay is the recovery screen's job, and
+Part 19 is about that screen. "Acknowledge and move on" stopped meaning "gone".
+
+Past the door, the record was already safe. That door is the only place an event can slip through; once the
+server ingests one it can't silently disappear, because it always ends in a definite, stored
+`processing_state` on its own row. Most version conflicts auto-resolve, the genuine ones are parked in
+`CONFLICT_RESOLUTION_REQUESTED` for a human decision, and anything that can't be processed is parked in a
+terminal `PROCESSING_FAILURE` or `VALIDATION_FAILED`, sitting in the server database, queryable and there to
+act on. Showing both kinds of held work to the person who did it is that same screen.
 
 *Why* the two ids diverged, and the identity-minting fix behind it, is a bigger thread than this post wants
 to pull, so it gets its own.
@@ -122,8 +140,8 @@ to pull, so it gets its own.
   must inspect the body, not the status code. It's the single easiest place to lose data without knowing.
 - **A sync connector has to acknowledge failures, or it wedges the queue.** A permanent rejection you
   refuse to acknowledge blocks everything behind it; a permanent rejection you *do* acknowledge is
-  silently dropped. There's no free option, so decide, deliberately, which failures you want to be loud,
-  and build a channel to hear them.
+  dropped, unless you keep it yourself. There's no free option on the queue, so decide, deliberately,
+  which failures you want to be loud, and keep the refused work somewhere the acknowledgement can't reach.
 - **The nastiest offline bugs are the ones where everything reports success.** No throw, no red log,
   just an absence. Build the observability to see absences, because your error handling won't.
 
