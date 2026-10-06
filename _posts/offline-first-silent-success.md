@@ -82,7 +82,7 @@ failure inside the body.** One failed op doesn't fail the request. If your conne
 status, it sees green.
 
 Failures on the other side of that door, after the row is accepted and stored, come back a different way
-entirely. Part 10 takes that one apart.
+entirely. [Part 10](/posts/offline-first-two-failure-contracts) takes that one apart.
 
 ## Why the Connector Let It Go
 
