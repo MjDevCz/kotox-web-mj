@@ -182,7 +182,7 @@ text. That drift is the exact event that re-broke the bug once, and today it doe
   only the bug going quiet. The generated file is free to declare our column wrong again, because nothing
   on the upload path asks it about that column any more.
 
-Next up (Part 8): the junction row that needed an id of its own, and what sync down does to a table whose
+Next up ([Part 8](/posts/offline-first-join-table-id)): the junction row that needed an id of its own, and what sync down does to a table whose
 primary key is two foreign keys.
 
 ## Reference

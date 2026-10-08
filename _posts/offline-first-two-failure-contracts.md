@@ -87,7 +87,7 @@ pipeline the failure happens.
 </div>
 </div>
 
-Part 5 was about the left branch: the endpoint tells you an operation failed, inside a response that says
+[Part 5](/posts/offline-first-silent-success) was about the left branch: the endpoint tells you an operation failed, inside a response that says
 200, and if you only check the status code you never hear it. The fix was to read the body.
 
 This is the right branch, and reading the body does not help. The body says `INTERNAL_SERVER_ERROR`. The

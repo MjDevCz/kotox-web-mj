@@ -84,7 +84,7 @@ So the pairs collapsed on the way down, and the survivor was whichever row lande
 server held perfectly could not be *represented* on the wire, because the rows had no identities to keep
 them apart.
 
-Part 6 used that same fact to justify upload-side inlining. There it was about wire format. Here it is
+[Part 6](/posts/offline-first-adapter-layer) used that same fact to justify upload-side inlining. There it was about wire format. Here it is
 about identity: a row that cannot be named cannot be moved.
 
 ## The Quick Fix: Mint the ID in the Sync Stream
@@ -158,16 +158,16 @@ did its job as a bridge and is gone.
   signs up for the first.
 - **"Redundant" is relative to the layer asking.** The id PostgreSQL calls unnecessary is load-bearing for
   the engine that carries the row across the wire, so the durable fix meant persuading the backend team to
-  add a column their model rejects on its own terms. Part 6 met the same shape from the wire-format side, a
+  add a column their model rejects on its own terms. [Part 6](/posts/offline-first-adapter-layer) met the same shape from the wire-format side, a
   declaration cosmetic in one place and load-bearing in another; here it lands on identity and
   addressability instead. Same lesson, different axis: what one layer can safely omit, the next layer down
   cannot.
-- **Silent, again.** Like [Part 5](/posts/offline-first-silent-success)'s dropped breadcrumb and Part 6's
+- **Silent, again.** Like [Part 5](/posts/offline-first-silent-success)'s dropped breadcrumb and [Part 6](/posts/offline-first-adapter-layer)'s
   rejected `"770.0"`, this degraded without a sound: right-looking data, a missing piece, no error. If there
   is one habit this series keeps arguing for, it is to distrust the failures that do not announce
   themselves. Those are the ones that reach your users.
 
-Next up (Part 9): the last stop on the plumbing run, and the one we should have made first: standing the
+Next up ([Part 9](/posts/offline-first-local-stack)): the last stop on the plumbing run, and the one we should have made first: standing the
 whole sync stack up on a laptop, and the two seams a cloud provider hides from you.
 
 ## Reference
