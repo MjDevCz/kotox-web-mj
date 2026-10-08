@@ -142,8 +142,8 @@ cases. Small thing, but it is the difference between "run the app" and a stretch
 That closes the plumbing run. Four parts spent inside the pipe between device and server, and later in the
 series we climb back out of it, to the architecture all this plumbing exists to serve.
 
-Next up (Part 10): one last failure from down in the pipes before we do. Part 5 said HTTP 200 is not
-success; Part 10 is the other half, where a 500 is not a retry.
+Next up ([Part 10](/posts/offline-first-two-failure-contracts)): one last failure from down in the pipes before we do. [Part 5](/posts/offline-first-silent-success) said HTTP 200 is not
+success; [Part 10](/posts/offline-first-two-failure-contracts) is the other half, where a 500 is not a retry.
 
 ## Reference
 

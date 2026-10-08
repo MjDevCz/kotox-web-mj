@@ -147,7 +147,7 @@ regeneration can't re-break it.)*
 
 That's the plumbing run's first stop. Next up ([Part 7](/posts/offline-first-generated-file)): why the
 one-word fix above didn't stay fixed, and where a decision has to live so a regeneration can't reach it.
-Parts 8 and 9 stay down here in the plumbing too, then the series zooms out to the architecture
+Parts [8](/posts/offline-first-join-table-id) and [9](/posts/offline-first-local-stack) stay down here in the plumbing too, then the series zooms out to the architecture
 underneath it all.
 
 ## Reference
