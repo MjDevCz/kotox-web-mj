@@ -6,7 +6,7 @@ import Header from '../../components/header'
 import PostHeader from '../../components/post-header'
 import Layout from '../../components/layout'
 import {getPostBySlug, getAllPosts, getSeriesNav} from '../../lib/api'
-import type {SeriesNavItem} from '../../lib/api'
+import type {SeriesNavItem, SeriesUpcomingItem} from '../../lib/api'
 import SeriesNav from '../../components/series-nav'
 import {getCoverBlurDataURL} from '../../lib/coverBlur'
 import PostTitle from '../../components/post-title'
@@ -19,7 +19,7 @@ import type PostType from '../../interfaces/post'
 type Props = {
     post: PostType
     morePosts: PostType[]
-    seriesNav: {prev: SeriesNavItem | null; next: SeriesNavItem | null}
+    seriesNav: {prev: SeriesNavItem | null; next: SeriesNavItem | null; upcoming: SeriesUpcomingItem | null}
     preview?: boolean
 }
 
@@ -63,7 +63,7 @@ export default function Post({post, morePosts, seriesNav, preview}: Props) {
                             />
                             <PostBody content={post.content}/>
                         </article>
-                        <SeriesNav prev={seriesNav.prev} next={seriesNav.next}/>
+                        <SeriesNav prev={seriesNav.prev} next={seriesNav.next} upcoming={seriesNav.upcoming}/>
                     </>
                 )}
             </Container>

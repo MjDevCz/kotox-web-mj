@@ -123,7 +123,7 @@ creates gets one minted on the device too, nested inside the event payload. That
 client-minted id only unifies the two sides if it *travels in the payload*, and an id minted independently on
 each side is two ids that merely look alike. The ones most likely to go missing are the side-effect entities
 nobody remembers to include. It bit us in production, and
-Part 12 is that war story, plus the sting in the tail: an event-sourced system can't migrate its own past.
+[Part 12](/series/offline-first-kmp#part-12) is that war story, plus the sting in the tail: an event-sourced system can't migrate its own past.
 
 ## Conflict as a Decision
 
@@ -152,8 +152,8 @@ question, not the cellar's.
 
 So here is the line. When all you need is the result, as with a text, a whiteboard or a shopping list, merge it.
 When the testimony is the product, as with a wine, a stock or an account, record it, and let someone put their
-name on it. Part 13 is the deep cut on everything those paragraphs hide, Part 14 is which entities get this
-treatment at all, Part 16 is how we stop the declarations it rests on from rotting, and Parts 17 and 18 are
+name on it. [Part 13](/series/offline-first-kmp#part-13) is the deep cut on everything those paragraphs hide, [Part 14](/series/offline-first-kmp#part-14) is which entities get this
+treatment at all, [Part 16](/series/offline-first-kmp#part-16) is how we stop the declarations it rests on from rotting, and Parts [17](/series/offline-first-kmp#part-17) and [18](/series/offline-first-kmp#part-18) are
 where the disjoint-column idea runs out and what a server owes a user when it refuses.
 
 ## The Kicker: The Same Kotlin Runs on a Node.js Server
@@ -175,7 +175,7 @@ server, so there is no second implementation to drift. Not even across versions:
 version is a hash of the module's source. Same hash, same rules. It is not free at the type boundary: `Long` narrows to
 `Double`, and coroutines become Promises with a rollback hazard attached. (One level down, one engine reading
 two databases means every value it reads arrives as a string; that one the phone pays too.)
-Part 15 is the deep cut on what that boundary actually charges.
+[Part 15](/series/offline-first-kmp#part-15) is the deep cut on what that boundary actually charges.
 But the property it buys is absolute: the client cannot disagree with the server, because they are the same
 judge.
 

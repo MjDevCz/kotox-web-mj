@@ -3,12 +3,19 @@ import {CMS_DOMAIN, CMS_INTRO} from './constants'
 import markdownToHtml from './markdownToHtml'
 import {stripInlineBold} from './inlineBold'
 
+// Post HTML uses root-relative links and images (`/posts/…`, `/assets/…`). Feed
+// readers render it away from the site and many don't resolve those, so make
+// them absolute. Protocol-relative `//host` URLs are left alone.
+function absolutizeUrls(html: string): string {
+    return html.replace(/(href|src)="\/(?!\/)/g, `$1="${CMS_DOMAIN}/`)
+}
+
 export async function generateRssFeed(): Promise<string> {
     const posts = getAllPosts(['title', 'date', 'slug', 'excerpt', 'content'])
 
     const items = await Promise.all(
         posts.map(async (post) => {
-            const contentHtml = await markdownToHtml(post.content || '')
+            const contentHtml = absolutizeUrls(await markdownToHtml(post.content || ''))
             return `    <item>
       <title><![CDATA[${post.title}]]></title>
       <link>${CMS_DOMAIN}/posts/${post.slug}</link>

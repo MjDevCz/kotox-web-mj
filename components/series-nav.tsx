@@ -1,13 +1,16 @@
 import Link from 'next/link'
-import type { SeriesNavItem } from '../lib/api'
+import type { SeriesNavItem, SeriesUpcomingItem } from '../lib/api'
 
 type Props = {
   prev?: SeriesNavItem | null
   next?: SeriesNavItem | null
+  // Shown in the "Next" slot on the newest part: the first announced part,
+  // linking to its "Coming soon" row on the series page.
+  upcoming?: SeriesUpcomingItem | null
 }
 
-const SeriesNav = ({ prev, next }: Props) => {
-  if (!prev && !next) return null
+const SeriesNav = ({ prev, next, upcoming }: Props) => {
+  if (!prev && !next && !upcoming) return null
   return (
     <nav className="max-w-2xl mx-auto mb-24 border-t border-gray-200 pt-8 grid grid-cols-2 gap-6">
       <div>
@@ -35,6 +38,18 @@ const SeriesNav = ({ prev, next }: Props) => {
               Next{next.part ? ` · Part ${next.part}` : ''} →
             </span>
             <span className="text-lg leading-snug group-hover:underline">{next.title}</span>
+          </Link>
+        )}
+        {!next && upcoming && (
+          <Link
+            as={`/series/${upcoming.seriesSlug}#part-${upcoming.part}`}
+            href="/series/[slug]"
+            className="group block no-underline"
+          >
+            <span className="block text-xs uppercase tracking-widest text-gray-500 mb-1">
+              Coming soon · Part {upcoming.part} →
+            </span>
+            <span className="text-lg leading-snug text-gray-500 group-hover:underline">{upcoming.title}</span>
           </Link>
         )}
       </div>
