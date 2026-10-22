@@ -3,7 +3,7 @@ title: 'Witness, Not Judge'
 series: 'Offline-First KMP'
 seriesPart: 11
 seriesHighlight: true
-excerpt: "Your offline-first app is not a sync queue. **The client witnesses; it never judges**: it records what happened as immutable events, and one shared Kotlin engine, the same one the phone runs, derives state and rules on conflicts on the server. The whole architecture in one read, with the Droidcon Berlin talk and slides."
+excerpt: "Your offline-first app is not a sync queue. **The client witnesses; it never judges**: it records what happened as immutable events, and one shared Kotlin engine, the same one the phone runs, derives state and rules on conflicts on a Node.js server. The whole architecture in one read, with the Droidcon Berlin talk and slides."
 coverImage: '/assets/blog/post/offline-first-witness-not-judge/cover.jpg'
 date: '2026-10-22T00:00:00.000Z'
 metaData:
@@ -21,7 +21,8 @@ ogTitle: "Witness, Not Judge"
 information the moment two people act offline. We built a different shape: the client only *records what
 happened* as immutable events instead of casting a vote about what's true, and a separate engine *derives*
 state and rules on conflicts. The client witnesses; it never judges. And the engine that judges is one
-shared Kotlin module, the same one the phone runs, so client and server can't disagree.
+shared Kotlin module, the same one the phone runs, compiled to JavaScript for a Node.js server, so client
+and server can't disagree.
 
 > Part 11 of the **Offline-First KMP** series, and the **written companion to my conference talk** ("Your
 > offline-first app is not a sync queue."). The earlier parts each told one mechanic or one war story in
@@ -155,11 +156,12 @@ name on it. Part 13 is the deep cut on everything those paragraphs hide, Part 14
 treatment at all, Part 16 is how we stop the declarations it rests on from rotting, and Parts 17 and 18 are
 where the disjoint-column idea runs out and what a server owes a user when it refuses.
 
-## The Kicker: The Same Kotlin Runs the Server
+## The Kicker: The Same Kotlin Runs on a Node.js Server
 
 I have said "the server derives its own authoritative state" several times, here and across nine earlier
 parts, without once saying *how*. That was deliberate. Here is the thing those parts kept walking around: it
-derives that state by running *the same code the phone ran*. The processor and validator are one Kotlin
+derives that state by running *the same code the phone ran*, on a **Node.js server**. Not a Kotlin backend,
+not the Java Virtual Machine (JVM): a plain Node.js backend. The processor and validator are one Kotlin
 Multiplatform module.
 
 Worth pausing on what that bought us before any backend existed: one source compiled natively for Android and
@@ -167,7 +169,7 @@ natively for iOS, so the rules could not fork between the two apps. Whoever writ
 SwiftUI, there is one docket assignment to write against, not one per platform.
 
 Going server-side then cost five lines: one JavaScript target on a module we already had, so the same source
-also compiles to a Node library, published as an npm package our backend imports. Two of those three runtimes
+also compiles to a Node.js library, published as an npm package our backend imports. Two of those three runtimes
 were free. One pure Kotlin engine processes sixty-four event types, not one of them reimplemented on the
 server, so there is no second implementation to drift. Not even across versions: the suffix on the package's
 version is a hash of the module's source. Same hash, same rules. It is not free at the type boundary: `Long` narrows to
@@ -185,7 +187,7 @@ Five things to actually do when the testimony is the product:
 - The client witnesses and never blocks real work; a separate engine judges, where it can see everyone.
 - Mint identity at creation and make it travel, or the two sides only *look* like they agree.
 - A version snapshot turns most conflicts into silent auto-resolves and the rest into human decisions.
-- One rule, one implementation, compiled to every runtime, even JavaScript on your Node server.
+- One rule, one implementation, compiled to every runtime, even JavaScript on your Node.js server.
 
 Your app records testimony it can always stand behind, and leaves the ruling to something that can see the
 whole courtroom. Your app testifies. It doesn't rule.
