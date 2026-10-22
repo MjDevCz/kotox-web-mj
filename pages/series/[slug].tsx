@@ -9,6 +9,7 @@ import Layout from '../../components/layout'
 import PostTitle from '../../components/post-title'
 import DateFormatter from '../../components/date-formatter'
 import CoverImage from '../../components/cover-image'
+import SeriesPartBadge from '../../components/series-part-badge'
 import {getAllSeries, getSeriesBySlug} from '../../lib/api'
 import type {SeriesShowcase} from '../../lib/api'
 import {getLocalImageMeta} from '../../lib/coverBlur'
@@ -106,11 +107,9 @@ export default function SeriesPage({series, coverMeta, socialMeta}: Props) {
                                         href="/posts/[slug]"
                                         className="group flex items-center gap-5 no-underline"
                                     >
-                                        <span className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-full border border-gray-300 bg-white text-base font-semibold text-gray-600">
-                                            {part.part ?? '·'}
-                                        </span>
+                                        <SeriesPartBadge part={part.part} highlight={part.highlight} className="w-11 h-11 text-base"/>
                                         <span className="block flex-1 min-w-0">
-                                            <span className="block text-xl md:text-2xl font-semibold leading-snug group-hover:underline">
+                                            <span className={`block text-xl md:text-2xl leading-snug group-hover:underline ${part.highlight ? 'font-extrabold' : 'font-semibold'}`}>
                                                 {part.title}
                                             </span>
                                             <span className="block text-sm text-gray-500 mt-1">

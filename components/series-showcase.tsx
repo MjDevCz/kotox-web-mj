@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import DateFormatter from './date-formatter'
+import SeriesPartBadge from './series-part-badge'
 import type { SeriesShowcase as SeriesShowcaseData } from '../lib/api'
 
 type Props = {
@@ -35,11 +36,9 @@ const SeriesShowcase = ({ series }: Props) => {
                 href="/posts/[slug]"
                 className="group flex gap-4 no-underline"
               >
-                <span className="flex-shrink-0 flex items-center justify-center w-9 h-9 rounded-full border border-gray-300 bg-white text-sm font-semibold text-gray-600">
-                  {part.part ?? '·'}
-                </span>
+                <SeriesPartBadge part={part.part} highlight={part.highlight} className="w-9 h-9 text-sm" />
                 <span className="block">
-                  <span className="block text-lg leading-snug group-hover:underline">
+                  <span className={`block text-lg leading-snug group-hover:underline ${part.highlight ? 'font-bold' : ''}`}>
                     {part.title}
                   </span>
                   <span className="block text-sm text-gray-500 mt-1">

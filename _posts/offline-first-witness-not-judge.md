@@ -2,6 +2,7 @@
 title: 'Witness, Not Judge'
 series: 'Offline-First KMP'
 seriesPart: 11
+seriesHighlight: true
 excerpt: "Your offline-first app is not a sync queue. **The client witnesses; it never judges**: it records what happened as immutable events, and one shared Kotlin engine, the same one the phone runs, derives state and rules on conflicts on the server. The whole architecture in one read, with the Droidcon Berlin talk and slides."
 coverImage: '/assets/blog/post/offline-first-witness-not-judge/cover.jpg'
 date: '2026-10-22T00:00:00.000Z'

@@ -8,3 +8,4 @@ package-lock.json
 .env.development
 .env.production
 /public/feed.xml
+/.build/

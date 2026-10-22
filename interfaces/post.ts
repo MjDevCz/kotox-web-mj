@@ -5,6 +5,7 @@ type PostType = {
   title: string
   series?: string
   seriesPart?: number
+  seriesHighlight?: boolean
   date: string
   coverImage: string
   coverBlurDataURL?: string | null
