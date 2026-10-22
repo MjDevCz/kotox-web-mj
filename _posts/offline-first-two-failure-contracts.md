@@ -191,7 +191,7 @@ first. A system can be perfectly accountable after the fact and completely mute 
 - **Look for the accidents holding your system up.** The most dangerous ones look like defects, so the fix
   arrives as a tidy-up in an unrelated pull request.
 
-Next up (Part 11): the series stops looking at pipes and starts looking at what all of this was built to
+Next up ([Part 11](/posts/offline-first-witness-not-judge)): the series stops looking at pipes and starts looking at what all of this was built to
 protect.
 
 ## Reference

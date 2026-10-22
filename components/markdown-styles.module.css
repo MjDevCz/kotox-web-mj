@@ -119,6 +119,23 @@
     @apply absolute inset-0 w-full h-full border-0;
 }
 
+/* --- Slide deck embed ------------------------------------------------------
+   A self-contained HTML deck served from the post's asset folder and framed
+   here. The extra 43px below the 16:9 stage is the deck's control bar. */
+
+.markdown :global(.slides-embed) {
+    @apply relative block w-full mt-8 mb-2 overflow-hidden rounded-lg bg-black;
+    padding-bottom: calc(56.25% + 43px);
+}
+
+.markdown :global(.slides-embed iframe) {
+    @apply absolute inset-0 w-full h-full border-0;
+}
+
+.markdown :global(p.slides-embed-links) {
+    @apply mt-0 mb-8 text-sm text-gray-500;
+}
+
 /* --- Inline diagrams -------------------------------------------------------
    Authored as raw HTML in posts (see docs/writing-articles.md). Classes are
    styled here rather than inline because tailwind.config.js only scans
