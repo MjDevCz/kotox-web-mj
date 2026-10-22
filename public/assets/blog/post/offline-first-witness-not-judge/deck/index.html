@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Witness, Not Judge — slides</title>
+<style>
+  :root { --bg: #080808; --fg: #f2f2f2; --dim: #8a8a8a; --accent: #ef0d33; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg);
+    font: 14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  body { display: flex; flex-direction: column; }
+  .stage { position: relative; flex: 1; min-height: 0; display: flex; align-items: center;
+    justify-content: center; overflow: hidden; cursor: pointer; user-select: none; }
+  .stage img, .stage video { max-width: 100%; max-height: 100%; aspect-ratio: 16 / 9; display: block; }
+  .stage video { width: 100%; cursor: default; }
+  .bar { display: flex; align-items: center; gap: 8px; padding: 6px 10px; border-top: 1px solid #222; }
+  .bar button { background: none; border: 1px solid #333; color: var(--fg); border-radius: 4px;
+    min-width: 34px; height: 30px; font: inherit; cursor: pointer; }
+  .bar button:hover { border-color: var(--dim); }
+  .bar button:disabled { opacity: .3; cursor: default; }
+  .count { font-variant-numeric: tabular-nums; color: var(--dim); white-space: nowrap; }
+  .count b { color: var(--fg); font-weight: 600; }
+  .title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--dim); }
+  .progress { position: absolute; left: 0; bottom: 0; height: 2px; background: var(--accent); transition: width .2s; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<div class="stage" id="stage" tabindex="0" aria-label="Slides — click, tap or use the arrow keys">
+  <div class="progress" id="progress"></div>
+</div>
+<div class="bar">
+  <button id="prev" aria-label="Previous slide">&#8592;</button>
+  <button id="next" aria-label="Next slide">&#8594;</button>
+  <span class="count" id="count"></span>
+  <span class="title" id="title"></span>
+  <button id="full" aria-label="Full screen">&#x26F6;</button>
+</div>
+<script>
+const SLIDES = [{"n": "2.1", "title": "Cold open", "src": "slides/2.1.webp"}, {"n": "2.2", "title": "Cold open", "src": "slides/2.2.webp"}, {"n": "3", "title": "The cellar", "src": "slides/3.webp"}, {"n": "4", "title": "Agenda", "src": "slides/4.webp"}, {"n": "5", "title": "Ch1 divider", "src": "slides/5.webp"}, {"n": "6", "title": "Silent clobber", "src": "slides/6.webp"}, {"n": "7", "title": "Witness, not Judge", "src": "slides/7.webp"}, {"n": "8", "title": "Ch2 divider", "src": "slides/8.webp"}, {"n": "9", "title": "The event", "src": "slides/9.webp"}, {"n": "10", "title": "Immutable", "src": "slides/10.webp"}, {"n": "11", "title": "No foreign keys", "src": "slides/11.webp"}, {"n": "12", "title": "Client-minted identity", "src": "slides/12.webp"}, {"n": "13", "title": "Ch3 divider", "src": "slides/13.webp"}, {"n": "14", "title": "Two writes per tap", "src": "slides/14.webp"}, {"n": "15", "title": "Only the event goes up", "src": "slides/15.webp"}, {"n": "16", "title": "Who cleans up", "src": "slides/16.webp"}, {"n": "17", "title": "One event, end to end", "src": "slides/17.webp"}, {"n": "18", "title": "Ch4 divider", "src": "slides/18.webp"}, {"n": "19", "title": "The reveal", "src": "slides/19.webp"}, {"n": "20", "title": "One module, three targets", "src": "slides/20.webp"}, {"n": "21", "title": "Two copies drift", "src": "slides/21.webp"}, {"n": "22", "title": "The server pipeline", "src": "slides/22.webp"}, {"n": "23", "title": "Watch it run", "src": "slides/23.webp", "video": "slide-23.mp4"}, {"n": "24", "title": "Ch5 divider", "src": "slides/24.webp"}, {"n": "25", "title": "The version snapshot", "src": "slides/25.webp"}, {"n": "26", "title": "The world changed", "src": "slides/26.webp"}, {"n": "27", "title": "A mismatch isn't a conflict", "src": "slides/27.webp"}, {"n": "28", "title": "The branch", "src": "slides/28.webp"}, {"n": "29", "title": "Conflict on screen", "src": "slides/29.webp"}, {"n": "30.1", "title": "Define reality forward", "src": "slides/30.1.webp"}, {"n": "30.2", "title": "Define reality forward", "src": "slides/30.2.webp"}, {"n": "31", "title": "Entity changed", "src": "slides/31.webp"}, {"n": "32", "title": "The work is done", "src": "slides/32.webp"}, {"n": "33.1", "title": "CRDT?", "src": "slides/33.1.webp"}, {"n": "33.2", "title": "CRDT?", "src": "slides/33.2.webp"}, {"n": "33.3", "title": "CRDT?", "src": "slides/33.3.webp"}, {"n": "34", "title": "Ch6 divider", "src": "slides/34.webp"}, {"n": "35", "title": "Not everything", "src": "slides/35.webp"}, {"n": "36.1", "title": "The boundary tax", "src": "slides/36.1.webp"}, {"n": "36.2", "title": "The boundary tax", "src": "slides/36.2.webp"}, {"n": "37", "title": "Ch7 divider", "src": "slides/37.webp"}, {"n": "38", "title": "Takeaways", "src": "slides/38.webp"}, {"n": "39", "title": "Close", "src": "slides/39.webp"}, {"n": "40", "title": "Thank you", "src": "slides/40.webp"}];
+const stage = document.getElementById('stage');
+const cache = new Map();
+let i = 0;
+
+function el(k) {
+  const s = SLIDES[k];
+  if (cache.has(k)) return cache.get(k);
+  let e;
+  if (s.video) {
+    e = document.createElement('video');
+    e.src = s.video; e.poster = s.src; e.controls = true; e.playsInline = true; e.preload = 'none';
+    e.addEventListener('click', ev => ev.stopPropagation());
+  } else {
+    e = new Image(); e.src = s.src; e.decoding = 'async';
+  }
+  e.alt = 'Slide ' + s.n + ': ' + s.title;
+  e.setAttribute('aria-label', e.alt);
+  cache.set(k, e);
+  return e;
+}
+
+function show(k, push) {
+  i = Math.max(0, Math.min(SLIDES.length - 1, k));
+  const cur = stage.querySelector('img, video');
+  if (cur && cur.pause) cur.pause();
+  if (cur) cur.remove();
+  stage.prepend(el(i));
+  [i + 1, i + 2, i - 1].forEach(j => { if (j >= 0 && j < SLIDES.length && !SLIDES[j].video) el(j); });
+  document.getElementById('count').innerHTML = '<b>' + SLIDES[i].n + '</b> &nbsp;' + (i + 1) + ' / ' + SLIDES.length;
+  document.getElementById('title').textContent = SLIDES[i].title;
+  document.getElementById('prev').disabled = i === 0;
+  document.getElementById('next').disabled = i === SLIDES.length - 1;
+  document.getElementById('progress').style.width = ((i + 1) / SLIDES.length * 100) + '%';
+  if (push) history.replaceState(null, '', '#' + SLIDES[i].n);
+}
+
+function fromHash() {
+  const h = decodeURIComponent(location.hash.slice(1));
+  const k = SLIDES.findIndex(s => s.n === h);
+  return k < 0 ? 0 : k;
+}
+
+stage.addEventListener('click', e => { const r = stage.getBoundingClientRect(); show(i + (e.clientX - r.left < r.width / 3 ? -1 : 1), true); });
+document.getElementById('prev').onclick = () => show(i - 1, true);
+document.getElementById('next').onclick = () => show(i + 1, true);
+document.getElementById('full').onclick = () => {
+  if (document.fullscreenElement) document.exitFullscreen();
+  else (document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen || (() => {})).call(document.documentElement);
+};
+document.addEventListener('keydown', e => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(i + 1, true); }
+  else if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); show(i - 1, true); }
+  else if (e.key === 'Home') show(0, true);
+  else if (e.key === 'End') show(SLIDES.length - 1, true);
+});
+let x0 = null;
+stage.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, {passive: true});
+stage.addEventListener('touchend', e => {
+  if (x0 === null) return;
+  const dx = e.changedTouches[0].clientX - x0; x0 = null;
+  if (Math.abs(dx) > 40) { e.preventDefault(); show(i + (dx < 0 ? 1 : -1), true); }
+});
+window.addEventListener('hashchange', () => show(fromHash(), false));
+show(fromHash(), false);
+</script>
+</body>
+</html>
