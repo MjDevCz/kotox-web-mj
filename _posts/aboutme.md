@@ -41,9 +41,25 @@ It's the craftsman who makes the architectural decisions, chooses the right solu
 
 ## Beyond the code
 
-Craft doesn't happen in isolation. I stay close to the Android and mobile community — trading war stories, learning from other engineers, and sharing what I've learned on the conference stage — at mDevCamp and droidCon Berlin. Berlin is where I unpack my [offline-first KMP work](/series/offline-first-kmp) — an event-sourced architecture built on one rule: the client witnesses, it never judges. You'll find my talks and upcoming sessions on [Sessionize](https://sessionize.com/michal-jenicek/).
+Craft doesn't happen in isolation. I stay close to the Android and mobile community — trading war stories, learning from other engineers, and sharing what I've learned on the conference stage — at mDevCamp, droidCon Berlin and droidCon Lisbon. Berlin and Lisbon are where I unpacked my [offline-first KMP work](/series/offline-first-kmp) — an event-sourced architecture built on one rule: the client witnesses, it never judges. The [talk recording and slides](/posts/offline-first-witness-not-judge) are on the blog. You'll find my talks on [Sessionize](https://sessionize.com/michal-jenicek/).
 
 <figure class="captioned">
 <img src="/assets/blog/about/mdevcamp2026.jpg" alt="MJ speaking at mDevCamp 2026" />
 <figcaption>Speaking at mDevCamp 2026</figcaption>
+</figure>
+
+<figure class="captioned">
+<div class="photo-row">
+<span class="photo-cell" style="flex:1 1 0"><img src="/assets/blog/about/droidcon-berlin-2026.jpg" alt="MJ presenting 'Your Offline-First App Is Not a Sync Queue' at droidCon Berlin 2026" /></span>
+<span class="photo-cell" style="flex:0.75 1 0"><img src="/assets/blog/about/droidcon-lisbon-2026.jpg" alt="MJ on stage at droidCon Lisbon 2026 in front of the talk's title slide" /></span>
+</div>
+<figcaption>On stage at droidCon Berlin 2026 and droidCon Lisbon 2026</figcaption>
+</figure>
+
+<figure class="captioned">
+<div class="photo-row">
+<span class="photo-cell" style="flex:1 1 0"><img src="/assets/blog/about/droidcon-berlin-2026-hallway.jpg" alt="A selfie with a fellow attendee and MJ by the podium at droidCon Berlin 2026" /></span>
+<span class="photo-cell" style="flex:1 1 0"><img src="/assets/blog/about/droidcon-lisbon-2026-hallway.jpg" alt="MJ with two fellow attendees at droidCon Lisbon 2026" /></span>
+</div>
+<figcaption>Between sessions in Berlin and Lisbon</figcaption>
 </figure>

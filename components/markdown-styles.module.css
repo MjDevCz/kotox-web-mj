@@ -65,6 +65,21 @@
     @apply my-0;
 }
 
+/* Photos side by side at equal height: give each .photo-cell an inline
+   `flex: <width/height> 1 0` so the row keeps every image uncropped. */
+.markdown :global(.photo-row) {
+    @apply flex gap-3;
+}
+
+.markdown :global(.photo-cell) {
+    @apply block min-w-0;
+}
+
+.markdown :global(.photo-cell) img,
+.markdown :global(.photo-cell .blur-img) {
+    @apply my-0;
+}
+
 .markdown figcaption {
     @apply mt-3 text-center text-sm italic text-gray-500;
 }
