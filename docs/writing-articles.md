@@ -1,4 +1,4 @@
-"""# Writing Articles
+# Writing Articles
 
 ## File location
 
@@ -28,6 +28,7 @@ ogTitle: "Title for social sharing"
 - **coverImage**: place images in `public/assets/blog/post/<folder>/`.
 - **series** *(optional)*: marks the article as part of a series. The value is shown as a small uppercase "eyebrow" label above the title — on the post page, the hero card, and the preview cards. Use the same string on every post in the series (e.g. `series: 'Offline-First KMP'`).
 - **seriesPart** *(optional)*: the installment number within the series. Appended to the eyebrow as `· Part N` (e.g. `seriesPart: 2` → "Offline-First KMP · Part 2"). Ignored unless `series` is also set.
+- **seriesHighlight** *(optional)*: `true` marks a landmark part (the series opener, a talk companion). Series lists on the homepage band and the `/series/<slug>` page show its number as a black disc with a white number and set its title bolder. Use it sparingly; currently Parts 1 and 11.
 
 ## Reading time
 
@@ -134,5 +135,10 @@ structure* but never the payoff line (keep the closing thesis intact):
   KMP-on-backend, conflict-resolution-as-UX) gets option (b) — it isn't covered later in the series.
   *(This file and the `*-notes-*.md` files may reference the talks freely — the rule is about the
   reader-facing blog text only.)*
+  - **Exception: a talk-companion part.** A part written as the companion to a talk that has already
+    been given (Part 11, `offline-first-witness-not-judge.md`) may name the talk and embed its
+    recording and slides. The rule exists to stop the blog from teasing material held back for a
+    stage; once the talk has happened and the post is its written version, pointing to it helps the reader.
+    Everywhere else the rule still holds.
 - **Don't imply a fixed part count.** The series is open-ended (6 drafted for now, can grow). Blog text
   should say "next up" / "later in the series", never "the final part" or "the last of six".

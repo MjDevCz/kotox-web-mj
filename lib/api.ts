@@ -103,6 +103,9 @@ export type SeriesShowcasePart = {
   part: number | null
   date: string
   coverImage: string | null
+  // Set via `seriesHighlight: true` in frontmatter: a landmark part (the
+  // opener, a talk companion) that series lists render with emphasis.
+  highlight: boolean
 }
 
 export type SeriesShowcase = {
@@ -145,7 +148,7 @@ export const MAX_FEATURED_SERIES = 3
 // file's optional short variant for meta tags, falling back to the description.
 // This is the shared source for both the homepage bands and the /series pages.
 export function getAllSeries(): SeriesShowcase[] {
-  const posts = getAllPosts(['slug', 'title', 'series', 'seriesPart', 'date', 'excerpt', 'coverImage'])
+  const posts = getAllPosts(['slug', 'title', 'series', 'seriesPart', 'seriesHighlight', 'date', 'excerpt', 'coverImage'])
 
   // `posts` is date-descending, so first sighting of a series name = its newest
   // part. Collecting names in encounter order gives us newest-active first.
@@ -182,6 +185,7 @@ export function getAllSeries(): SeriesShowcase[] {
         part: p.seriesPart != null ? Number(p.seriesPart) : null,
         date: p.date as string,
         coverImage: (p.coverImage as string) || null,
+        highlight: String(p.seriesHighlight) === 'true',
       })),
     }
   })
