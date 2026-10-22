@@ -10,7 +10,7 @@ import PostTitle from '../../components/post-title'
 import DateFormatter from '../../components/date-formatter'
 import CoverImage from '../../components/cover-image'
 import SeriesPartBadge from '../../components/series-part-badge'
-import {getAllSeries, getSeriesBySlug} from '../../lib/api'
+import {getAllSeries, getSeriesBySlug, getStaleSeriesAnchors} from '../../lib/api'
 import type {SeriesShowcase} from '../../lib/api'
 import {getLocalImageMeta} from '../../lib/coverBlur'
 import type {LocalImageMeta} from '../../lib/coverBlur'
@@ -80,6 +80,7 @@ export default function SeriesPage({series, coverMeta, socialMeta}: Props) {
                         </Head>
                         <p className="uppercase tracking-widest font-semibold text-gray-500 text-sm mb-4">
                             Series · {series.parts.length} {series.parts.length === 1 ? 'part' : 'parts'}
+                            {series.planned.length > 0 && ` · ${series.planned.length} coming soon`}
                         </p>
                         <h1 className="text-4xl md:text-6xl font-bold tracking-tighter leading-tight mb-6">
                             {series.name}
@@ -131,6 +132,47 @@ export default function SeriesPage({series, coverMeta, socialMeta}: Props) {
                                 </li>
                             ))}
                         </ol>
+                        {series.planned.length > 0 && (
+                            <section className="max-w-3xl mt-16">
+                                <h2 className="uppercase tracking-widest font-semibold text-gray-500 text-sm mb-2">
+                                    Coming Soon
+                                </h2>
+                                <p className="text-gray-700 mb-6">
+                                    Already written and on their way. If a published part mentions one of these,
+                                    this is where it lands. Follow along on{' '}
+                                    <a href="https://www.linkedin.com/in/jenicekmichal/" target="_blank" rel="noopener noreferrer" className="underline">
+                                        LinkedIn
+                                    </a>{' '}
+                                    or the <a href="/feed.xml" className="underline">RSS feed</a> to catch each one as it ships.
+                                </p>
+                                <ol>
+                                    {series.planned.map((part) => (
+                                        <li
+                                            key={part.part}
+                                            id={`part-${part.part}`}
+                                            className="scroll-mt-8 border-t border-gray-200 py-6 -mx-4 px-4 rounded transition-colors duration-700 target:bg-yellow-50"
+                                        >
+                                            <div className="flex items-center gap-5">
+                                                <span className="flex-shrink-0 flex items-center justify-center rounded-full border border-dashed border-gray-300 bg-white text-gray-400 font-semibold w-11 h-11 text-base">
+                                                    {part.part}
+                                                </span>
+                                                <span className="block flex-1 min-w-0">
+                                                    <span className="block text-xl md:text-2xl leading-snug font-semibold text-gray-500">
+                                                        {part.title}
+                                                    </span>
+                                                    {part.teaser && (
+                                                        <span className="block text-gray-500 mt-1">{part.teaser}</span>
+                                                    )}
+                                                    <span className="inline-block text-xs uppercase tracking-widest text-gray-400 mt-2">
+                                                        Coming soon
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ol>
+                            </section>
+                        )}
                     </article>
                 )}
             </Container>
@@ -158,6 +200,9 @@ export async function getStaticProps({params}: Params) {
 }
 
 export async function getStaticPaths() {
+    for (const link of getStaleSeriesAnchors()) {
+        console.warn(`[series] Part is published now, link the post instead: ${link}`)
+    }
     return {
         paths: getAllSeries().map((series) => ({
             params: {slug: series.slug},

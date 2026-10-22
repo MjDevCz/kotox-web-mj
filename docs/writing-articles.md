@@ -29,6 +29,14 @@ ogTitle: "Title for social sharing"
 - **series** *(optional)*: marks the article as part of a series. The value is shown as a small uppercase "eyebrow" label above the title — on the post page, the hero card, and the preview cards. Use the same string on every post in the series (e.g. `series: 'Offline-First KMP'`).
 - **seriesPart** *(optional)*: the installment number within the series. Appended to the eyebrow as `· Part N` (e.g. `seriesPart: 2` → "Offline-First KMP · Part 2"). Ignored unless `series` is also set.
 - **seriesHighlight** *(optional)*: `true` marks a landmark part (the series opener, a talk companion). Series lists on the homepage band and the `/series/<slug>` page show its number as a black disc with a white number and set its title bolder. Use it sparingly; currently Parts 1 and 11.
+- **Planned parts** *(series file, not post frontmatter)*: announced-but-unpublished parts live in the
+  `planned:` list (`part`, `title`, `teaser`) of `_series/<slug>.md`. The `/series/<slug>` page lists them under
+  "Coming Soon" with an anchor per part, and the newest published part's "Next" slot points at the first one.
+  An entry hides itself once a post with that `seriesPart` is published.
+  - **Mentioning an unpublished part:** link it to its placeholder, e.g.
+    `[Part 12](/series/offline-first-kmp#part-12)`, never leave it as plain text.
+  - **When publishing part N:** repoint every `/series/<slug>#part-N` link to `/posts/<slug-of-part-N>`. The
+    build prints a `[series] Part is published now…` warning for each one left behind.
 
 ## Reading time
 

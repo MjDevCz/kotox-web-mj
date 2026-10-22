@@ -122,7 +122,7 @@ the server returned; the HTTP status; and when it was first and last refused, an
 Acknowledging clears the queue. It no longer clears the record. If a later download proves the server has
 the row after all, the entry retires itself. Otherwise the work is held, so that once whatever refused it is
 fixed it can be replayed instead of retyped from memory. That replay is the recovery screen's job, and
-Part 19 is about that screen. "Acknowledge and move on" stopped meaning "gone".
+[Part 19](/series/offline-first-kmp#part-19) is about that screen. "Acknowledge and move on" stopped meaning "gone".
 
 Past the door, the record was already safe. That door is the only place an event can slip through; once the
 server ingests one it can't silently disappear, because it always ends in a definite, stored

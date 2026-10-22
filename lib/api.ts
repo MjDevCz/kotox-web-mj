@@ -15,15 +15,45 @@ const seriesDirectory = join(process.cwd(), '_series')
 // meta tags. When present the body overrides the default (the first part's
 // excerpt). Returns null if the file is absent or empty.
 function getSeriesBlurb(slug: string): {description: string; ogDescription: string | null} | null {
-    const fullPath = join(seriesDirectory, `${slug}.md`)
-    if (!fs.existsSync(fullPath)) return null
-    const {content, data} = matter(fs.readFileSync(fullPath, 'utf8'))
+    const data = readSeriesFile(slug)
+    if (!data) return null
+    const {content, frontmatter} = data
+    const og = typeof frontmatter.ogDescription === 'string' ? frontmatter.ogDescription.trim() : ''
     // The file is hard-wrapped for readability; collapse it to a single line so
     // meta tags and cards get clean text rather than embedded newlines.
     const description = content.replace(/\s+/g, ' ').trim()
     if (description.length === 0) return null
-    const og = typeof data.ogDescription === 'string' ? data.ogDescription.trim() : ''
     return {description, ogDescription: og.length > 0 ? og : null}
+}
+
+function readSeriesFile(slug: string): {content: string; frontmatter: Record<string, any>} | null {
+    const fullPath = join(seriesDirectory, `${slug}.md`)
+    if (!fs.existsSync(fullPath)) return null
+    const {content, data} = matter(fs.readFileSync(fullPath, 'utf8'))
+    return {content, frontmatter: data}
+}
+
+export type SeriesPlannedPart = {
+    part: number
+    title: string
+    teaser: string | null
+}
+
+// Parts announced in the `planned:` frontmatter list of `_series/<slug>.md`.
+// The /series page shows them as "Coming soon" rows anchored at `#part-N`.
+// Entries whose number already has a published post are dropped, so publishing
+// a part retires its placeholder without touching the series file.
+function getSeriesPlanned(slug: string, publishedParts: Set<number>): SeriesPlannedPart[] {
+    const planned = readSeriesFile(slug)?.frontmatter.planned
+    if (!Array.isArray(planned)) return []
+    return planned
+        .map((p: any) => ({
+            part: Number(p.part),
+            title: String(p.title ?? ''),
+            teaser: typeof p.teaser === 'string' && p.teaser.trim().length > 0 ? p.teaser.trim() : null,
+        }))
+        .filter((p) => Number.isFinite(p.part) && p.title.length > 0 && !publishedParts.has(p.part))
+        .sort((a, b) => a.part - b.part)
 }
 
 export function getPostSlugs() {
@@ -70,15 +100,25 @@ export type SeriesNavItem = {
   part: number | null
 }
 
+// The next announced-but-unpublished part, shown in place of "Next" on the
+// newest published part. Links to its "Coming soon" row on the series page.
+export type SeriesUpcomingItem = {
+  seriesSlug: string
+  part: number
+  title: string
+}
+
 // Given a post slug, find its neighbours within the same `series`, ordered by
 // `seriesPart`. Returns nulls when the post isn't in a series or is at an end.
+// On the newest part, `upcoming` is the first planned part, if any.
 export function getSeriesNav(slug: string): {
   prev: SeriesNavItem | null
   next: SeriesNavItem | null
+  upcoming: SeriesUpcomingItem | null
 } {
   const realSlug = slug.replace(/\.md$/, '')
   const series = getPostBySlug(realSlug, ['series']).series
-  if (!series) return { prev: null, next: null }
+  if (!series) return { prev: null, next: null, upcoming: null }
 
   const inSeries = getAllPosts(['slug', 'title', 'series', 'seriesPart'])
     .filter((p) => p.series === series)
@@ -91,9 +131,19 @@ export function getSeriesNav(slug: string): {
     part: p.seriesPart != null ? Number(p.seriesPart) : null,
   })
 
+  const next = idx >= 0 && idx < inSeries.length - 1 ? toNav(inSeries[idx + 1]) : null
+  let upcoming: SeriesUpcomingItem | null = null
+  if (!next && idx >= 0) {
+    const slugOfSeries = seriesSlug(series)
+    const published = new Set(inSeries.map((p) => Number(p.seriesPart)))
+    const first = getSeriesPlanned(slugOfSeries, published)[0]
+    if (first) upcoming = { seriesSlug: slugOfSeries, part: first.part, title: first.title }
+  }
+
   return {
     prev: idx > 0 ? toNav(inSeries[idx - 1]) : null,
-    next: idx >= 0 && idx < inSeries.length - 1 ? toNav(inSeries[idx + 1]) : null,
+    next,
+    upcoming,
   }
 }
 
@@ -116,6 +166,7 @@ export type SeriesShowcase = {
   cover: string | null
   social: string | null
   parts: SeriesShowcasePart[]
+  planned: SeriesPlannedPart[]
 }
 
 // Returns the public path for a series asset if the file exists, else null.
@@ -187,6 +238,7 @@ export function getAllSeries(): SeriesShowcase[] {
         coverImage: (p.coverImage as string) || null,
         highlight: String(p.seriesHighlight) === 'true',
       })),
+      planned: getSeriesPlanned(slug, new Set(parts.map((p) => Number(p.seriesPart)))),
     }
   })
 }
@@ -194,6 +246,23 @@ export function getAllSeries(): SeriesShowcase[] {
 // Look up a single series by its slug for the /series/[slug] page.
 export function getSeriesBySlug(slug: string): SeriesShowcase | null {
   return getAllSeries().find((s) => s.slug === slug) ?? null
+}
+
+// Links of the form `/series/<slug>#part-N` stand in for a mention of a part
+// that isn't published yet. Once part N ships, such a link should point at the
+// post itself; this lists the ones that still don't, for a build-time warning.
+export function getStaleSeriesAnchors(): string[] {
+  const published = new Map<string, Set<number>>()
+  for (const s of getAllSeries()) {
+    published.set(s.slug, new Set(s.parts.map((p) => p.part).filter((n): n is number => n != null)))
+  }
+  const stale: string[] = []
+  for (const post of getAllPosts(['slug', 'content'])) {
+    for (const m of (post.content ?? '').matchAll(/\/series\/([a-z0-9-]+)#part-(\d+)/g)) {
+      if (published.get(m[1])?.has(Number(m[2]))) stale.push(`_posts/${post.slug}.md → ${m[0]}`)
+    }
+  }
+  return stale
 }
 
 // Series to feature on the homepage, ordered by recency, capped at
