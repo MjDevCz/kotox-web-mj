@@ -28,7 +28,7 @@ ogTitle: "Title for social sharing"
 - **coverImage**: place images in `public/assets/blog/post/<folder>/`.
 - **series** *(optional)*: marks the article as part of a series. The value is shown as a small uppercase "eyebrow" label above the title — on the post page, the hero card, and the preview cards. Use the same string on every post in the series (e.g. `series: 'Offline-First KMP'`).
 - **seriesPart** *(optional)*: the installment number within the series. Appended to the eyebrow as `· Part N` (e.g. `seriesPart: 2` → "Offline-First KMP · Part 2"). Ignored unless `series` is also set.
-- **seriesHighlight** *(optional)*: `true` marks a landmark part (the series opener, a talk companion). Series lists on the homepage band and the `/series/<slug>` page show its number as a black disc with a white number and set its title bolder. Use it sparingly; currently Parts 1 and 11.
+- **seriesHighlight** *(optional)*: `true` marks a landmark part (the series opener, a talk companion). Series lists on the homepage band and the `/series/<slug>` page show its number as a black disc with a white number and set its title bolder. Use it sparingly; currently Parts 1 and 11. It also picks the homepage hero: when the newest post belongs to a series, the hero is that series' newest landmark part instead, falling back to the newest part while the series has no landmark yet.
 - **Planned parts** *(series file, not post frontmatter)*: announced-but-unpublished parts live in the
   `planned:` list (`part`, `title`, `teaser`) of `_series/<slug>.md`. The `/series/<slug>` page lists them under
   "Coming Soon" with an anchor per part, and the newest published part's "Next" slot points at the first one.

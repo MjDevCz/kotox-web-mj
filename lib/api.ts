@@ -274,6 +274,18 @@ export function getFeaturedSeries(): SeriesShowcase[] {
     .slice(0, MAX_FEATURED_SERIES)
 }
 
+// The homepage hero. Normally the newest post, but when that post belongs to a
+// series the hero is the series' newest landmark part (`seriesHighlight: true`),
+// so a series leads with its opener or talk companion rather than whichever
+// deep cut shipped last. A series without a landmark yet keeps its newest part.
+// `posts` must be date-descending, as getAllPosts returns them.
+export function pickHeroPost<T extends {series?: string; seriesHighlight?: unknown}>(posts: T[]): T | undefined {
+    const newest = posts[0]
+    if (!newest?.series) return newest
+    const landmark = posts.find((p) => p.series === newest.series && String(p.seriesHighlight) === 'true')
+    return landmark ?? newest
+}
+
 export function getAllPosts(fields: string[] = []) {
     const slugs = getPostSlugs()
     const posts = slugs

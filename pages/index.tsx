@@ -4,7 +4,7 @@ import HeroPost from '../components/hero-post'
 import SeriesShowcase from '../components/series-showcase'
 import Intro from '../components/intro'
 import Layout from '../components/layout'
-import {getAllPosts, getFeaturedSeries} from '../lib/api'
+import {getAllPosts, getFeaturedSeries, pickHeroPost} from '../lib/api'
 import type {SeriesShowcase as SeriesShowcaseData} from '../lib/api'
 import {getCoverBlurDataURL} from '../lib/coverBlur'
 import {generateRssFeed} from '../lib/generateRssFeed'
@@ -14,15 +14,16 @@ import Post from '../interfaces/post'
 
 type Props = {
     allPosts: Post[]
+    heroSlug: string | null
     featuredSeries: SeriesShowcaseData[]
 }
 
-export default function Index({allPosts, featuredSeries}: Props) {
-    const heroPost = allPosts[0]
+export default function Index({allPosts, heroSlug, featuredSeries}: Props) {
+    const heroPost = allPosts.find((p) => p.slug === heroSlug)
     // Parts shown in a series band are dropped from the grid so a post never
     // appears twice (the hero is intentionally left as-is).
     const featuredSlugs = new Set(featuredSeries.flatMap((s) => s.parts.map((p) => p.slug)))
-    const morePosts = allPosts.slice(1).filter((p) => !featuredSlugs.has(p.slug))
+    const morePosts = allPosts.filter((p) => p.slug !== heroPost?.slug && !featuredSlugs.has(p.slug))
     return (
         <>
             <Layout>
@@ -59,6 +60,7 @@ export const getStaticProps = async () => {
         'title',
         'series',
         'seriesPart',
+        'seriesHighlight',
         'date',
         'slug',
         'metaData',
@@ -76,6 +78,10 @@ export const getStaticProps = async () => {
     fs.writeFileSync('public/feed.xml', await generateRssFeed())
 
     return {
-        props: {allPosts: allPostsWithBlur, featuredSeries: getFeaturedSeries()},
+        props: {
+            allPosts: allPostsWithBlur,
+            heroSlug: pickHeroPost(allPosts)?.slug ?? null,
+            featuredSeries: getFeaturedSeries(),
+        },
     }
 }
