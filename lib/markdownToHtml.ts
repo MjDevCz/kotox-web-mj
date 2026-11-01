@@ -39,6 +39,25 @@ function styleTldr(htmlString: string): string {
   )
 }
 
+// Give every h2/h3 a GitHub-style slug id so a link can point at a section
+// ("Mint the ID, and Make It Travel" → #mint-the-id-and-make-it-travel).
+function addHeadingIds(htmlString: string): string {
+  const seen = new Map<string, number>()
+  return htmlString.replace(/<h([23])>([\s\S]*?)<\/h\1>/g, (_, level, inner) => {
+    const base = inner
+      .replace(/<[^>]+>/g, '')
+      .replace(/&[a-z]+;|&#\d+;/g, '')
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/\s+/g, '-')
+    const count = seen.get(base) ?? 0
+    seen.set(base, count + 1)
+    const id = count === 0 ? base : `${base}-${count}`
+    return `<h${level} id="${id}">${inner}</h${level}>`
+  })
+}
+
 const IMG_TAG = /<img\s+([^>]*?)\s*\/?>/g
 
 function getAttr(attrs: string, name: string): string | null {
@@ -103,7 +122,7 @@ type Options = {
 
 export default async function markdownToHtml(markdown: string, options: Options = {}) {
   const result = await remark().use(html, { sanitize: false }).process(expandYouTubeShortcodes(markdown))
-  let htmlString = styleTldr(openExternalLinksInNewTab(result.toString()))
+  let htmlString = addHeadingIds(styleTldr(openExternalLinksInNewTab(result.toString())))
   if (options.enrichImages) {
     htmlString = await enrichLocalImages(htmlString)
   }

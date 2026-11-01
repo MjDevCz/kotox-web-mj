@@ -242,6 +242,144 @@
     @apply mt-2 flex flex-wrap gap-x-6 gap-y-1 text-xs text-gray-500;
 }
 
+/* Timeline: events on one line, with an optional .diagram-window band marking a span of it.
+   Vertical on phones, horizontal from sm up. */
+
+.markdown :global(.diagram-timeline) {
+    @apply relative mt-5 flex flex-col;
+}
+
+.markdown :global(.diagram-timeline)::before {
+    @apply absolute bg-gray-300;
+    content: '';
+    left: 11px;
+    top: 12px;
+    bottom: 12px;
+    width: 2px;
+}
+
+.markdown :global(.diagram-timeline) + :global(.diagram-timeline) {
+    @apply mt-8;
+}
+
+.markdown :global(.diagram-window) {
+    @apply flex flex-col rounded-md bg-white;
+    box-shadow: 0 0 0 1px #fca5a5;
+}
+
+.markdown :global(.diagram-window-ticks) {
+    @apply flex flex-col;
+}
+
+.markdown :global(.diagram-window-label) {
+    @apply pb-2 text-xs font-semibold uppercase tracking-widest text-red-700;
+    padding-left: 32px;
+}
+
+.markdown :global(.diagram-tick) {
+    @apply relative py-2 pr-2;
+    padding-left: 32px;
+}
+
+.markdown :global(.diagram-tick)::before {
+    @apply absolute rounded-full border-2 border-gray-900 bg-gray-900;
+    content: '';
+    z-index: 1;
+    left: 6px;
+    top: 13px;
+    width: 12px;
+    height: 12px;
+}
+
+.markdown :global(.diagram-tick-label) {
+    @apply text-sm text-gray-900;
+}
+
+.markdown :global(.diagram-tick-tag) {
+    @apply mt-0.5 text-xs uppercase tracking-wide text-gray-500;
+}
+
+.markdown :global(.diagram-tick.is-compare)::before {
+    @apply border-red-600 bg-red-600;
+}
+
+.markdown :global(.diagram-tick.is-compare) :global(.diagram-tick-label) {
+    @apply font-semibold;
+}
+
+.markdown :global(.diagram-tick.is-compare) :global(.diagram-tick-tag) {
+    @apply text-red-700;
+}
+
+.markdown :global(.diagram-tick.is-skip)::before {
+    @apply border-gray-300 bg-white;
+}
+
+.markdown :global(.diagram-tick.is-skip) :global(.diagram-tick-label) {
+    @apply text-gray-400 line-through;
+}
+
+.markdown :global(.diagram-tick.is-skip) :global(.diagram-tick-tag) {
+    @apply text-gray-400;
+}
+
+@media (min-width: 640px) {
+    .markdown :global(.diagram-timeline) {
+        @apply flex-row;
+    }
+
+    .markdown :global(.diagram-timeline)::before {
+        left: 0;
+        right: 0;
+        top: 17px;
+        bottom: auto;
+        width: auto;
+        height: 2px;
+    }
+
+    .markdown :global(.diagram-timeline) > :global(.diagram-tick) {
+        flex: 1 1 0;
+    }
+
+    .markdown :global(.diagram-window) {
+        flex: 3 1 0;
+    }
+
+    .markdown :global(.diagram-window-ticks) {
+        @apply flex-row;
+    }
+
+    .markdown :global(.diagram-window-ticks) > :global(.diagram-tick) {
+        flex: 1 1 0;
+    }
+
+    .markdown :global(.diagram-window-label) {
+        @apply text-center;
+        padding-left: 0;
+    }
+
+    .markdown :global(.diagram-tick) {
+        @apply px-0 pb-3 text-center;
+        min-width: 0;
+        padding-top: 34px;
+    }
+
+    .markdown :global(.diagram-tick-label),
+    .markdown :global(.diagram-tick-tag) {
+        @apply px-2;
+    }
+
+    .markdown :global(.diagram-window) {
+        min-width: 0;
+    }
+
+    .markdown :global(.diagram-tick)::before {
+        left: 50%;
+        top: 12px;
+        transform: translateX(-50%);
+    }
+}
+
 .markdown :global(.is-fragile) {
     @apply text-red-700;
 }

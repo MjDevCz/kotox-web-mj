@@ -99,29 +99,19 @@ consistent because every id in it is real from the moment it was invented.
 
 ## The Temporary-ID Trap We Avoided
 
-The pattern I've seen (and written, years ago, and regretted) is temporary ids: create the entity with
-a placeholder like `temp_1`, and when the server responds with the "real" id, walk your local data and
-rewrite every reference.
+The usual alternative (I've written it, years ago, and regretted it) is a temporary id: create the entity
+as `temp_1`, and when the server returns the "real" id, rewrite every reference to it.
 
-It sounds fine until you have offline chains. Now `temp_1` is referenced by `temp_2` which is referenced
-by `temp_3`, the network comes back mid-chain, and you're doing a graph rewrite while new writes are
-still landing. Every edge case in that rewrite is a corrupted reference waiting to happen.
+That breaks on offline chains. `temp_1` is referenced by `temp_2`, which is referenced by `temp_3`, the
+network comes back mid-chain, and you're rewriting a graph while new writes still land. Worse, `temp_1` is
+baked into an event you already recorded, and events are append-only
+([Part 2](/posts/offline-first-two-writes)). You can't rewrite it at all.
 
-There's a harder wall than those edge cases, though. That `temp_1` isn't sitting in a mutable row you can
-quietly patch later; it's baked into an event you already recorded, and as
-[Part 2](/posts/offline-first-two-writes) covered, events are append-only. Rewriting the id would mean
-editing history the log won't let you edit. Temporary ids aren't just risky in an offline chain; in an
-append-only log they don't fit at all.
-
-Client-minted ids delete this entire class of bug. There is no "real id" that arrives later to reconcile
-against: the id the client minted *is* the real id. The device and the server agree on it because the
-device decided it first and the server is told what it is.
-
-*How* the server is told, and how its authoritative version of the entity lands on top of your local
-projection without creating a duplicate, is a contract with a couple of genuinely subtle edges, more
-than this post needs. So I'll tease the shape and stop. Half of it is easy: the minted id travels *with
-the event*, and both sides use it. [Part 4](/posts/offline-first-write-checkpoints) shows the sync mechanic behind the other half — the
-authoritative version landing on top without creating a duplicate.
+Client-minted ids remove the problem: the id the client minted *is* the real id. It travels with the event
+and the server reuses it, so both sides agree. That holds only if the server reuses the client's id for
+*every* entity an event creates.
+[Part 12](/posts/offline-first-shared-id#the-root-cause-two-wines-two-ids) is what happened when it minted
+its own id for one wine instead.
 
 ## The Shape to Take Away
 

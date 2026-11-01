@@ -52,6 +52,12 @@ hideReadingTime: true
   ```markdown
   [About me](/posts/aboutme)
   ```
+- **Section link**: every `##`/`###` heading gets a GitHub-style slug `id` (lowercase, punctuation
+  dropped, spaces → `-`), so point at a section when the text names one:
+  ```markdown
+  [Part 11](/posts/offline-first-witness-not-judge#mint-the-id-and-make-it-travel)
+  ```
+  Renaming a heading changes its anchor, so search `_posts/` for the old one when you do.
 - **External link** (opens new tab automatically): use a full URL
   ```markdown
   [PowerSync](https://www.powersync.com)
@@ -78,6 +84,11 @@ Available blocks (see `_posts/offline-first-generated-file.md` for both in use):
   `.diagram-verdict` marked `is-ok` or `is-bad`. Stacks to one column on narrow screens.
 - **Labelled rows:** `.diagram-rows` holding `.diagram-row` items, each with `.diagram-row-name` and
   `.diagram-tag`. Add `is-derived` to a row to highlight it.
+- **Timeline:** `.diagram-timeline` holding `.diagram-tick` items (each a `.diagram-tick-label` plus a
+  `.diagram-tick-tag`), in time order. Wrap a span of ticks in `.diagram-window` >
+  `.diagram-window-ticks`, followed by a `.diagram-window-label`, to highlight that stretch of time. Mark a
+  tick `is-compare` (red, what counts) or `is-skip` (hollow, struck through, what is ignored). Horizontal
+  from `sm` up, vertical on phones. See Break One in `_posts/offline-first-auto-resolve.md`.
 - **Formula and legend:** `.diagram-formula` for a monospace line, `.diagram-legend` beneath it. Use
   `is-fragile` and `is-safe` to colour-code terms and their legend swatches.
 
