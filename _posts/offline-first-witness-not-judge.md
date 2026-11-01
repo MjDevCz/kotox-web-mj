@@ -42,6 +42,8 @@ And the slides, if you'd rather click through at your own pace. Click, tap or us
 
 <p class="slides-embed-links"><a href="/assets/blog/post/offline-first-witness-not-judge/deck/index.html" target="_blank" rel="noopener">Open the slides full page</a> · <a href="/assets/blog/post/offline-first-witness-not-judge/witness-not-judge-slides.pdf" target="_blank" rel="noopener">Download as PDF</a></p>
 
+<p class="slides-embed-links">Cover photo (left): Volkmar Otto / <a href="https://www.flickr.com/photos/194372122@N07/55586737831/" target="_blank" rel="noopener noreferrer">next.app devCon Berlin 2026</a></p>
+
 ## The Queue That Quietly Loses
 
 A queue-and-replay client stores *mutations*. Here is how that loses data:
