@@ -9,3 +9,6 @@ package-lock.json
 .env.production
 /public/feed.xml
 /.build/
+
+# Local scratch files (photos, mock-ups)
+/tmp/

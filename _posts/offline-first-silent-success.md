@@ -132,7 +132,7 @@ terminal `PROCESSING_FAILURE` or `VALIDATION_FAILED`, sitting in the server data
 act on. Showing both kinds of held work to the person who did it is that same screen.
 
 *Why* the two ids diverged, and the identity-minting fix behind it, is a bigger thread than this post wants
-to pull, so it gets its own.
+to pull, so it gets its own: [Part 12](/posts/offline-first-shared-id).
 
 ## The Takeaways
 

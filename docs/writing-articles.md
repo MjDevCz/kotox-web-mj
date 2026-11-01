@@ -28,7 +28,7 @@ ogTitle: "Title for social sharing"
 - **coverImage**: place images in `public/assets/blog/post/<folder>/`.
 - **series** *(optional)*: marks the article as part of a series. The value is shown as a small uppercase "eyebrow" label above the title — on the post page, the hero card, and the preview cards. Use the same string on every post in the series (e.g. `series: 'Offline-First KMP'`).
 - **seriesPart** *(optional)*: the installment number within the series. Appended to the eyebrow as `· Part N` (e.g. `seriesPart: 2` → "Offline-First KMP · Part 2"). Ignored unless `series` is also set.
-- **seriesHighlight** *(optional)*: `true` marks a landmark part (the series opener, a talk companion). Series lists on the homepage band and the `/series/<slug>` page show its number as a black disc with a white number and set its title bolder. Use it sparingly; currently Parts 1 and 11.
+- **seriesHighlight** *(optional)*: `true` marks a landmark part (the series opener, a talk companion). Series lists on the homepage band and the `/series/<slug>` page show its number as a black disc with a white number and set its title bolder. Use it sparingly; currently Parts 1 and 11. It also picks the homepage hero: when the newest post belongs to a series, the hero is that series' newest landmark part instead, falling back to the newest part while the series has no landmark yet.
 - **Planned parts** *(series file, not post frontmatter)*: announced-but-unpublished parts live in the
   `planned:` list (`part`, `title`, `teaser`) of `_series/<slug>.md`. The `/series/<slug>` page lists them under
   "Coming Soon" with an anchor per part, and the newest published part's "Next" slot points at the first one.
@@ -52,6 +52,12 @@ hideReadingTime: true
   ```markdown
   [About me](/posts/aboutme)
   ```
+- **Section link**: every `##`/`###` heading gets a GitHub-style slug `id` (lowercase, punctuation
+  dropped, spaces → `-`), so point at a section when the text names one:
+  ```markdown
+  [Part 11](/posts/offline-first-witness-not-judge#mint-the-id-and-make-it-travel)
+  ```
+  Renaming a heading changes its anchor, so search `_posts/` for the old one when you do.
 - **External link** (opens new tab automatically): use a full URL
   ```markdown
   [PowerSync](https://www.powersync.com)
@@ -78,6 +84,11 @@ Available blocks (see `_posts/offline-first-generated-file.md` for both in use):
   `.diagram-verdict` marked `is-ok` or `is-bad`. Stacks to one column on narrow screens.
 - **Labelled rows:** `.diagram-rows` holding `.diagram-row` items, each with `.diagram-row-name` and
   `.diagram-tag`. Add `is-derived` to a row to highlight it.
+- **Timeline:** `.diagram-timeline` holding `.diagram-tick` items (each a `.diagram-tick-label` plus a
+  `.diagram-tick-tag`), in time order. Wrap a span of ticks in `.diagram-window` >
+  `.diagram-window-ticks`, followed by a `.diagram-window-label`, to highlight that stretch of time. Mark a
+  tick `is-compare` (red, what counts) or `is-skip` (hollow, struck through, what is ignored). Horizontal
+  from `sm` up, vertical on phones. See Break One in `_posts/offline-first-auto-resolve.md`.
 - **Formula and legend:** `.diagram-formula` for a monospace line, `.diagram-legend` beneath it. Use
   `is-fragile` and `is-safe` to colour-code terms and their legend swatches.
 
