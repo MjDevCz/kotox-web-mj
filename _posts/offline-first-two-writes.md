@@ -43,8 +43,8 @@ user moved wine X to Tank 7." A fact about the past, in an append-only log. We c
 
 ```
 User taps "Move to Tank 7"
-   │
-   └─ record CELLAR_WINE_TRANSFER  →  operational_event row
+  │
+  └─ record CELLAR_WINE_TRANSFER → operational_event row
 ```
 
 This row is the thing that gets uploaded. It's the only thing the server ultimately trusts. Everything
@@ -65,10 +65,10 @@ event and updates the local rows: Tank 7 now shows wine X, the source vessel sho
 
 ```
 User taps "Move to Tank 7"
-   │
-   ├─ record CELLAR_WINE_TRANSFER  →  operational_event row   (uploaded)
-   │
-   └─ project it                   →  wine / vessel rows      (local-only)
+  │
+  ├─ record CELLAR_WINE_TRANSFER → operational_event row (uploaded)
+  │
+  └─ project it                  → wine / vessel rows    (local-only)
 ```
 
 The screen updates instantly because the rows it reads from just changed, with no network in the loop.

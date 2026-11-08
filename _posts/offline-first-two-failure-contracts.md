@@ -39,14 +39,15 @@ confirmed. Here is what our logs said, in order:
 
 ```
 AWS batch upload response [500 Internal Server Error]:
-  {"code":"INTERNAL_SERVER_ERROR","message":"Failed to apply PowerSync write batch operation"}
+  {"code":"INTERNAL_SERVER_ERROR",
+   "message":"Failed to apply PowerSync write batch operation"}
 
 AWS batch upload transient failure (500 Internal Server Error), will retry.
 AWS upload backing off 2000ms (transient failure #1)
 
 Dropped PUT operational_event/e9e2… [HTTP 200, CONFLICT]:
-  Write conflict on operational_event/e9e2…: operational_event is append-only;
-  PUT is allowed only for new rows
+  Write conflict on operational_event/e9e2…:
+  operational_event is append-only; PUT is allowed only for new rows
 ```
 
 Read that last line the way anyone would. It is specific, it names a table, it states a rule, and it
@@ -129,7 +130,8 @@ apply a downloaded checkpoint while your upload queue still has pending local wr
 scary log line as reassuring, and it is. It is the mechanism that stops a half-synced database.
 
 ```
-Could not apply checkpoint due to local data. Will retry at completed upload or next checkpoint.
+Could not apply checkpoint due to local data.
+Will retry at completed upload or next checkpoint.
 ```
 
 Now hold that gate open with a write that can never succeed. The queue does not drain, so the gate does

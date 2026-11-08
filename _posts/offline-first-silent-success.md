@@ -59,9 +59,9 @@ The action itself always worked. Here's what a plain docket-to-tank assign *used
 conflict:
 
 ```
-record HARVEST_DOCKET_ASSIGN  → operational_event   (uploaded)
-mint wine locally             → wine row            (local-only projection)
-emit CELLAR_WINE_CREATED      → operational_event   (uploaded)
+record HARVEST_DOCKET_ASSIGN → operational_event (uploaded)
+mint wine locally            → wine row          (local-only projection)
+emit CELLAR_WINE_CREATED     → operational_event (uploaded)
 ```
 
 Two events went up. Watching the upload batch:

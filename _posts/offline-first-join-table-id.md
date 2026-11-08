@@ -99,7 +99,8 @@ SELECT docket_certification_id || '_' || certification_type_id AS id,
        docket_certification_id, certification_type_id
 FROM docket_certification_certification_type_lookup
 WHERE docket_certification_id IN (
-  SELECT id FROM docket_certification WHERE workspace_id IN (SELECT id FROM active_workspaces)
+  SELECT id FROM docket_certification
+  WHERE workspace_id IN (SELECT id FROM active_workspaces)
 )
 ```
 
@@ -139,11 +140,14 @@ the query just reads the real id straight off the table:
 
 ```sql
 SELECT docket_certification_certification_type_lookup.id,
-       docket_certification_certification_type_lookup.docket_certification_id,
-       docket_certification_certification_type_lookup.certification_type_id
+       docket_certification_certification_type_lookup
+         .docket_certification_id,
+       docket_certification_certification_type_lookup
+         .certification_type_id
 FROM docket_certification_certification_type_lookup
 INNER JOIN docket_certification dc
-        ON dc.id = docket_certification_certification_type_lookup.docket_certification_id
+        ON dc.id = docket_certification_certification_type_lookup
+                     .docket_certification_id
 WHERE dc.workspace_id IN (SELECT id FROM active_workspaces)
 ```
 
