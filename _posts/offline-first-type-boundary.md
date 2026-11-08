@@ -47,7 +47,8 @@ a `Double`, and narrowed back with `.toLong()` on the inside:
 ```kotlin
 public fun validateIntake(
     // ...
-    intakeDateMillis: Double?,   // Long on the inside, Double at the boundary
+    // Long on the inside, Double at the boundary
+    intakeDateMillis: Double?,
 ): Array<String> =
     validator.validateIntake(/* ... */, intakeDateMillis?.toLong())
 ```
@@ -76,7 +77,8 @@ column:
 ```kotlin
 /** Platform-agnostic row accessor for query results. */
 public interface Row {
-    public fun getString(name: String): String?   // every column, always a string
+    // every column, always a string
+    public fun getString(name: String): String?
 }
 ```
 
@@ -160,8 +162,8 @@ try {
     val result = block()
     js.commitTransaction().await()
     return result
-} catch (e: Throwable) {                   // Throwable, not Exception: a TODO() is an Error
-    withContext(NonCancellable) {          // finish the cleanup even if we were cancelled
+} catch (e: Throwable) {          // not Exception: a TODO() is an Error
+    withContext(NonCancellable) { // finish even if we were cancelled
         js.rollbackTransaction().await()
     }
     throw e
@@ -206,13 +208,16 @@ projection that holds until the server's authoritative state syncs back:
 ```kotlin
 // Wiring (Koin): the phone's DbExecutor is PowerSync over SQLite
 single { PowerSyncDbExecutor(get<PowerSyncDatabase>()) }
-single { WineryProcessorEngine(db = get<PowerSyncDbExecutor>(), /* ... */) }
+single { WineryProcessorEngine(get<PowerSyncDbExecutor>(), /* ... */) }
 
 // Renaming a docket on the phone (simplified)
-val errors = validationEngine.validateDocket(/* ... */ name = event.name)   // check: a local no is real
-if (errors.isNotEmpty()) return Result.failure(DocketValidationException(errors))
-eventEngine.recordDocketUpdate(workspaceId, docketId, event, performedById)   // witness: the event uploads
-processorEngine.processDocketUpdate(workspaceId, event)                       // provisional projection, stays local
+// 1. check: a local no is real
+val errors = validationEngine.validateDocket(/* ... */ name = event.name)
+if (errors.isNotEmpty()) return Result.failure(/* ... */)
+// 2. witness: the event uploads
+eventEngine.recordDocketUpdate(workspaceId, docketId, event, userId)
+// 3. provisional projection: the same rules, stays on the phone
+processorEngine.processDocketUpdate(workspaceId, event)
 ```
 
 Typed events and suspend functions: no strings, no Promises. The server runs the same engine but reaches it
@@ -223,17 +228,21 @@ again:
 ```kotlin
 @JsExport
 public class WineryJudgeJs(db: JsDbExecutor) {
-    private val dbAdapter = JsDbExecutorAdapter(db)   // Promises in, suspend out, rollback guaranteed
+    // Promises in, suspend out, rollback guaranteed
+    private val dbAdapter = JsDbExecutorAdapter(db)
 
     public fun processEvent(
         eventId: String,
         workspaceId: String,
         eventType: String,
-        eventData: String,                            // raw JSON, decoded inside
+        eventData: String,      // raw JSON, decoded inside
         schemaVersion: Int,
     ): Promise<Unit> = GlobalScope.promise {
-        // decode and validate, then write: the SQL is generated here, in Kotlin
-        dbAdapter.execute("UPDATE docket SET name = ? WHERE id = ?", listOf(name, docketId))
+        // decode and validate, then write: Kotlin generates the SQL
+        dbAdapter.execute(
+            "UPDATE docket SET name = ? WHERE id = ?",
+            listOf(name, docketId),
+        )
     }
 }
 ```
@@ -242,13 +251,17 @@ Then, in TypeScript, the host. It never writes SQL. It runs what Kotlin sends, o
 
 ```typescript
 const db: JsDbExecutor = {
+  // Toll Two: every value becomes a string
   getAll: async (sql, params) =>
     (await runner.query(sql, params)).map(row => ({
-      getString: name => toText(row[name]),          // Toll Two: everything becomes a string
+      getString: name => toText(row[name]),
     })),
-  execute: async (sql, params) => { await runner.query(sql, params) },   // Kotlin's SQL, run as-is
-  beginTransaction: async () => {                   // one pooled connection, kept until
-    runner = dataSource.createQueryRunner()         // commit or rollback: connection affinity
+  // Kotlin's SQL, run as-is
+  execute: async (sql, params) => { await runner.query(sql, params) },
+  // connection affinity: one pooled connection, kept until
+  // commit or rollback
+  beginTransaction: async () => {
+    runner = dataSource.createQueryRunner()
     await runner.connect()
     await runner.startTransaction()
   },
@@ -256,7 +269,9 @@ const db: JsDbExecutor = {
 }
 
 const judge = new WineryJudgeJs(db)
-await judge.processEvent(event.id, workspaceId, eventType, JSON.stringify(eventData), schemaVersion)
+await judge.processEvent(
+  event.id, workspaceId, eventType, JSON.stringify(eventData), version,
+)
 ```
 
 That inversion is what lets one Kotlin module drive a Node backend without dragging Kotlin's runtime

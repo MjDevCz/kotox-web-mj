@@ -163,7 +163,7 @@ three decisions, in three places, that have to agree:
 <div class="diagram-row"><span class="diagram-row-name">Upload connector accepts its creates</span><span class="diagram-tag">phone sync layer</span></div>
 <div class="diagram-row is-derived"><span class="diagram-row-name">Upload rule keeps direct updates on the phone</span><span class="diagram-tag">forget it: the server refuses the edits</span></div>
 </div>
-<div class="diagram-formula">category(<span class="is-safe">cooperage</span>) = hybrid &rarr; all three settings</div>
+<div class="diagram-formula">category(cooperage) = <span class="is-safe">hybrid</span> &rarr; all three settings</div>
 <div class="diagram-legend"><span><span class="is-safe">&#9632;</span> declared once per table; the three settings follow from it</span></div>
 </div>
 
