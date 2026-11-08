@@ -153,6 +153,9 @@ about ends the same way, as a conflict for a person:
 - an event type it doesn't know, or a payload it can't decode
 - an entity that no longer exists
 
+Ten is a number we picked: today's cellars never come close, and if real use does, we raise it. The point is
+that a limit exists, and crossing it falls toward a person.
+
 That makes its mistakes one-sided:
 
 <div class="diagram">
@@ -175,8 +178,9 @@ That makes its mistakes one-sided:
 
 When the machine is not certain two humans agreed, it asks them.
 
-Comparing columns tells you whether two edits *collide*, not whether either one still makes sense;
-[Part 17](/series/offline-first-kmp#part-17) is where that difference starts to matter.
+One caveat: everything above makes the auto-resolver's mistakes harmless; none of it proves the column
+comparison asks the right question. Two edits can touch different columns and still not make sense together;
+[Part 17](/series/offline-first-kmp#part-17) is where that bites.
 
 ## The Takeaways
 
@@ -185,4 +189,4 @@ Comparing columns tells you whether two edits *collide*, not whether either one 
 - **Only edits the user hadn't seen can conflict.** Compare against what changed since their snapshot,
   not against the entity's whole history.
 - **Fail closed, loudly.** An auto-resolver that over-asks is an annoyance. One that under-asks corrupts
-  data silently, and the silent failures are the ones that reach your users.
+  data silently.
