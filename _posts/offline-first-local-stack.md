@@ -76,14 +76,24 @@ We did not rewrite the app. We wrote a second connector pointed at localhost and
 development build flavor.
 
 ```kotlin
-class LocalConnector(private val httpClient: HttpClient) : PowerSyncBackendConnector() {
+class LocalConnector(
+    private val httpClient: HttpClient,
+) : PowerSyncBackendConnector() {
 
     override suspend fun fetchCredentials(): PowerSyncCredentials {
-        val token = httpClient.get("http://$localSyncHost:3002/token").bodyAsText().trim()
-        return PowerSyncCredentials(endpoint = "http://$localSyncHost:8080", token = token)
+        val token = httpClient.get("http://$localSyncHost:3002/token")
+            .bodyAsText()
+            .trim()
+        return PowerSyncCredentials(
+            endpoint = "http://$localSyncHost:8080",
+            token = token,
+        )
     }
 
-    override suspend fun uploadData(database: PowerSyncDatabase) { /* POST/PATCH/DELETE to PostgREST */ }
+    // POST/PATCH/DELETE to PostgREST
+    override suspend fun uploadData(database: PowerSyncDatabase) {
+        /* ... */
+    }
 }
 ```
 

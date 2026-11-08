@@ -157,7 +157,7 @@ their name on it.
 Going deeper:
 
 - [Part 13](/posts/offline-first-auto-resolve): everything those paragraphs hide.
-- [Part 14](/series/offline-first-kmp#part-14): which entities get this treatment at all.
+- [Part 14](/posts/offline-first-not-everything-ledger): which entities get this treatment at all.
 - [Part 16](/series/offline-first-kmp#part-16): keeping the declarations it rests on from rotting.
 - [Part 17](/series/offline-first-kmp#part-17): where the disjoint-column idea runs out.
 - [Part 18](/series/offline-first-kmp#part-18): what a server owes a user when it refuses.
@@ -179,7 +179,7 @@ also compiles to a Node.js library, published as an npm package our backend impo
   same rules.
 - **Not free at the type boundary.** `Long` narrows to `Double`, and coroutines become Promises with a
   rollback hazard attached. And one engine reading two databases gets every value as a string, a cost the
-  phone pays too. [Part 15](/series/offline-first-kmp#part-15) covers what that boundary charges.
+  phone pays too. [Part 15](/posts/offline-first-type-boundary) covers what that boundary charges.
 
 But the property it buys is absolute: the client cannot disagree with the server, because they are the same
 judge.

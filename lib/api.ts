@@ -265,6 +265,27 @@ export function getStaleSeriesAnchors(): string[] {
   return stale
 }
 
+// Widest code line that fits the article column on desktop. A longer line
+// scrolls sideways and hides its end, usually the comment that carries the point.
+const MAX_CODE_LINE = 75
+
+// Lines inside fenced code blocks that are wider than the article column, for a
+// build-time warning (docs/writing-articles.md, "Code Blocks").
+export function getOverlongCodeLines(): string[] {
+  const overlong: string[] = []
+  for (const file of getPostSlugs()) {
+    let inFence = false
+    fs.readFileSync(join(postsDirectory, file), 'utf8').split('\n').forEach((line, i) => {
+      if (line.startsWith('```')) {
+        inFence = !inFence
+      } else if (inFence && line.length > MAX_CODE_LINE) {
+        overlong.push(`_posts/${file}:${i + 1} (${line.length} chars)`)
+      }
+    })
+  }
+  return overlong
+}
+
 // Series to feature on the homepage, ordered by recency, capped at
 // MAX_FEATURED_SERIES. Only series with at least two published parts are
 // featured; a lone Part 1 stays an ordinary card in the grid until Part 2 ships.

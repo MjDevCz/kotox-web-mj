@@ -52,6 +52,16 @@
     white-space: pre;
 }
 
+/* Shiki-highlighted blocks (lib/markdownToHtml.ts): keep the site's code card,
+   let the theme colour only the tokens. */
+.markdown pre:global(.shiki) {
+    background-color: theme('colors.gray.100') !important;
+}
+
+.markdown pre:global(.shiki) code {
+    color: inherit;
+}
+
 .markdown img {
     @apply block w-full my-8 rounded-lg;
 }

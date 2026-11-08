@@ -48,7 +48,8 @@ just silently piling up in your database.
 When I first watched the sync logs, I saw this and panicked:
 
 ```
-Could not apply checkpoint due to local data. Will retry at completed upload or next checkpoint.
+Could not apply checkpoint due to local data.
+Will retry at completed upload or next checkpoint.
 ```
 
 I read "could not apply" as an error. It looks like one. It's not. It's the mechanism working exactly
