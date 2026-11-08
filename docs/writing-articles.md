@@ -106,7 +106,8 @@ theme `github-light`), so no highlighting JavaScript ships to the reader.
   output that isn't code.
 - **Keep lines under ~75 characters.** That is what fits the article column on desktop; longer lines scroll
   sideways and hide their ends. Put a comment that carries the point on its own line above the code, not at
-  the end of a long line, so it also reads on a phone.
+  the end of a long line, so it also reads on a phone. The build prints a `[code] Line is wider than the
+  article column…` warning with the file and line for each one.
 
 ## Drafts
 

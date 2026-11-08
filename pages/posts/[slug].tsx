@@ -5,7 +5,7 @@ import PostBody from '../../components/post-body'
 import Header from '../../components/header'
 import PostHeader from '../../components/post-header'
 import Layout from '../../components/layout'
-import {getPostBySlug, getAllPosts, getSeriesNav} from '../../lib/api'
+import {getPostBySlug, getAllPosts, getSeriesNav, getOverlongCodeLines} from '../../lib/api'
 import type {SeriesNavItem, SeriesUpcomingItem} from '../../lib/api'
 import SeriesNav from '../../components/series-nav'
 import {getCoverBlurDataURL} from '../../lib/coverBlur'
@@ -109,6 +109,9 @@ export async function getStaticProps({params}: Params) {
 }
 
 export async function getStaticPaths() {
+    for (const line of getOverlongCodeLines()) {
+        console.warn(`[code] Line is wider than the article column, wrap it: ${line}`)
+    }
     const posts = getAllPosts(['slug'])
 
     return {
