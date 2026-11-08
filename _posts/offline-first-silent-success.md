@@ -70,7 +70,8 @@ Two events went up. Watching the upload batch:
 POST /v1/powersync/write
   HARVEST_DOCKET_ASSIGN  → 200 {"success":1,"error":0}
   CELLAR_WINE_CREATED    → 200 {"success":0,"error":1}
-      results[1].error: "wine_id 159e8928… does not reference an existing wine"
+      results[1].error:
+        "wine_id 159e8928… does not reference an existing wine"
 ```
 
 The assign succeeded. The breadcrumb *failed validation on the server*, and the whole batch still came
