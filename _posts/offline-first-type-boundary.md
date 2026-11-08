@@ -35,7 +35,7 @@ iOS; we added a single JavaScript target, and the same source now builds a Node 
 package the backend imports. This post is about what happens at the seam where compiled Kotlin meets
 hand-written JavaScript.
 
-## Toll One: Kotlin `Long` Becomes a JavaScript `Double`
+## Toll 1: Kotlin `Long` Becomes a JavaScript `Double`
 
 Kotlin has a real `Long`. JavaScript has one number type, an IEEE 754 double, and Kotlin/JS does not smuggle
 a 64-bit integer across intact. So anything that is a `Long` on the Kotlin side crosses the boundary as a
@@ -69,7 +69,7 @@ So for our data this is safe. But "safe for our data" is a decision, not a freeb
 boundary silently rounds, and you will not get a compile error telling you so. Know which of your numbers
 are genuinely 64-bit, and keep them out of the arithmetic that crosses.
 
-## Toll Two: Every Database Value Arrives as a String
+## Toll 2: Every Database Value Arrives as a String
 
 The engine reads its database through one small interface, and that interface has exactly one way to read a
 column:
@@ -110,7 +110,7 @@ columns where "10.4" must not become a float. [Part 6](/posts/offline-first-adap
 and [Part 7](/posts/offline-first-generated-file) is the bug you get from putting one column on the wrong side
 of that split.
 
-## Toll Three: Coroutines Become Promises, and the Rollback Is Yours
+## Toll 3: Coroutines Become Promises, and the Rollback Is Yours
 
 Kotlin's concurrency is coroutines; JavaScript's is Promises. A `suspend` function cannot cross as-is, so the
 facade wraps each one in `GlobalScope.promise { }`, which turns a suspending body into a real Promise the Node
@@ -251,7 +251,7 @@ Then, in TypeScript, the host. It never writes SQL. It runs what Kotlin sends, o
 
 ```typescript
 const db: JsDbExecutor = {
-  // Toll Two: every value becomes a string
+  // Toll 2: every value becomes a string
   getAll: async (sql, params) =>
     (await runner.query(sql, params)).map(row => ({
       getString: name => toText(row[name]),

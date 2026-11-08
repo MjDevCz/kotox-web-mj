@@ -88,7 +88,7 @@ Available blocks (see `_posts/offline-first-generated-file.md` for both in use):
   `.diagram-tick-tag`), in time order. Wrap a span of ticks in `.diagram-window` >
   `.diagram-window-ticks`, followed by a `.diagram-window-label`, to highlight that stretch of time. Mark a
   tick `is-compare` (red, what counts) or `is-skip` (hollow, struck through, what is ignored). Horizontal
-  from `sm` up, vertical on phones. See Break One in `_posts/offline-first-auto-resolve.md`.
+  from `sm` up, vertical on phones. See Break 1 in `_posts/offline-first-auto-resolve.md`.
 - **Formula and legend:** `.diagram-formula` for a monospace line, `.diagram-legend` beneath it. Use
   `is-fragile` and `is-safe` to colour-code terms and their legend swatches.
 

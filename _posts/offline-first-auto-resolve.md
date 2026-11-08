@@ -56,7 +56,7 @@ compares the columns the two edits wrote:
 
 That is the clean version. Here is what it leaves out.
 
-## Break One: Only Edits You Haven't Seen Can Conflict
+## Break 1: Only Edits You Haven't Seen Can Conflict
 
 **The point: compare an event only against the edits its user hadn't seen yet.** Anything older is already
 part of the version they acted on, so it can't disagree with them.
@@ -97,7 +97,7 @@ an event is already in your snapshot, it keeps it: at worst, a human gets asked.
 The check also trusts each event's own list of the columns it writes, and hand-written lists rot;
 [Part 16](/series/offline-first-kmp#part-16) is how we stop that from happening quietly.
 
-## Break Two: The Same Value Is Not a Disagreement
+## Break 2: The Same Value Is Not a Disagreement
 
 The check assumes two writes to the same column clash. They don't if the values match. Two devices mark the
 same docket as received offline, both writing `status` = received. The columns overlap, so the naive check
@@ -106,7 +106,7 @@ asks a human to settle a disagreement that doesn't exist.
 Now an overlap with an *identical* value is a no-op: recorded as resolved, nothing applied, nobody asked. A
 conflict requires a difference, not just a collision.
 
-## Break Three: Row Locks So the Check Survives Concurrency
+## Break 3: Row Locks So the Check Survives Concurrency
 
 Everything above assumes a stable history. On our server, several batches process events for the same
 workspace in parallel, so another batch could change a docket while the auto-resolver is reading it. So the
