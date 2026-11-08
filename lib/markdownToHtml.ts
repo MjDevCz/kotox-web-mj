@@ -1,6 +1,43 @@
 import { remark } from 'remark'
 import html from 'remark-html'
+import { createHighlighter, type Highlighter } from 'shiki'
 import { getLocalImageMeta } from './coverBlur'
+
+// Languages the posts use in fenced code blocks. A fence with any other
+// language, or none, stays plain text (logs, HTTP traces, step flows).
+const CODE_LANGS = ['kotlin', 'typescript', 'javascript', 'sql', 'json', 'bash', 'yaml']
+const CODE_THEME = 'github-light'
+
+let highlighter: Promise<Highlighter> | null = null
+
+function getHighlighter(): Promise<Highlighter> {
+  highlighter ??= createHighlighter({ themes: [CODE_THEME], langs: CODE_LANGS })
+  return highlighter
+}
+
+const CODE_BLOCK = /<pre><code class="language-([\w-]+)">([\s\S]*?)<\/code><\/pre>/g
+
+function decodeHtmlEntities(value: string): string {
+  return value
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(parseInt(dec, 10)))
+    .replace(/&amp;/g, '&')
+}
+
+// Colour fenced code blocks at build time, so readers get syntax highlighting
+// without any client-side JavaScript.
+async function highlightCodeBlocks(htmlString: string): Promise<string> {
+  if (!htmlString.includes('<pre><code class="language-')) return htmlString
+  const shiki = await getHighlighter()
+  return htmlString.replace(CODE_BLOCK, (block, lang: string, code: string) => {
+    const language = lang === 'ts' ? 'typescript' : lang === 'js' ? 'javascript' : lang === 'kt' ? 'kotlin' : lang
+    if (!CODE_LANGS.includes(language)) return block
+    return shiki.codeToHtml(decodeHtmlEntities(code).replace(/\n$/, ''), { lang: language, theme: CODE_THEME })
+  })
+}
 
 const YOUTUBE_SHORTCODE = /@\[youtube\]\(([\w-]{6,})\)/g
 
@@ -123,6 +160,7 @@ type Options = {
 export default async function markdownToHtml(markdown: string, options: Options = {}) {
   const result = await remark().use(html, { sanitize: false }).process(expandYouTubeShortcodes(markdown))
   let htmlString = addHeadingIds(styleTldr(openExternalLinksInNewTab(result.toString())))
+  htmlString = await highlightCodeBlocks(htmlString)
   if (options.enrichImages) {
     htmlString = await enrichLocalImages(htmlString)
   }

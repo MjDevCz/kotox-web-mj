@@ -17,6 +17,7 @@
     "remark": "^14.0.2",
     "remark-html": "^15.0.1",
     "sharp": "^0.35.0",
+    "shiki": "^3",
     "typescript": "^6.0.2"
   },
   "resolutions": {

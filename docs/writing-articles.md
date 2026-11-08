@@ -95,6 +95,19 @@ Available blocks (see `_posts/offline-first-generated-file.md` for both in use):
 Keep diagrams to structures the prose would otherwise labour over, and **cut the prose the diagram
 replaces** — a diagram added on top of the paragraph it duplicates makes the post longer, not shorter.
 
+## Code Blocks
+
+Fenced code is syntax-highlighted at build time by [Shiki](https://shiki.style) (`lib/markdownToHtml.ts`,
+theme `github-light`), so no highlighting JavaScript ships to the reader.
+
+- **Tag the language on the fence** to get colour: `kotlin`, `typescript` (or `ts`), `javascript` (or `js`),
+  `sql`, `json`, `bash`, `yaml`. Add a language to `CODE_LANGS` before using a new one.
+- **Leave logs, HTTP traces and step flows untagged.** An untagged fence stays plain text, which is right for
+  output that isn't code.
+- **Keep lines under ~75 characters.** That is what fits the article column on desktop; longer lines scroll
+  sideways and hide their ends. Put a comment that carries the point on its own line above the code, not at
+  the end of a long line, so it also reads on a phone.
+
 ## Drafts
 
 Unfinished articles live in `_posts_wip/`. This folder is not read by the site — articles there won't be built or deployed. When a draft is ready, move it to `_posts/`.
