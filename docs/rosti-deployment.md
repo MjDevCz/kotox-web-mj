@@ -43,8 +43,12 @@ Inside the container (all under `/srv`):
 | `/srv/conf/supervisor.d/nginx.conf` | Runs nginx. |
 | `/srv/conf/nginx.d/app.conf` | nginx site: listens on 8000, proxies to the app on `127.0.0.1:8080`. |
 | `/srv/bin/primary_tech/` | The Node.js toolchain (`node`, `npm`, `npx`, `corepack`), set by `rosti node <version>`. |
-| `/srv/.npm-packages/` | Global npm packages. Contains an **old global Next.js** — it is on the app's `PATH`. |
+| `/srv/.npm-packages/` | Global npm packages, on the app's `PATH`: only `npm` and `yarn` (~17 MB). An old global Next.js (243 MB) was removed on 2026-11-12. |
 | `/srv/log/node.log` | App stdout/stderr (rotated by supervisord, 2 MB × 5). |
+| `/srv/.yarn/`, `/srv/.npm/` | Package-manager download caches from installs on the server. Unused since we build in CI; they held 504 MB + 295 MB until removed on 2026-11-12. Delete them if they reappear. |
+
+After the 2026-11-12 cleanup all of `/srv` is ~122 MB. Measure the whole thing with
+`du -sh /srv /srv/* /srv/.[!.]*`. Summing a few known directories missed ~800 MB of caches once.
 
 The app is a Next.js **standalone** build (`output: 'standalone'` in `next.config.js`).
 CI builds it, copies `.next/static` and `public/` into `.next/standalone/`, and rsyncs only
@@ -56,9 +60,10 @@ environment=PATH="...",NODE_ENV="production",PORT="8080",HOSTNAME="127.0.0.1"
 ```
 
 There is no `node_modules/.bin/next` on the server, so `npm start` / `next start` cannot work
-there. If anything falls back to them, the old global Next.js from `/srv/.npm-packages` starts
-instead, crashes on the Next 16 build (`Cannot find module .../font-manifest.json`) and
-crash-loops.
+there. If anything falls back to them, it now fails with `next: not found` and crash-loops.
+Before 2026-11-12 an old global Next.js in `/srv/.npm-packages` started instead and crashed on
+the Next 16 build (`Cannot find module .../font-manifest.json`), which hid the real cause. Don't
+install `next` globally on the server again.
 
 `next.config.js` also forces sharp's native `@img/sharp-libvips-*` package into the bundle:
 Next's file tracing copies `sharp` but misses libvips, and without it every page returns 500.
@@ -99,7 +104,7 @@ tail -50 /srv/log/node.log               # a healthy start shows "▲ Next.js 16
 ls /srv/conf/supervisor.d                # should be node.conf + nginx.conf only
 cat /sys/fs/cgroup/pids.events           # "max N": times the PID limit was hit
 cat /sys/fs/cgroup/memory.events         # "oom_kill N": times something ran out of RAM
-df -h /srv; du -sh /srv/app              # disk vs the 1 GB quota
+du -sh /srv /srv/* /srv/.[!.]* | sort -h  # disk vs the 1 GB quota (df shows the shared host disk)
 ```
 
 The Roští admin's monitoring page shows CPU, memory, network, disk I/O, disk space and file
