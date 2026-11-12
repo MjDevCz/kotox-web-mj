@@ -42,6 +42,12 @@ jobs:
       - name: Build
         run: |
           yarn build
+      # output: 'standalone' emits a minimal server in .next/standalone; it
+      # needs the client assets and public/ copied in beside it.
+      - name: Assemble standalone bundle
+        run: |
+          cp -R .next/static .next/standalone/.next/static
+          cp -R public/. .next/standalone/public/
       - name: Setup Node.js
         run: |
           ssh -o UserKnownHostsFile=./known_hosts -p $PORT $USER@$HOST /usr/local/bin/rosti node $NODE_VERSION
@@ -49,8 +55,8 @@ jobs:
         run: |
           cat << EOF > rosti.app.conf
           [program:app]
-          command=/srv/bin/primary_tech/npm start
-          environment=PATH="/srv/bin/primary_tech:/usr/local/bin:/usr/bin:/bin:/srv/.npm-packages/bin"
+          command=/srv/bin/primary_tech/node server.js
+          environment=PATH="/srv/bin/primary_tech:/usr/local/bin:/usr/bin:/bin:/srv/.npm-packages/bin",NODE_ENV="production",PORT="8080",HOSTNAME="127.0.0.1"
           stopasgroup=true
           directory=/srv/app
           process_name=app
@@ -86,7 +92,7 @@ jobs:
           rm rosti.nginx.conf
       - name: Copy code
         run: |
-          rsync -ae "ssh -o UserKnownHostsFile=./known_hosts -p $PORT" --delete-after --exclude=.git ./ $USER@$HOST:/srv/app/
+          rsync -ae "ssh -o UserKnownHostsFile=./known_hosts -p $PORT" --delete-after .next/standalone/ $USER@$HOST:/srv/app/
       - name: Apply changes
         run: |
           ssh -o UserKnownHostsFile=./known_hosts -p $PORT $USER@$HOST supervisorctl reread
