@@ -31,6 +31,8 @@ Use **yarn** — this repo is yarn-only (do not use npm).
 - **[Writing articles & house style](docs/writing-articles.md)** — the source of truth for authoring
   posts: frontmatter schema, series fields, links, drafts, content guidelines, and the full **house
   style** (TL;DR deck, Title Case headings, SEO/GEO titling, etc.). **Apply this to every blog edit.**
+- **[Deployment on Roští.cz](docs/rosti-deployment.md)** — server layout, the standalone build, and
+  the supervisord `node.conf` pitfall. **Read before changing the deploy workflow or start command.**
 - [Dependency management](docs/dependency-management.md)
 - [RSS feed](docs/rss-feed.md)
 - [Story ideas](docs/story-ideas.md)
