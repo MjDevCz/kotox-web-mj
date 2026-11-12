@@ -95,6 +95,8 @@ jobs:
           rsync -ae "ssh -o UserKnownHostsFile=./known_hosts -p $PORT" --delete-after .next/standalone/ $USER@$HOST:/srv/app/
       - name: Apply changes
         run: |
-          ssh -o UserKnownHostsFile=./known_hosts -p $PORT $USER@$HOST supervisorctl reread
+          # update (not just reread) applies a changed [program:app] command;
+          # restart alone would relaunch the app with the old one.
+          ssh -o UserKnownHostsFile=./known_hosts -p $PORT $USER@$HOST supervisorctl update
           ssh -o UserKnownHostsFile=./known_hosts -p $PORT $USER@$HOST supervisorctl restart app
           ssh -o UserKnownHostsFile=./known_hosts -p $PORT $USER@$HOST supervisorctl restart nginx
