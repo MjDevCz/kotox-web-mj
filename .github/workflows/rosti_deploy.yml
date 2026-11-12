@@ -69,7 +69,9 @@ jobs:
           stdout_events_enabled=false
           redirect_stderr=true
           EOF
-          scp -o UserKnownHostsFile=./known_hosts -P $PORT rosti.app.conf $USER@$HOST:/srv/conf/supervisor.d/app.conf
+          # Roští's Node.js program config is node.conf; a separate app.conf with the
+          # same [program:app] is silently overridden by it. See docs/rosti-deployment.md.
+          scp -o UserKnownHostsFile=./known_hosts -P $PORT rosti.app.conf $USER@$HOST:/srv/conf/supervisor.d/node.conf
           rm rosti.app.conf
       - name: Setup Nginx
         run: |
