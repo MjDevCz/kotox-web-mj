@@ -68,15 +68,16 @@ status stops updating exactly when its component dies.
 <div class="diagram">
 <div class="diagram-head">Three ways to count unsent work</div>
 <div class="diagram-rows">
-<div class="diagram-row"><span class="diagram-row-name">Raw queue entries</span><span class="diagram-tag">nine actions show up as 41</span></div>
+<div class="diagram-row"><span class="diagram-row-name">Raw queue rows</span><span class="diagram-tag">nine actions show up as 41</span></div>
 <div class="diagram-row"><span class="diagram-row-name">Events only</span><span class="diagram-tag">misses rows created without an event</span></div>
-<div class="diagram-row is-derived"><span class="diagram-row-name">The user's work: each row once, no derived or local-only rows</span><span class="diagram-tag">what we show</span></div>
+<div class="diagram-row is-derived"><span class="diagram-row-name">Entries: the user's work, each row once, no derived or local-only rows</span><span class="diagram-tag">what we show</span></div>
 </div>
 </div>
 
 One user action writes several queue rows, so the raw count overstates. Counting events alone misses
 entities created as a plain row with no event behind it, like a supplier added offline. The third count
-matches what the person actually did.
+matches what the person actually did, and it is the number the Recovery screen shows as "entries recorded
+on this device".
 
 The count reads the sync SDK's own storage format, so the read can fail. When it does, it falls back to
 the raw queue count, which is larger. If that fails too, the sign-out dialog says "unknown" and warns
