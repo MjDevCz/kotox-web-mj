@@ -70,6 +70,31 @@
     @apply my-8;
 }
 
+/* A single tall image (a phone screenshot) beside the text: floats right from sm up,
+   centred and stacked on phones. Headings clear it so it never runs into the next section. */
+.markdown :global(figure.figure-aside) {
+    @apply mx-auto max-w-[16rem] sm:float-right sm:clear-right sm:w-56 sm:mt-1 sm:mb-4 sm:ml-8 sm:mr-0;
+}
+
+/* Pairs an aside with its own text: holds the float, so the next pair starts below it. */
+.markdown :global(.aside-group) {
+    display: flow-root;
+}
+
+.markdown :global(.aside-group) > p:first-of-type {
+    margin-top: 0;
+}
+
+/* A wider aside for a cropped, landscape-ish screenshot, so its text stays legible. */
+.markdown :global(figure.figure-aside.is-wide) {
+    @apply max-w-[20rem] sm:w-72;
+}
+
+.markdown h2,
+.markdown h3 {
+    clear: both;
+}
+
 .markdown figure img,
 .markdown figure :global(.blur-img) {
     @apply my-0;
@@ -176,6 +201,11 @@
 
 .markdown :global(.diagram-fork) {
     @apply grid gap-4 mt-4 sm:grid-cols-2;
+}
+
+/* Three cards side by side from md up; one column below that, never a 2 + 1 split. */
+.markdown :global(.diagram-fork.is-three) {
+    @apply sm:grid-cols-1 md:grid-cols-3;
 }
 
 .markdown :global(.diagram-branch) {

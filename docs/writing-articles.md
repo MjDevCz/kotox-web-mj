@@ -82,6 +82,8 @@ Available blocks (see `_posts/offline-first-generated-file.md` for both in use):
 - **Two-branch fork:** `.diagram-fork` holding two `.diagram-branch` cards, each with
   `.diagram-branch-title`, `.diagram-branch-rule`, one or more `.diagram-line`, and a closing
   `.diagram-verdict` marked `is-ok` or `is-bad`. Stacks to one column on narrow screens.
+  Add `is-three` to the fork for three cards side by side (from `md` up). See the shipped-build guards in
+  `_posts/offline-first-drift-compile-error.md`.
 - **Labelled rows:** `.diagram-rows` holding `.diagram-row` items, each with `.diagram-row-name` and
   `.diagram-tag`. Add `is-derived` to a row to highlight it.
 - **Timeline:** `.diagram-timeline` holding `.diagram-tick` items (each a `.diagram-tick-label` plus a
@@ -94,6 +96,16 @@ Available blocks (see `_posts/offline-first-generated-file.md` for both in use):
 
 Keep diagrams to structures the prose would otherwise labour over, and **cut the prose the diagram
 replaces** — a diagram added on top of the paragraph it duplicates makes the post longer, not shorter.
+
+## Screenshots
+
+A single tall image, such as a phone screenshot, can sit beside the text: wrap it in
+`<figure class="captioned figure-aside">` right after the section heading. It floats right from `sm` up and
+stacks centred on phones; the next heading clears it. Crop empty space off the bottom so it ends within its
+section. Add `is-wide` for a cropped, wider screenshot so its text stays legible. To keep an aside beside its own
+paragraph, wrap the pair in `<div class="aside-group">` (blank lines inside, so the Markdown still
+parses), as the refused-work screenshots in
+`_posts/offline-first-unsent-not-saved.md` do.
 
 ## Code Blocks
 
