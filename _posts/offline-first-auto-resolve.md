@@ -95,7 +95,7 @@ event your snapshot already contains; what is left is the *intervening window*. 
 an event is already in your snapshot, it keeps it: at worst, a human gets asked.
 
 The check also trusts each event's own list of the columns it writes, and hand-written lists rot;
-[Part 16](/series/offline-first-kmp#part-16) is how we stop that from happening quietly.
+[Part 16](/posts/offline-first-drift-compile-error) is how we stop that from happening quietly.
 
 ## Break 2: The Same Value Is Not a Disagreement
 
@@ -180,7 +180,7 @@ When the machine is not certain two humans agreed, it asks them.
 
 One caveat: everything above makes the auto-resolver's mistakes harmless; none of it proves the column
 comparison asks the right question. Two edits can touch different columns and still not make sense together;
-[Part 17](/series/offline-first-kmp#part-17) is where that bites.
+[Part 17](/posts/offline-first-no-collision-permission) is where that bites.
 
 ## The Takeaways
 

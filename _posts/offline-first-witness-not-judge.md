@@ -65,6 +65,9 @@ The queue has a second way to lose. A batch upload can come back `HTTP 200` whil
 was refused, and the queue crosses it off as done. [Part 5](/posts/offline-first-silent-success) tells that
 war story: "200" is a fact about HTTP, not about your *operation*.
 
+And a third, before any upload at all: work that never leaves the device. [Part 19](/posts/offline-first-unsent-not-saved)
+is the iPad that held twenty-four days of it while every screen looked healthy.
+
 ## Witness, Not Judge
 
 The fix started as a principle before it was any code. **The client witnesses; it never judges.** A witness
@@ -158,9 +161,9 @@ Going deeper:
 
 - [Part 13](/posts/offline-first-auto-resolve): everything those paragraphs hide.
 - [Part 14](/posts/offline-first-not-everything-ledger): which entities get this treatment at all.
-- [Part 16](/series/offline-first-kmp#part-16): keeping the declarations it rests on from rotting.
-- [Part 17](/series/offline-first-kmp#part-17): where the disjoint-column idea runs out.
-- [Part 18](/series/offline-first-kmp#part-18): what a server owes a user when it refuses.
+- [Part 16](/posts/offline-first-drift-compile-error): keeping the declarations it rests on from rotting.
+- [Part 17](/posts/offline-first-no-collision-permission): where the disjoint-column idea runs out.
+- [Part 18](/posts/offline-first-refusal-nobody-sees): what a server owes a user when it refuses.
 
 ## The Kicker: The Same Kotlin Runs on a Node.js Server
 

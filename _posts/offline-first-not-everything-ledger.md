@@ -179,7 +179,7 @@ season you add barrel suppliers to the catalog, as a hybrid entity like growers:
 
 Forget the upload rule on the left, and the phone uploads direct edits that the server refuses. So if you build
 one of these, write each entity's group down once and derive the three lists from it, or at least add a test
-that fails when they disagree. It is the same idea as [Part 16](/series/offline-first-kmp#part-16): when
+that fails when they disagree. It is the same idea as [Part 16](/posts/offline-first-drift-compile-error): when
 correctness depends on metadata staying in step, let the build check it, not the next person's memory.
 
 ## The Takeaways
