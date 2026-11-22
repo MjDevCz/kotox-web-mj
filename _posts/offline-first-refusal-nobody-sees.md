@@ -103,7 +103,7 @@ The timing difference is still there. It stopped mattering, because neither endi
 our design discussion went into picking a verdict, rejection or conflict. That was the wrong question.
 Either is fine, as long as the person whose work it was can see it.
 
-## Why Refusing an Edit Does Not Break "Never Block Recording"
+## Refusing to Apply Is Not Refusing to Record
 
 One objection kept this rule unwritten for a long time. Our first principle is that the app never stops
 anyone from recording real work. That is why the event log has no foreign keys and the client
